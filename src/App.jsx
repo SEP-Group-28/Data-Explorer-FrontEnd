@@ -1,29 +1,13 @@
-import { useState,useEffect } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import React from "react";
+import "./App.css";
+import Router from "./navigation/Router";
 
 function App() {
-  const [data, setData] = useState([{}])
-
-  useEffect(()=>{
-    fetch("/members").then(
-   
-      res=>{res.json()
-      console.log(res.json())}
-      ).then(
-        data =>{
-          setData(data)
-          console.log(data)
-        }
-
-    )
-  },[])
-
   return (
     <div className="App">
-     
+      <Router/>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
