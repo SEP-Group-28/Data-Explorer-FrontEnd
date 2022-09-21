@@ -78,11 +78,11 @@ const custom_password = (value, helper) => {
     );
   } else if (value.search(/[0-9]/i) < 0) {
     return helper.message("Password must contain at least one number");
-//   } else if (value.search(/[#?!@$%^&*-]/i) < 0) {
-//     return helper.message(
-//       "Password must contain at least one special character"
-//     );
-//   } else {
+  } else if (value.search(/[#?!@$%^&*-]/i) < 0) {
+    return helper.message(
+      "Password must contain at least one special character"
+    );
+  } else {
     return true;
   }
 };

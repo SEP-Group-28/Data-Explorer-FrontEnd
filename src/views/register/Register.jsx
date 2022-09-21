@@ -158,7 +158,7 @@ function Register() {
           </Form.Group>
         
           
-            <button type="submit" className="login-btn mb-10" id="login-btn" onClick={handleSubmit}>Login</button>
+            <button type="submit" className="login-btn mb-10" id="login-btn" onClick={handleSubmit}>Sign up</button>
             {/* <div id="signUpDiv"></div> */}
             <div className="d-flex flex-row col-7 align-self-center justify-content-between">
             <p>Already have an account?</p>
