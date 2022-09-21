@@ -53,6 +53,7 @@ function Login() {
             const response =await AuthServices.login(state);
             console.log(" response is",response);
           }catch(error){
+            console.log(error.response.data.message)
             console.log("Login failed")
           }
           setEmailError("");
