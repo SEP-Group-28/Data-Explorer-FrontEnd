@@ -11,8 +11,8 @@ const register = (data) => {
     method: "post",
     url: APIEndpoint + "/register",
     data: {
-      first_name: data["First Name"],
-      last_name: data["Last Name"],
+      firstname: data["First Name"],
+      lastname: data["Last Name"],
       email: data["Email"],
       password: data["Password"],
     },
@@ -20,4 +20,27 @@ const register = (data) => {
   });
 };
 
-export default register;
+  const login = async(data)=>{
+    console.log(data);
+
+    const response = await axios({
+      method : "post",
+      url: APIEndpoint + '/login',
+      data:{
+        email : data.Email,
+        password : data.password
+      }
+    });
+    console.log("response", response);
+    token.setAccessToken(response.data.access_token);
+    return response;
+  }
+
+  const logout = async (data) => {
+    return axios({
+      method: "get",
+      url: APIEndpoint + "/logout",
+    });
+  };
+
+export default {register,login,logout};
