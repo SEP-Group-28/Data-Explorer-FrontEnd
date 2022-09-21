@@ -10,14 +10,37 @@ const register = (data) => {
   return axios({
     method: "post",
     url: APIEndpoint + "/register",
-    data: {
-      first_name: data["First Name"],
-      last_name: data["Last Name"],
+    data:{
+      firstname: data["First Name"],
+      lastname: data["Last Name"],
       email: data["Email"],
       password: data["Password"],
     },
-    // headers: {Authorization: `Bearer ${token.getAccessToken()}`}
+    //  headers: {Authorization: `Bearer ${token.getAccessToken()}`}
+    // headers:{'Content-Type':"application/json"},
+    // json:true,
   });
 };
 
-export default register;
+  const login = async(data)=>{
+
+    const response = await axios({
+      method : "post",
+      url: APIEndpoint + '/login',
+      data:{
+        email : data["Email"],
+        password : data["Password"],
+      }
+    });
+    token.setAccessToken(response.data.access_token);
+    return response;
+  }
+
+  const logout = async (data) => {
+    return axios({
+      method: "get",
+      url: APIEndpoint + "/logout",
+    });
+  };
+
+export default {register,login,logout};

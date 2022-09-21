@@ -1,4 +1,5 @@
 import React,{useState} from "react";
+import { Link } from "react-router-dom";
 import HeaderOne from "../../components/headers/HeaderOne";
 import { Form, FormControl } from "react-bootstrap";
 import GoogleButton from "react-google-button";
@@ -10,6 +11,7 @@ import AuthServices from "../../services/AuthServices"
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Visibility from "@mui/icons-material/Visibility";
 import IconButton from "@mui/material/IconButton";
+import { Password } from "@mui/icons-material";
 
 function Register() {
 
@@ -23,13 +25,19 @@ function Register() {
   };
   const [state, setState] = useState(formValues);
   const [errorData,setErrorData] = useState({});
+  const [confirmPassError,setConfirmPassError]=useState("")
   const errors = {};
 
   const [showPassword,setShowPassword]=useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const togglePassword=()=>{
     setShowPassword(!showPassword);
   }
+  const toggleConfirmPassword = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
+  
   const handleChange =(e)=>{
     setState({
       ...state,[e.target.name] : e.target.value,
@@ -39,14 +47,13 @@ function Register() {
   const handleSubmit= async(e)=>{
     e.preventDefault();
     const {value,error} = Validation.register(state);
+    
     if(error){
       error.details.map((item)=>{
         errors[item.path[0]] = item.message;
       });
-      
-      
-      // if(errors["Confirm Password"] !="")
-      //   errors["Confirm Password"]="Passwords do not match"
+    
+
     }else{
       try{
         const response = await AuthServices.register(state);
@@ -54,11 +61,12 @@ function Register() {
       }catch(error){
         console.log("Failed registration")
       }
+  
     }
     
-    console.log("Errors are", errors);
-    console.log("Error data", errorData)
     setErrorData(errors);
+
+    
     
 
     
@@ -84,12 +92,13 @@ function Register() {
       <HeaderOne />
       <div className="register-container col-lg-5 container d-flex flex-column " style={{ backgroundColor: "rgb(17, 23, 38)" }}>
         <header>Create your account</header>
-        {errorData["First Name"] !== "" && (
+
+        <Form className="register-form container  d-flex flex-column col-9">
+          {errorData["First Name"] !== "" && (
               <p className="d-flex justify-content-center mb-0" style={{ color: "red" }}>
                 {errorData["First Name"]}
               </p>
             )}
-        <Form className="register-form container  d-flex flex-column col-9">
           <Form.Group className="formGroup mb-3 d-flex flex-row" id="formFirstName">
             <Form.Label className="register-form-label">First Name</Form.Label>
             <Form.Control className="register-form-control" type="text" place holder="Enter first name" name="First Name"
@@ -125,8 +134,12 @@ function Register() {
             )}
           <Form.Group className="formGroup mb-3 d-flex flex-row" id="formPassword">
             <Form.Label className="register-form-label">Password</Form.Label>
-            <Form.Control className="register-form-control" type="password" place holder="Enter password" name="Password"
+            <Form.Control className="register-form-control" place holder="Enter password" name="Password"
+              type={showPassword ? 'text' : 'password'}
               onChange={handleChange} required/>
+              <IconButton style={{backgroundColor:"#30353F", width:"0px",height:"0px",color:"white"}} onClick={togglePassword}>
+              {showPassword? <VisibilityOff   /> : <Visibility/> }
+              </IconButton>
           </Form.Group>
 
           {errorData["Confirm Password"] !== "" && (
@@ -136,19 +149,21 @@ function Register() {
             )}
           <Form.Group className="formGroup  mb-3 d-flex flex-row" id="formFirstName">
             <Form.Label className="register-form-label">Confirm password</Form.Label>
-            <Form.Control className="register-form-control"  place holder="Re enter password" name="Confirm Password"
-              type={showPassword ? 'text' : 'password'}
+            <Form.Control  className="register-form-control passControl"  place holder="Re enter password" name="Confirm Password"
+              type={showConfirmPassword ? 'text' : 'password'}
               onChange={handleChange} required/>   
-              <IconButton style={{backgroundColor:"#30353F", width:"0px",height:"0px",color:"white"}} onClick={togglePassword}>
-            {showPassword? <VisibilityOff   /> : <Visibility/> }
-          </IconButton>
+              <IconButton style={{backgroundColor:"#30353F", width:"0px",height:"0px",color:"white"}} onClick={toggleConfirmPassword}>
+              {showConfirmPassword? <VisibilityOff   /> : <Visibility/> }
+              </IconButton>
           </Form.Group>
         
           
-            <button type="submit" className="login-btn mb-10" id="login-btn" onClick={handleSubmit}>Login</button>
+            <button type="submit" className="login-btn mb-10" id="login-btn" onClick={handleSubmit}>Sign up</button>
             {/* <div id="signUpDiv"></div> */}
-              
-
+            <div className="d-flex flex-row col-7 align-self-center justify-content-between">
+            <p>Already have an account?</p>
+            <Link style={{textDecoration:"none"}} to="/login"><span>Sign in</span></Link>
+            </div>
         </Form>
       </div>
     </div>

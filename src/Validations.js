@@ -6,7 +6,12 @@ const register = (data) => {
     "Last Name": name_validation_joi_object(),
     Email: email_validation_joi_object(),
     Password: password_joi_object(),
-    "Confirm Password": Joi.any().equal(Joi.ref("password")),
+    "Confirm Password": Joi.custom((value, helper) => {
+      if (value != data.Password) {
+        return helper.message("Two passwords does not match");
+      }
+      return true;
+    }),
   });
 
   const { error, value } = schema.validate(data, { abortEarly: false });
@@ -14,6 +19,17 @@ const register = (data) => {
   return { value, error };
   
 };
+
+const login = (data)=>{
+  const schema = Joi.object({
+    Email : email_validation_joi_object(),
+    Password : password_joi_object(),
+  });
+
+  const {error,value} = schema.validate(data,{abortEarly: false});
+
+  return {value, error};
+}
 
 const name_validation_joi_object = () => {
   return Joi.string()
@@ -62,15 +78,15 @@ const custom_password = (value, helper) => {
     );
   } else if (value.search(/[0-9]/i) < 0) {
     return helper.message("Password must contain at least one number");
-//   } else if (value.search(/[#?!@$%^&*-]/i) < 0) {
-//     return helper.message(
-//       "Password must contain at least one special character"
-//     );
-//   } else {
+  } else if (value.search(/[#?!@$%^&*-]/i) < 0) {
+    return helper.message(
+      "Password must contain at least one special character"
+    );
+  } else {
     return true;
   }
 };
 
 export default {
-    register
+    register,login,
 }
