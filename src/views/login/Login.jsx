@@ -65,9 +65,9 @@ function Login() {
   return (
     <div className="Login">
       <HeaderOne />
-      <div className="login-container col-md-4 container d-flex flex-column" style={{ backgroundColor: "rgb(17, 23, 38)" }}>
+      <div className="login-container col-9 col-sm-7 col-lg-4 col-md-5 col-xl-4 col-xxl-4 container d-flex flex-column" style={{ backgroundColor: "rgb(17, 23, 38)" }}>
         <header>Welcome</header>
-        <Form className="register-form container  d-flex flex-column col-9">
+        <Form className="register-form container col-xl-10 d-flex flex-column ">
             {emailError !== "" && (
                 <p className="d-flex justify-content-center mb-0" style={{ color: "red" }}>
                     {emailError}
