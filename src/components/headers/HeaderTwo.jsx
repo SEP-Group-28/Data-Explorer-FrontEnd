@@ -57,12 +57,12 @@ const HeaderTwo = () => {
 
   //  try{
   //     var user=jwtDecode(Token.getAccessToken())
-  //     user = null;
+  //     
   //    }
   //    catch(err){
   //      user=null
   //    }
-   const user = false;
+   const user = true;
 
   return (
     <AppBar className="AppBar" >
@@ -70,8 +70,8 @@ const HeaderTwo = () => {
         <Toolbar disableGutters>
           <img src={Logo} href="/" />
 
-          <Box sx={{display:"flex" , flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-            <IconButton style={{ alignItems:"center" }}
+          <Box sx={{display:"flex" ,flexDirection:"row-reverse", flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+            <IconButton style={{ alignItems:"center", marginRight: user? "60px" :"0px"}}
               size="large"
               aria-label="account of current user"
               aria-controls="menu-appbar"
