@@ -59,6 +59,7 @@ function Register() {
         const response = await AuthServices.register(state);
         console.log(response);
       }catch(error){
+        console.log(error.response.data.message)
         console.log("Failed registration")
       }
   
