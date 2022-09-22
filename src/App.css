@@ -1,6 +1,8 @@
 body{
  background-color: rgba(10, 14, 23, 0.91) !important;
+
 }
+
 .headerOne {
   height: 50px;
   border-bottom: 1px solid white;
@@ -52,7 +54,7 @@ Form.Control::placeholder {
 
 }
 .login-btn{
-  width: 100%;
+  width: 90%;
   height: 46px;
   background: #286aef;
   border-radius: 20px;
@@ -61,6 +63,7 @@ Form.Control::placeholder {
   margin-bottom: 5%;
   color: #fff;
   font-weight: 400;
+  align-self: center;
 }
 
 #login-btn:hover{
@@ -83,5 +86,345 @@ Form.Control::placeholder {
   color: #67696B;
 }
 .register-form span{
-  color:#01ADC2
+  color:#01ADC2;
+  
+}
+
+/* headerTwo */
+.AppBar{
+  background-color: rgba(10, 14, 23, 0) !important;
+
+  position: static !important;
+  
+
+}
+
+.AppBar img{
+  object-fit: contain;
+  width: 250px;
+  
+}
+
+#menu-appbar{
+  color: #0f2349;
+}
+
+.pages{
+
+  display: flex !important;
+  flex-direction: row !important;
+
+  align-items: center;
+  position: absolute !important;
+  right: 0% !important;
+}
+
+
+
+.page-buttons{
+  /* margin-right: 9% !important; */
+  text-decoration: none !important;
+  font-size: 0.9rem !important;
+  padding: 0 !important;
+  color: white;
+  width: 80px;
+  padding: 5px !important;
+  text-align: center;
+  align-items: center !important;
+  border-radius: 10px;
+  margin-right: 9px;
+}
+
+.page-buttons:hover{
+  background-color: #181b20 !important;
+  color: white;
+  
+}
+#menu-appbar{
+  color:#000000;
+}
+.menu-names{
+  width: 100%;
+  color: black !important;
+  text-decoration: none;
+
+}
+.menu-names:hover{
+  background: none !important;
+}
+
+.page-box{
+  position: relative;
+  left: 0px !important;
+}
+
+.headerTwo-icon{
+  position: relative;
+  right: 0% !important;
+  
+}
+
+.HomeSubOne{
+  background: linear-gradient(262.7deg, #092D35 22.81%, rgba(16, 63, 74, 0.583333) 58.09%, rgba(1, 14, 17, 0.78) 90.99%);
+  border-radius: 3px;
+  margin-top: 11px;
+
+  align-items: center;
+  padding-bottom: 12px;
+  margin-right: 40px;
+  margin-left: 40px;
+  
+}
+
+.subOne-details header{
+font-size: 27px;
+font-weight: 900;
+}
+
+.white{
+  color: #fff;
+  font-family: "Inter";
+  font-style: normal;
+}
+
+.img-sec img{
+  object-fit: contain;
+  height: 250px;
+
+}
+.HomeSubOne{
+  
+}
+
+.logo-name{
+  margin-right: 50px;
+}
+
+.main-title{
+  color: rgba(1, 159, 194, 0.79);
+  display: inline;
+}
+
+.subOne-details header{
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.subOne-details h3{
+  margin-bottom: 30px ;
+  font-size: 25px;
+}
+.h3-first{
+  font-weight: 200;
+}
+.h3-second{
+  font-weight: 600;
+}
+
+.star-icon{
+  color:#286AEF !important;
+  object-fit: contain;
+  width: 15px !important;
+  margin-bottom: 4px;
+  
+}
+
+.blue-keyword{
+ color:#286AEF !important;
+}
+
+.detail-list p{
+  font-size: 20px;
+  margin: 11px;
+}
+
+.app-description{
+  background: #30353F;
+  margin-top: 10px;
+  margin-bottom: 30px;
+
+  color: white;
+  font-family: "Inter";
+  font-style: normal;
+  align-self: center !important;
+  width: 100%;
+}
+
+.app-description header{
+  font-size: 25px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: rgba(1, 159, 194, 0.79);
+ 
+}
+
+.app-details{
+  font-size: 13px;
+  margin-left: 40px;
+  color: rgb(218, 213, 213);
+}
+
+.app-description {
+  text-align: center;
+}
+
+.crypto-imgs img{
+  object-fit: contain;
+  width: 100px;
+  margin-bottom: 10px;
+}
+
+.crypto-imgs #img2{
+  object-fit: contain;
+  width: 86px;
+  
+  
+} 
+.stock-imgs img{
+  object-fit: contain;
+  width: 80px ;
+  margin-bottom: 10px;
+  margin-top: 4px;
+  padding-top: 2px;
+  margin-left: 10px;
+  ;
+}
+
+.CryptoSec{
+  width:280px;
+  background: linear-gradient(270deg, #3C3D40 2.33%, #38383A 34.89%, #2D2E32 67.44%, #282B30 100%);
+    box-shadow: 5px 5px 10px 2px #000000;
+    border-radius: 10px;
+    margin: 50px;
+    padding: 2%;
+    font-family: "Inter";
+    cursor: pointer;
+
+}
+
+.CryptoSec:hover{
+  transform: scale(1.03)
+}
+
+.CryptoSec p{
+  color: white;
+  font-size: 13px;
+}
+
+.CryptoSec header{
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  margin-bottom: 5px;
+}
+
+.CryptoSec span {
+  color: white;
+  color: #0756f4;
+  font-size: 13px;
+  margin-bottom: 5px;
+  text-align:left;
+  font-weight: 500;
+}
+
+.market-cards{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.AlertDetails{
+  color: white;
+  font-family: "Inter";
+  align-items: center;
+  margin-top: 30px;
+}
+.alert-details{
+margin-right:40px;  
+}
+.alert-img-sec{
+  margin-left: 40px;
+}
+.alert-details header{
+  font-size:20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  
+}
+.alert-p-1{
+  font-size: 13px;
+  margin-bottom: -2px;
+  color: rgba(211, 209, 209, 0.79);
+  font-weight: lighter;
+  
+}
+.alert-p-2{
+  font-size: 13px;
+  color: rgba(211, 209, 209, 0.79);
+  margin-bottom: 20px;
+}
+.alert-p-3{
+  font-weight: 500;
+}
+.alert-details-2{
+  color: #0756f4;
+}
+.alert-img-sec img{
+  object-fit: contain;
+  width: 130px;
+}
+
+@media only screen and (max-width: 900px) {
+
+  /* For mobile phones: */
+  .pages{
+    width: 50px;
+  }
+  
+  .subOne-details .logo-name{
+    display: block !important;
+  }
+  .main-title{
+    display: block !important;
+  }
+}
+
+
+@media only screen and (max-width: 1003px) 
+{
+    .subOne-details .logo-name {
+        display: block !important;
+      }
+    
+      .main-title {
+        display: block !important;
+      }
+}
+@media only screen and (max-width: 800px) {
+  .img-sec {
+      display: none;
+    }
+}
+
+@media only screen and (max-width: 650px) {
+  .market-cards {
+      display: flex;
+      flex-direction: column;
+      margin: 0 auto;
+
+      
+      
+    }
+    .crypto-comp{
+      align-self: center !important;
+    }
+    .stock-comp{
+      align-self: center !important;
+    }
+}
+
+@media only screen and (max-width: 560px){
+
+  .alert-img-sec{
+    display: none;
+  }
 }

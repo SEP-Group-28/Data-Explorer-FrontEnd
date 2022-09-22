@@ -91,10 +91,10 @@ function Register() {
   return (
     <div className="Register ">
       <HeaderOne />
-      <div className="register-container col-lg-5 container d-flex flex-column " style={{ backgroundColor: "rgb(17, 23, 38)" }}>
+      <div className="register-container col-9 col-sm-8 col-lg-5 col-md-6 col-xl-5 col-xxl-5 container d-flex flex-column " style={{ backgroundColor: "rgb(17, 23, 38)" }}>
         <header>Create your account</header>
 
-        <Form className="register-form container  d-flex flex-column col-9">
+        <Form className="register-form container  d-flex flex-column col-xl-10">
           {errorData["First Name"] !== "" && (
               <p className="d-flex justify-content-center mb-0" style={{ color: "red" }}>
                 {errorData["First Name"]}
@@ -150,7 +150,7 @@ function Register() {
             )}
           <Form.Group className="formGroup  mb-3 d-flex flex-row" id="formFirstName">
             <Form.Label className="register-form-label">Confirm password</Form.Label>
-            <Form.Control  className="register-form-control passControl"  place holder="Re enter password" name="Confirm Password"
+            <Form.Control  className="register-form-control passControl"  placeholder={"Re enter password"} name="Confirm Password"
               type={showConfirmPassword ? 'text' : 'password'}
               onChange={handleChange} required/>   
               <IconButton style={{backgroundColor:"#30353F", width:"0px",height:"0px",color:"white"}} onClick={toggleConfirmPassword}>
@@ -163,7 +163,7 @@ function Register() {
             {/* <div id="signUpDiv"></div> */}
             <div className="d-flex flex-row col-7 align-self-center justify-content-between">
             <p>Already have an account?</p>
-            <Link style={{textDecoration:"none"}} to="/login"><span>Sign in</span></Link>
+            <Link style={{textDecoration:"none"}} to="/login"><span >Sign in</span></Link>
             </div>
         </Form>
       </div>
