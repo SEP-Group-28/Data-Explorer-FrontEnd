@@ -5,7 +5,7 @@ const setAccessToken =(value)=>{
 }
 
 const getAccessToken =(value)=>{
-    localStorage.getItem("AccessToken")
+    return localStorage.getItem("AccessToken")
 }
 
 const removeAccessToken = ()=>{
@@ -13,6 +13,15 @@ const removeAccessToken = ()=>{
 }
 
 const getAuth = () =>{
+    const jwt = localStorage.getItem("AccessToken");
+
+  try {
+    const user = jwtDecode(jwt);
+    // console.log("user :", user);
+    return user;
+  } catch (err) {
+    return null;
+  }
     
 }
 
