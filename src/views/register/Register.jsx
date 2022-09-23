@@ -102,7 +102,7 @@ function Register() {
             )}
           <Form.Group className="formGroup mb-3 d-flex flex-row" id="formFirstName">
             <Form.Label className="register-form-label">First Name</Form.Label>
-            <Form.Control className="register-form-control" type="text" place holder="Enter first name" name="First Name"
+            <Form.Control className="register-form-control" type="text" placeholder="Enter first name" name="First Name"
               onChange={handleChange} required/>
           </Form.Group>
           
@@ -113,7 +113,7 @@ function Register() {
             )}
           <Form.Group className="formGroup mb-3 d-flex flex-row" id="formLastName">
             <Form.Label className="register-form-label">Last Name</Form.Label>
-            <Form.Control className="register-form-control" type="text" place holder="Enter last name" name="Last Name"
+            <Form.Control className="register-form-control" type="text" placeholder="Enter last name" name="Last Name"
               onChange={handleChange} required/>
           </Form.Group>
           
@@ -124,7 +124,7 @@ function Register() {
             )}
           <Form.Group className="formGroup mb-3 d-flex flex-row" id="formEmail">
             <Form.Label className="register-form-label">Email</Form.Label>
-            <Form.Control className="register-form-control" type="email" place holder="Enter email" name="Email"
+            <Form.Control className="register-form-control" type="email" placeholder="Enter email" name="Email"
               onChange={handleChange} required/>
           </Form.Group>
           
@@ -135,7 +135,7 @@ function Register() {
             )}
           <Form.Group className="formGroup mb-3 d-flex flex-row" id="formPassword">
             <Form.Label className="register-form-label">Password</Form.Label>
-            <Form.Control className="register-form-control" place holder="Enter password" name="Password"
+            <Form.Control data-testid="password" className="register-form-control" placeholder="Enter password" name="Password"
               type={showPassword ? 'text' : 'password'}
               onChange={handleChange} required/>
               <IconButton style={{backgroundColor:"#30353F", width:"0px",height:"0px",color:"white"}} onClick={togglePassword}>
@@ -159,7 +159,7 @@ function Register() {
           </Form.Group>
         
           
-            <button type="submit" className="login-btn mb-10" id="login-btn" onClick={handleSubmit}>Sign up</button>
+            <button data-testid="register-elem" type="submit" className="login-btn mb-10" id="login-btn" onClick={handleSubmit}>Sign up</button>
             {/* <div id="signUpDiv"></div> */}
             <div className="d-flex flex-row col-7 align-self-center justify-content-between">
             <p>Already have an account?</p>
