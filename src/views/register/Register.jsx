@@ -124,7 +124,7 @@ function Register() {
             )}
           <Form.Group className="formGroup mb-3 d-flex flex-row" id="formEmail">
             <Form.Label className="register-form-label">Email</Form.Label>
-            <Form.Control className="register-form-control" type="email" placeholder="Enter email" name="Email"
+            <Form.Control data-testid='email' className="register-form-control" type="email" placeholder="Enter email" name="Email"
               onChange={handleChange} required/>
           </Form.Group>
           

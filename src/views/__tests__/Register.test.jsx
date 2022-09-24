@@ -16,7 +16,7 @@ describe("Test register component", () =>{
     });
     test("email input should accept email", async() => {
         createInstance();
-        const email = screen.getByPlaceholderText("Enter email");
+        const email = screen.getByTestId("email");
         await userEvent.type(email, "nameonly");
         expect(email.value).not.toBe("nameonly@gmail.com");
     });
@@ -25,13 +25,6 @@ describe("Test register component", () =>{
         const password = screen.getByTestId("password");
         expect(password).toHaveAttribute("type", "password");
     });
-    // test("should be able to submit form", () => {
-    //     createInstance();
-    //     const signupBtn = screen.getByTestId("submit");
-    //     const email = screen.getByPlaceholderText("Enter email");
-    //     const password = screen.getByTestId("password");
-
-
-    // });
 });
 
+// before all
