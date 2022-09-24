@@ -13,7 +13,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 
-function LoginNew() {
+function Login() {
   const formValues = {
     Email: "",
     Password: "",
@@ -79,12 +79,12 @@ function LoginNew() {
         style={{ backgroundColor: "rgb(17, 23, 38)" }}
       >
         <header>Welcome</header>
-        <Form className="register-form container col-xl-10 d-flex flex-column "> </div>
+        <Form className="register-form container col-xl-10 d-flex flex-column ">
           <FormControl sx={{ m: 1 }} variant="outlined" className="register-form-control">
             <InputLabel sx={{fontSize:"13px",mt:"-7px"}} className="inputLabel" htmlFor="outlined-adornment-email">
               Email
             </InputLabel>
-            <OutlinedInput data-testid='email' className="outLineInput" id="outlined-adornment-email" type={"text"}
+            <OutlinedInput data-testid='email' className="outLineInput" id="outlined-adornment-email" type={"email"}
               style={{ color: "rgb(194, 193, 193)" , fontSize: "13px"}}
               name="Email" onChange={handleChange} error={emailError != "" && true} label="Password"/>
           </FormControl>
@@ -98,9 +98,9 @@ function LoginNew() {
             <InputLabel sx={{fontSize:"13px",mt:"-7px"}} className="inputLabel"htmlFor="outlined-adornment-password">
               Password
             </InputLabel>
-            <OutlinedInput data-testid="password" className="outLineInput" id="outlined-adornment-password" type={showPassword ? "text" : "password"}
+            <OutlinedInput className="outLineInput" id="outlined-adornment-password" type={showPassword ? "text" : "password"}
               style={{ color: "rgb(194, 193, 193)", fontSize: "13px" }}
-              name="Password" onChange={handleChange} error={passwordError != ""}
+              name="Password" placeholder='password' onChange={handleChange} error={passwordError != ""}
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton aria-label="toggle password visibility" onClick={togglePassword} edge="end">
@@ -120,6 +120,7 @@ function LoginNew() {
           <button data-testid='login-elem' type="submit"className="login-btn mb-10" id="login-btn" onClick={handleSubmit} >
             Login
           </button>
+
           <div className=" col-7 align-self-center justify-content-between register-login-footer login-footer">
             <p style={{ fontSize: "12px" }}>No account?</p>
             <span style={{ fontSize: "12px" }}>{" "}
@@ -134,4 +135,4 @@ function LoginNew() {
   );
 }
 
-export default LoginNew;
+export default Login;
