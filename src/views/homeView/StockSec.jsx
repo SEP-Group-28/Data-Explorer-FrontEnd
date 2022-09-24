@@ -16,7 +16,7 @@ function StockSec() {
         <img id="img2" src={Stock2} alt="" />
       </div>
       <header style={{marginTop:"10px"}}>Stock</header>
-      <p>
+      <p data-testid='stockDesc'>
         View the stock market price variations and analyse them in time frames.
         Make back testing easier with candlestick charts
       </p>

@@ -75,8 +75,8 @@ function Login() {
                 </p>
                 )}
             <Form.Group className="formGroup mb-3 d-flex flex-row" id="formEmail">
-                <Form.Label className="register-form-label">First Name</Form.Label>
-                <Form.Control className="register-form-control" type="Email" place holder="Enter email" name="Email"
+                <Form.Label data-testid='email' className="register-form-label">Email</Form.Label>
+                <Form.Control className="register-form-control" type="Email" placeholder="Enter email" name="Email"
                 onChange={handleChange} required/>
             </Form.Group>
 
@@ -87,7 +87,7 @@ function Login() {
                 )}
             <Form.Group className="formGroup mb-3 d-flex flex-row" id="formPassword">
                 <Form.Label className="register-form-label">Password</Form.Label>
-                <Form.Control className="register-form-control"  place holder="Enter password" name="Password"
+                <Form.Control data-testid="password" className="register-form-control"  placeholder="Enter password" name="Password"
                  type={showPassword ? 'text' : 'password'}
                 onChange={handleChange} required/>
                 <IconButton style={{backgroundColor:"#30353F", width:"0px",height:"0px",color:"white"}} onClick={togglePassword}>
@@ -95,7 +95,7 @@ function Login() {
               </IconButton>
             </Form.Group>
 
-            <button type="submit" className="login-btn mb-10" id="login-btn" onClick={handleSubmit}>Login</button>
+            <button data-testid='login-elem' type="submit" className="login-btn mb-10" id="login-btn" onClick={handleSubmit}>Login</button>
            
             <div className="d-flex flex-row col-7 align-self-center justify-content-between">
             <p>No account?</p>
