@@ -21,7 +21,7 @@ describe("Test Register component", () =>{
     });
     it("password input should have type password", () =>{
         createInstance();
-        const password = screen.getByTestId("password");
+        const password = screen.getByPlaceholderText("password");
         expect(password).toHaveAttribute("type", "password");
     });
 })
