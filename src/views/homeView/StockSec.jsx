@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Stock1 from "../../../public/stock1.png";
-import Stock2 from "../../../public/stock2.png";
+import Stock1 from "../../assets/stock1.png";
+import Stock2 from "../../assets/stock2.png";
 
 function StockSec() {
   return (
