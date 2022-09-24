@@ -81,7 +81,7 @@ function Register() {
       <HeaderOne />
       <div className="register-container col-9 col-sm-8 col-lg-5 col-md-6 col-xl-5 col-xxl-5 container d-flex flex-column " style={{ backgroundColor: "rgb(17, 23, 38)" }}>
         <header style={{textAlign:"center"}}>Create your account</header>
-
+        
         <Form className="register-form container col-xl-10 d-flex flex-column ">
 
           <FormControl sx={{ m: 1  }} variant="outlined" className="register-form-control">

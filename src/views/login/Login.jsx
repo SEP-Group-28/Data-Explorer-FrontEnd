@@ -79,12 +79,12 @@ function LoginNew() {
         style={{ backgroundColor: "rgb(17, 23, 38)" }}
       >
         <header>Welcome</header>
-        <Form className="register-form container col-xl-10 d-flex flex-column ">
+        <Form className="register-form container col-xl-10 d-flex flex-column "> </div>
           <FormControl sx={{ m: 1 }} variant="outlined" className="register-form-control">
             <InputLabel sx={{fontSize:"13px",mt:"-7px"}} className="inputLabel" htmlFor="outlined-adornment-email">
               Email
             </InputLabel>
-            <OutlinedInput className="outLineInput" id="outlined-adornment-email" type={"text"}
+            <OutlinedInput data-testid='email' className="outLineInput" id="outlined-adornment-email" type={"text"}
               style={{ color: "rgb(194, 193, 193)" , fontSize: "13px"}}
               name="Email" onChange={handleChange} error={emailError != "" && true} label="Password"/>
           </FormControl>
@@ -98,7 +98,7 @@ function LoginNew() {
             <InputLabel sx={{fontSize:"13px",mt:"-7px"}} className="inputLabel"htmlFor="outlined-adornment-password">
               Password
             </InputLabel>
-            <OutlinedInput className="outLineInput" id="outlined-adornment-password" type={showPassword ? "text" : "password"}
+            <OutlinedInput data-testid="password" className="outLineInput" id="outlined-adornment-password" type={showPassword ? "text" : "password"}
               style={{ color: "rgb(194, 193, 193)", fontSize: "13px" }}
               name="Password" onChange={handleChange} error={passwordError != ""}
               endAdornment={
@@ -117,10 +117,9 @@ function LoginNew() {
             </p>
           )}
 
-          <button type="submit"className="login-btn mb-10" id="login-btn" onClick={handleSubmit} >
+          <button data-testid='login-elem' type="submit"className="login-btn mb-10" id="login-btn" onClick={handleSubmit} >
             Login
           </button>
-
           <div className=" col-7 align-self-center justify-content-between register-login-footer login-footer">
             <p style={{ fontSize: "12px" }}>No account?</p>
             <span style={{ fontSize: "12px" }}>{" "}

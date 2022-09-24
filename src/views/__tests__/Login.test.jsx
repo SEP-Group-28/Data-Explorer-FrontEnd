@@ -1,16 +1,17 @@
 import React from 'react';
 import { render, screen } from "@testing-library/react";
-import Register from "../register/Register";
+import Login from "../login/Login";
 import { BrowserRouter } from 'react-router-dom';
 import userEvent from "@testing-library/user-event";
 
-describe("Test Register component", () =>{
+
+describe("Test Login component", () =>{
     const createInstance=() => {
-        render(<BrowserRouter><Register/></BrowserRouter>);
+        render(<BrowserRouter><Login/></BrowserRouter>);
     }    
-    it("render register form with signup button", () => {
+    it("render Login form with login button", () => {
         createInstance();
-        const btnList = screen.getByTestId('register-elem');
+        const btnList = screen.getByTestId('login-elem');
         expect(btnList).not.toBeNull();
     });
     it("email input should accept email", async() => {
@@ -24,4 +25,6 @@ describe("Test Register component", () =>{
         const password = screen.getByTestId("password");
         expect(password).toHaveAttribute("type", "password");
     });
-})
+});
+
+// before all
