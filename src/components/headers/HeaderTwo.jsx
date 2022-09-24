@@ -15,7 +15,7 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
-import Logo from "../../../public/Logo.png"
+import Logo from "../../assets/Logo.png";
 
 
 const userPages = ["Home", "Stock", "Crypto"];
@@ -62,13 +62,13 @@ const HeaderTwo = () => {
   //    catch(err){
   //      user=null
   //    }
-   const user = true;
+   const user = false;
 
   return (
-    <AppBar className="AppBar" >
+    <AppBar  className="AppBar" >
       <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          <img src={Logo} href="/" />
+        <Toolbar className="appbar-toolbar" disableGutters>
+          <img src={Logo} onClick={()=>{ window.location.href = "/";}} />
 
           <Box sx={{display:"flex" ,flexDirection:"row-reverse", flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton style={{ alignItems:"center", marginRight: user? "60px" :"0px"}}
