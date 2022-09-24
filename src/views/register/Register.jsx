@@ -1,17 +1,20 @@
 import React,{useState} from "react";
 import { Link } from "react-router-dom";
 import HeaderOne from "../../components/headers/HeaderOne";
-import { Form, FormControl } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import GoogleButton from "react-google-button";
 import { useEffect } from "react";
 import { CLIENT_ID } from "../../config";
 import Validation from "../../Validations";
 import AuthServices from "../../services/AuthServices"
 
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import Visibility from "@mui/icons-material/Visibility";
 import IconButton from "@mui/material/IconButton";
-import { Password } from "@mui/icons-material";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import InputLabel from "@mui/material/InputLabel";
+import InputAdornment from "@mui/material/InputAdornment";
+import { FormControl } from "@mui/material";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 function Register() {
 
@@ -24,7 +27,11 @@ function Register() {
     
   };
   const [state, setState] = useState(formValues);
-  const [errorData,setErrorData] = useState({});
+  
+  const [fNameError,setfNameError]=useState("")
+  const [lNameError,setlNameError]=useState("")
+  const [emailError, setEmailError] =useState("")
+  const [passwordError,setPasswordError] = useState("")
   const [confirmPassError,setConfirmPassError]=useState("")
   const errors = {};
 
@@ -52,7 +59,11 @@ function Register() {
       error.details.map((item)=>{
         errors[item.path[0]] = item.message;
       });
-    
+      if (errors["Confirm Password"]) setConfirmPassError(errors["Confim Password"])
+      if (errors["Password"]) setPasswordError(errors["Password"])
+      if(errors["First Name"]) setfNameError(errors["First Name"])
+      if(errors["Last Name"]) setlNameError(errors["Last Name"])
+      if(errors["Email"]) setEmailError(errors["Email"])
 
     }else{
       try{
@@ -62,108 +73,112 @@ function Register() {
         console.log(error.response.data.message)
         console.log("Failed registration")
       }
-  
     }
-    
-    setErrorData(errors);
-
-    
-    
-
-    
   }
 
-  // const handleCallbackResponse =(response)=>{
-  //   console.log("Encoded JWT ID token:" + response.credential)
-  // }
-
-  // useEffect(()=>{
-  //   google.accounts.id.initialize({
-  //     client_id: CLIENT_ID,
-  //     callback: handleCallbackResponse
-  //   });
-  //   google.accounts.id.renderButton(
-  //     document.getElementById("signUpDiv"),
-  //     {theme: "outline", size:"large"}
-  //   );
-
-  // },[])
   return (
     <div className="Register ">
       <HeaderOne />
       <div className="register-container col-9 col-sm-8 col-lg-5 col-md-6 col-xl-5 col-xxl-5 container d-flex flex-column " style={{ backgroundColor: "rgb(17, 23, 38)" }}>
-        <header>Create your account</header>
+        <header style={{textAlign:"center"}}>Create your account</header>
 
-        <Form className="register-form container  d-flex flex-column col-xl-10">
-          {errorData["First Name"] !== "" && (
-              <p className="d-flex justify-content-center mb-0" style={{ color: "red" }}>
-                {errorData["First Name"]}
-              </p>
-            )}
-          <Form.Group className="formGroup mb-3 d-flex flex-row" id="formFirstName">
-            <Form.Label className="register-form-label">First Name</Form.Label>
-            <Form.Control className="register-form-control" type="text" placeholder="Enter first name" name="First Name"
-              onChange={handleChange} required/>
-          </Form.Group>
-          
-          {errorData["Last Name"] !== "" && (
-              <p className="d-flex justify-content-center mb-0" style={{ color: "red" }}>
-                {errorData["Last Name"]}
-              </p>
-            )}
-          <Form.Group className="formGroup mb-3 d-flex flex-row" id="formLastName">
-            <Form.Label className="register-form-label">Last Name</Form.Label>
-            <Form.Control className="register-form-control" type="text" placeholder="Enter last name" name="Last Name"
-              onChange={handleChange} required/>
-          </Form.Group>
-          
-          {errorData["Email"] !== "" && (
-              <p className="d-flex justify-content-center mb-0" style={{ color: "red" }}>
-                {errorData["Email"]}
-              </p>
-            )}
-          <Form.Group className="formGroup mb-3 d-flex flex-row" id="formEmail">
-            <Form.Label className="register-form-label">Email</Form.Label>
-            <Form.Control className="register-form-control" type="email" placeholder="Enter email" name="Email"
-              onChange={handleChange} required/>
-          </Form.Group>
-          
-          {errorData["Password"] !== "" && (
-              <p className="d-flex justify-content-center mb-0" style={{ color: "red" }}>
-                {errorData["Password"]}
-              </p>
-            )}
-          <Form.Group className="formGroup mb-3 d-flex flex-row" id="formPassword">
-            <Form.Label className="register-form-label">Password</Form.Label>
-            <Form.Control data-testid="password" className="register-form-control" placeholder="Enter password" name="Password"
-              type={showPassword ? 'text' : 'password'}
-              onChange={handleChange} required/>
-              <IconButton style={{backgroundColor:"#30353F", width:"0px",height:"0px",color:"white"}} onClick={togglePassword}>
-              {showPassword? <VisibilityOff   /> : <Visibility/> }
-              </IconButton>
-          </Form.Group>
+        <Form className="register-form container col-xl-10 d-flex flex-column ">
 
-          {errorData["Confirm Password"] !== "" && (
-              <p className="d-flex justify-content-center mb-0" style={{ color: "red" }}>
-                {errorData["Confirm Password"]}
+          <FormControl sx={{ m: 1  }} variant="outlined" className="register-form-control">
+            <InputLabel sx={{fontSize:"13px",mt:"-7px"}} className="inputLabel" htmlFor="outlined-adornment-firstname">
+              First name
+            </InputLabel>
+            <OutlinedInput className="outLineInput" id="outlined-adornment-firstname" type={"text"}
+              style={{ color: "rgb(194, 193, 193)", fontSize: "13px" }}
+              name="First Name" onChange={handleChange} error={fNameError != ""} label="First Name"/>
+          </FormControl>
+          {fNameError !== "" && (
+              <p className="login-signup-error  mb-0" style={{ color: "red", fontSize: "10px" }}>
+                {fNameError}
               </p>
             )}
-          <Form.Group className="formGroup  mb-3 d-flex flex-row" id="formFirstName">
-            <Form.Label className="register-form-label">Confirm password</Form.Label>
-            <Form.Control  className="register-form-control passControl"  placeholder={"Re enter password"} name="Confirm Password"
-              type={showConfirmPassword ? 'text' : 'password'}
-              onChange={handleChange} required/>   
-              <IconButton style={{backgroundColor:"#30353F", width:"0px",height:"0px",color:"white"}} onClick={toggleConfirmPassword}>
-              {showConfirmPassword? <VisibilityOff   /> : <Visibility/> }
-              </IconButton>
-          </Form.Group>
-        
-          
-            <button data-testid="register-elem" type="submit" className="login-btn mb-10" id="login-btn" onClick={handleSubmit}>Sign up</button>
-            {/* <div id="signUpDiv"></div> */}
-            <div className="d-flex flex-row col-7 align-self-center justify-content-between">
-            <p>Already have an account?</p>
-            <Link style={{textDecoration:"none"}} to="/login"><span >Sign in</span></Link>
+
+
+          <FormControl sx={{ m: 1 }} variant="outlined" className="register-form-control">
+            <InputLabel sx={{fontSize:"13px",mt:"-7px"}} className="inputLabel" htmlFor="outlined-adornment-lastname">
+              Last name
+            </InputLabel>
+            <OutlinedInput className="outLineInput" id="outlined-adornment-lastname" type={"text"}
+              style={{ color: "rgb(194, 193, 193)", fontSize: "13px" }}
+              name="Last Name" onChange={handleChange} error={lNameError != ""} label="Last Name"/>
+          </FormControl>
+          {lNameError !== "" && (
+              <p className=" login-signup-error mb-0" style={{ color: "red", fontSize: "10px" }}>
+                {lNameError}
+              </p>
+            )}
+
+
+            <FormControl sx={{ m: 1 }} variant="outlined" className="register-form-control">
+              <InputLabel sx={{fontSize:"13px",mt:"-7px"}} className="inputLabel" htmlFor="outlined-adornment-email">
+                Email
+              </InputLabel>
+              <OutlinedInput className="outLineInput" id="outlined-adornment-email" type={"email"}
+                style={{ color: "rgb(194, 193, 193)", fontSize: "13px" }}
+                name="Email" onChange={handleChange} error={emailError != ""} label="Email"/>
+            </FormControl>
+            {emailError !== "" && (
+                <p className="login-signup-error mb-0" style={{ color: "red", fontSize: "10px" }}>
+                  {emailError}
+                </p>
+              )
+            }
+
+           <FormControl sx={{ m: 1 }} variant="outlined" className="register-form-control">
+            <InputLabel sx={{fontSize:"13px",mt:"-7px"}} className="inputLabel"htmlFor="outlined-adornment-password">
+              Password
+            </InputLabel>
+            <OutlinedInput className="outLineInput" id="outlined-adornment-password" type={showPassword ? "text" : "password"}
+              style={{ color: "rgb(194, 193, 193)", fontSize: "13px" }}
+              name="Password" onChange={handleChange} error={passwordError != ""}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton aria-label="toggle password visibility" onClick={togglePassword} edge="end">
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
+              label="Password"
+            />
+          </FormControl>
+          {passwordError !== "" && (
+            <p className="login-signup-error mb-0" style={{ color: "red", fontSize: "10px" }}>
+              {passwordError}
+            </p>
+          )}
+
+          <FormControl sx={{ m: 1 }} variant="outlined" className="register-form-control">
+            <InputLabel sx={{fontSize:"13px",mt:"-7px"}} className="inputLabel"htmlFor="outlined-adornment-confirmPassword">
+              Confirm Password
+            </InputLabel>
+            <OutlinedInput className="outLineInput" id="outlined-adornment-confirmPassword" type={showConfirmPassword ? "text" : "password"}
+              style={{ color: "rgb(194, 193, 193)", fontSize: "13px" }}
+              name="Confirm Password" onChange={handleChange} error={confirmPassError != ""}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton aria-label="toggle confrimPassword visibility" onClick={toggleConfirmPassword} edge="end">
+                    {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
+              label="Confirm Password"
+            />
+          </FormControl>
+          {confirmPassError !== "" && (
+            <p className="login-signup-error mb-0" style={{ color: "red", fontSize: "10px" }}>
+              {confirmPassError}
+            </p>
+          )}
+
+            <button type="submit" className="login-btn signup-btn" id="login-btn" onClick={handleSubmit}>Sign up</button>
+            <div className=" col-7 align-self-center justify-content-between register-login-footer register-footer">
+              <p style={{ fontSize: "12px" }}>Already have an account?</p>
+              <span style={{ fontSize: "12px" }}><Link style={{textDecoration:"none"}} to="/login">Login</Link></span>
             </div>
         </Form>
       </div>
