@@ -86,7 +86,7 @@ function Register() {
 
           <FormControl sx={{ m: 1  }} variant="outlined" className="register-form-control">
             <InputLabel sx={{fontSize:"13px",mt:"-7px"}} className="inputLabel" htmlFor="outlined-adornment-firstname">
-              First name
+              First
             </InputLabel>
             <OutlinedInput className="outLineInput" id="outlined-adornment-firstname" type={"text"}
               style={{ color: "rgb(194, 193, 193)", fontSize: "13px" }}
