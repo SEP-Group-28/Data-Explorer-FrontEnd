@@ -6,6 +6,7 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
+import { makeStyles } from "@mui/styles";
 import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -18,6 +19,21 @@ import AdbIcon from "@mui/icons-material/Adb";
 import Logo from "../../assets/Logo.png";
 
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+  },
+  menu: {
+    "& .MuiPaper-root": {
+      backgroundColor: "#292C31",
+    },
+  },
+
+  formControl: {
+    width: 120,
+  },
+}));
+
 const userPages = ["Home", "Stock", "Crypto"];
 const pages = [...userPages, "Login","Sign up"];
 const settings = ["Profile", "Watch list", "Logout"];
@@ -25,6 +41,8 @@ const settings = ["Profile", "Watch list", "Logout"];
 const HeaderTwo = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+
+  const classes = useStyles();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -65,24 +83,41 @@ const HeaderTwo = () => {
    const user = false;
 
   return (
-    <AppBar  className="AppBar" >
+    <AppBar className="AppBar">
       <Container maxWidth="xl">
         <Toolbar className="appbar-toolbar" disableGutters>
-          <img src={Logo} onClick={()=>{ window.location.href = "/";}} />
+          <img
+            src={Logo}
+            onClick={() => {
+              window.location.href = "/";
+            }}
+          />
 
-          <Box sx={{display:"flex" ,flexDirection:"row-reverse", flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-            <IconButton style={{ alignItems:"center", marginRight: user? "60px" :"0px"}}
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row-reverse",
+              flexGrow: 1,
+              display: { xs: "flex", md: "none" },
+            }}
+          >
+            <IconButton
+              style={{
+                alignItems: "center",
+                marginRight: user ? "60px" : "0px",
+              }}
               size="large"
               aria-label="account of current user"
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
               color="inherit"
-              
             >
               <MenuIcon />
             </IconButton>
-            <Menu 
+            <Menu
+              className={classes.menu}
+            
               id="basic-menu"
               anchorEl={anchorElNav}
               anchorOrigin={{
@@ -100,45 +135,97 @@ const HeaderTwo = () => {
                 display: { xs: "block", md: "none" },
               }}
             >
-              {!user && pages.map((page) => (
-                <MenuItem  key={page}  >
-                  <Link style={{color:"white"}} to={page=="Home"? "/": page=="Sign up"? "register": "/"+page}  className="menu-names" >
-                    {page}
-                  </Link>
-                </MenuItem>
-              ))}
-              {user && userPages.map((page) => (
-                <MenuItem key={page}  >
-                  <Link to={page=="Home"? "/": "/"+page}  className="menu-names" >
-                    {page}
-                  </Link>
-                </MenuItem>
-              ))}
+              {!user &&
+                pages.map((page) => (
+                  <MenuItem 
+                  className={classes.font}
+                    sx={{fontSize:"15px"}}
+                    key={page}
+                  >
+                    <Link
+                      style={{ color: "white" }}
+                      to={
+                        page == "Home"
+                          ? "/"
+                          : page == "Sign up"
+                          ? "register"
+                          : "/" + page
+                      }
+                      className="menu-names"
+                    >
+                      {page}
+                    </Link>
+                  </MenuItem>
+                ))}
+              {user &&
+                userPages.map((page) => (
+                  <MenuItem key={page}>
+                    <Link
+                      to={page == "Home" ? "/" : "/" + page}
+                      className="menu-names"
+                    >
+                      {page}
+                    </Link>
+                  </MenuItem>
+                ))}
             </Menu>
           </Box>
           <div className="pages">
-            <Box className="page-box justify-content-between" sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-              {!user && pages.map((page) => (
-                <Link style={{backgroundColor: page=="Sign up"?"#286AEF" : "none"}}className={page=="Sign up"? "Signup-HeaderTwo page-buttons" : "page-buttons"} to={page=="Home"? "/": page=="Sign up"? "register": "/"+page} 
-                  key={page}
-                  name={page}
-                  sx={{ my: 2, color: "white", display: "block" }}
-                >
-                  {page}
-                </Link>
-              ))}
-              {user && userPages.map((page) => (
-                <Link className={page=="Sign up"? "Signup-HeaderTwo page-buttons" : "page-buttons"} to={page=="Home"? "/": page=="Sign up"? "register": "/"+page} 
-                  key={page}
-                  name={page}
-                  sx={{ my: 2, color: "white", display: "block" }}
-                >
-                  {page}
-                </Link>
-              ))}
+            <Box
+              className="page-box justify-content-between"
+              sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}
+            >
+              {!user &&
+                pages.map((page) => (
+                  <Link
+                    style={{
+                      backgroundColor: page == "Sign up" ? "#286AEF" : "none",
+                    }}
+                    className={
+                      page == "Sign up"
+                        ? "Signup-HeaderTwo page-buttons"
+                        : "page-buttons"
+                    }
+                    to={
+                      page == "Home"
+                        ? "/"
+                        : page == "Sign up"
+                        ? "register"
+                        : "/" + page
+                    }
+                    key={page}
+                    name={page}
+                    sx={{ my: 2, color: "white", display: "block" }}
+                  >
+                    {page}
+                  </Link>
+                ))}
+              {user &&
+                userPages.map((page) => (
+                  <Link
+                    className={
+                      page == "Sign up"
+                        ? "Signup-HeaderTwo page-buttons"
+                        : "page-buttons"
+                    }
+                    to={
+                      page == "Home"
+                        ? "/"
+                        : page == "Sign up"
+                        ? "register"
+                        : "/" + page
+                    }
+                    key={page}
+                    name={page}
+                    sx={{ my: 2, color: "white", display: "block" }}
+                  >
+                    {page}
+                  </Link>
+                ))}
             </Box>
 
-             {user && <Box sx={{ flexGrow: 0 }}>
+            {user && (
+              <Box sx={{ flexGrow: 0 }}>
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                     <Avatar alt="Remy Sharp" />
@@ -167,7 +254,7 @@ const HeaderTwo = () => {
                   ))}
                 </Menu>
               </Box>
-            }
+            )}
           </div>
         </Toolbar>
       </Container>
