@@ -18,8 +18,6 @@ const register = (data) => {
       password: data["Password"],
     },
     //  headers: {Authorization: `Bearer ${token.getAccessToken()}`}
-    // headers:{'Content-Type':"application/json"},
-    // json:true,
   });
 };
 

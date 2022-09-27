@@ -119,8 +119,7 @@ body{
 
 .login-signup-error{
   margin-top: -10px;
-  margin-left: 20px;
-  
+  margin-left: 20px;  
   
 }
 
@@ -134,9 +133,11 @@ body{
 /* headerTwo */
 .AppBar{
   background-color: rgba(10, 14, 23, 0) !important;
+  position: -webkit-sticky;
   position: sticky !important;
   width: 100%;
-  z-index: 999 !important
+  z-index: 100 !important;
+  
 
 }
 
@@ -184,15 +185,20 @@ body{
 #menu-appbar{
   color:#000000;
 }
+
+.MuiMenuItem-root{
+  color: white !important;
+}
+
 .menu-names{
   width: 100%;
-  color: black !important;
+  color: white !important;
   text-decoration: none;
+  font-weight: 100 !important;
+  font-size: 13px !important;
 
 }
-.menu-names:hover{
-  background: none !important;
-}
+
 
 .page-box{
   position: relative;
@@ -422,10 +428,12 @@ margin-right:40px;
   padding-top: 20px;
 }
 
-.footer-details header{
+.footer header{
   font-size: 20px;
   color: white;
   font-weight: 500;
+}
+.footer-details header{
   margin-bottom: 10px;
 }
 
@@ -436,9 +444,6 @@ margin-right:40px;
 }
 
 .footer-sub header{
-  font-size: 20px;
-  color: white;
-  font-weight: 500;
   margin-bottom: 10px;
 }
 
@@ -451,6 +456,123 @@ margin-right:40px;
 .footer-icons-white{
   color: white;
 }
+
+.crypto-charts{
+  width: 89%;
+  position: relative;
+}
+
+.CryptoHeader{
+  height: 60px;
+  border-radius: 10px;
+  margin-top: 10px;
+  justify-content: space-between;
+
+}
+.crypto-bar {
+  display: flex;
+  flex-direction: row;
+  
+  background-color: #393C45;
+  margin-left: 20px;
+  align-items: center;
+  box-shadow: 5px 4px 5px 1px rgba(0, 0, 0, 0.8);
+}
+
+.CryptoHeader header{
+  font-size: 22px;
+  color: white;
+  margin-left: 15px;
+}
+
+.CryptoHeader p{
+  color: rgb(227, 221, 221);
+  margin-left: 8px;
+  margin-right: 8px;
+  font-size: 20px;
+  font-weight: lighter !important;
+}
+
+.watchlist-btn{
+  margin-right: 10px;
+  font-size: 14px !important;
+  text-align: center !important;
+  height: 33px;
+  border: none;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-radius: 10px;
+  background: #286AEF;
+  box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+  color: rgb(229, 223, 223);
+}
+.watchlist-btn:hover{
+  background-color: #1557e4 !important;
+
+}
+.CryptoIntervals{
+  height: 30px;
+  border-radius: 5px;
+  margin-top: 5px;
+  justify-content: space-around;
+}
+.CryptoIntervals header{
+  color: white;
+  font-size: 15px;
+  margin-left: 15px;
+  margin-right: 40px;
+}
+.interval-btns{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.interval-btns :hover{
+  /* background: #2c2f37 !important;  */
+  opacity: 0.7;
+}
+.interval-btns button{
+  margin-left: 10px;
+  width: 40px;
+  border: none;
+  background:none !important;
+  color: rgb(214, 214, 214);
+  background-color: #282B30 !important;
+  padding: 2px;
+  border-radius: 5px;
+  cursor: pointer !important;
+  font-size: 14px;
+}
+/* .indicato-list-names{
+  font-size: 15px;
+} */
+
+.CryptoTypes{
+  background-color: #393C45;
+  box-shadow: 5px 4px 5px 1px rgba(0, 0, 0, 0.8);
+  margin-top: 120px;
+
+}
+.CryptoTypes Table{
+  width: 100px;
+  font-size: 15px;
+  
+}
+.type-btn{
+  width: 100%;
+  background: none;
+  color:rgb(208, 200, 200);
+  border: none;
+}
+
+.CryptoTypes Table th {
+  color: white;
+  font-weight: 550 !important;
+  text-align: center;
+  font-size: 15px;
+}
+
 
 
 @media only screen and (max-width: 900px) {
@@ -468,6 +590,11 @@ margin-right:40px;
   }
 }
 
+.prosidebar{
+  background-color: #24262D;
+  width: 30%;
+  color: white;
+}
 
 @media only screen and (max-width: 1003px) 
 {
@@ -500,6 +627,28 @@ margin-right:40px;
     .app-details {
       font-size: 11px;
     }
+    .crypto-bar {
+      display: flex;
+      flex-direction: row;
+      background-color: #393C45;
+      margin-left: 10px;
+      align-items: center;
+      box-shadow: 5px 4px 5px 1px rgba(0, 0, 0, 0.8);
+    }
+
+        .interval-btns button {
+          margin-left: 7px;
+          width: 30px;
+          font-size: 12px;
+          border: none;
+          background: none !important;
+          color: rgb(214, 214, 214);
+          background-color: #282B30 !important;
+          padding: 2px;
+          border-radius: 5px;
+          cursor: pointer !important;
+    
+        }
 }
 
 @media only screen and (max-width: 650px) {
@@ -514,6 +663,33 @@ margin-right:40px;
     }
     .stock-comp{
       align-self: center !important;
+    }
+
+  .CryptoHeader header{
+      font-size: 14px;
+  }
+  .CryptoHeader p {
+    font-size: 13px;
+  }
+  .watchlist-btn{
+    font-size: 10px!important;
+    height: 28px;
+  }
+  .CryptoIntervals header {
+    display: none;
+    }
+    .interval-btns button {
+      margin-left: 7px;
+      width: 30px;
+      font-size: 12px;
+      border: none;
+      background: none !important;
+      color: rgb(214, 214, 214);
+      background-color: #282B30 !important;
+      padding: 2px;
+      border-radius: 5px;
+      cursor: pointer !important;
+
     }
 }
 
@@ -544,7 +720,65 @@ margin-right:40px;
   }
   .register-footer span{
     font-size: 12px !important;
-  
-    
   }
+  .footer header{
+    font-size: 16px;
+  }
+  .footer-details p{
+    font-size: 10px;
+  }
+
+  .CryptoHeader header {
+    font-size: 12px;
+  }
+    .CryptoHeader p {
+      font-size: 11px;
+    }
+    .watchlist-btn {
+      font-size: 10px !important;
+      height: 30px;
+      width: 70px;
+      padding-top: 1px;
+      padding-bottom: 1px;
+    }
+    .indicator-select-btn img{
+      object-fit: contain;
+      width: 23px;
+    }
+
+    .crypto-bar {
+      margin-left: 2px;
+      width: 8;
+    }
+
+    .crypto-charts{
+      width:85%
+    }
+
+    .CryptoTypes Table {
+      width: 55px;
+      font-size: 15px;
+
+    }
+    .CryptoTypes Table th {
+      font-size: 12px;
+    }
+    .CryptoTypes Table td {
+      font-size: 10px;
+    }
+
+
+    .interval-btns button {
+      margin-left: 5px;
+      width: 29px;
+      font-size: 12px;
+      border: none;
+      background: none !important;
+      color: rgb(214, 214, 214);
+      background-color: #282B30 !important;
+      padding: 1px;
+      border-radius: 5px;
+      cursor: pointer !important;
+
+    }
 }
