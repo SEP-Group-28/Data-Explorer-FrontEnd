@@ -98,17 +98,7 @@ const Profile = () => {
                     
                     <h1 className='fs-1 text-primary'>Profile Details</h1>
 
-                   
-                        {/* <Link to={"/update-password"} state={{ user_id }} style={{ display: "flex", float: "right", textDecoration: "none", marginBottom: "10px", marginRight: "10px"}}>
-                            <Button className="update_pwd_btn" variant="outline-primary" type="submit">Update Password</Button>
-                        </Link> */}
-                    {/* <div style={{position: 'relative', left: '40%'}}>
-                      <Avatar
-                        alt={state['First Name']}
-                        src="src/assets/userImages/user.jpg"
-                        sx={{ width: 100, height: 100 }}
-                      />
-                    </div> */}
+            
                     <div className="profile-pic-div" style={{position: 'relative', left: '50%'}}>
                       <img src="src/assets/userImages/user.jpg" id="photo" className='photo'/>
                       <input type="file" id="file" className='file'/>
