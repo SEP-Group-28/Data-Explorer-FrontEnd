@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
 
 const userPages = ["Home", "Stock", "Crypto"];
 const pages = [...userPages, "Login","Sign up"];
-const settings = ["Profile", "Watch list", "Logout"];
+const settings = ["Profile", "Watchlist", "Logout"];
 
 const HeaderTwo = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -232,6 +232,7 @@ const HeaderTwo = () => {
                   </IconButton>
                 </Tooltip>
                 <Menu
+                className={classes.menu}
                   sx={{ mt: "45px" }}
                   id="menu-appbar"
                   anchorEl={anchorElUser}
@@ -249,7 +250,7 @@ const HeaderTwo = () => {
                 >
                   {settings.map((setting) => (
                     <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                      <Typography textAlign="center">{setting}</Typography>
+                      <Link className="menu-names" to={"/"+ setting.toLowerCase()}>{setting}</Link>
                     </MenuItem>
                   ))}
                 </Menu>
