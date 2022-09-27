@@ -462,6 +462,10 @@ margin-right:40px;
   position: relative;
 }
 
+.stock-header  {
+  justify-content: space-evenly !important;
+}
+
 .CryptoHeader{
   height: 60px;
   border-radius: 10px;
@@ -478,6 +482,8 @@ margin-right:40px;
   align-items: center;
   box-shadow: 5px 4px 5px 1px rgba(0, 0, 0, 0.8);
 }
+
+
 
 .CryptoHeader header{
   font-size: 22px;
@@ -522,6 +528,24 @@ margin-right:40px;
   margin-left: 15px;
   margin-right: 40px;
 }
+
+.indicator-img-btn{
+  width: 35px;
+  border-style: none;
+  background: #20232B;
+  box-shadow: inset 10px 10px 6px rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
+  margin-right: 5px;
+}
+.indicator-img-btn:hover{
+  background-color: #181b20;
+}
+
+.indicator-img-btn img{
+  object-fit: contain;
+  width: 15px;
+}
+
 .interval-btns{
   display: flex;
   flex-direction: row;
@@ -741,9 +765,9 @@ margin-right:40px;
       padding-top: 1px;
       padding-bottom: 1px;
     }
-    .indicator-select-btn img{
+    .indicator-img-btn img{
       object-fit: contain;
-      width: 23px;
+      width: 19px;
     }
 
     .crypto-bar {
@@ -772,13 +796,7 @@ margin-right:40px;
       margin-left: 5px;
       width: 29px;
       font-size: 12px;
-      border: none;
-      background: none !important;
-      color: rgb(214, 214, 214);
-      background-color: #282B30 !important;
       padding: 1px;
       border-radius: 5px;
-      cursor: pointer !important;
-
     }
 }
