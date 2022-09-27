@@ -65,18 +65,17 @@ const IndicatorMenuTwo = () => {
 
   return (
     <div data-testid="externalIndicators" className="indicator-select-btn">
-      <Button
+      <button
         aria-controls="simple-menu"
         aria-haspopup="true"
         onClick={handleClick}
-        className={classes.btn}
+        className="indicator-img-btn"
       >
-        <img
-          style={{ backgroundColor: "#20232B", borderRadius: "3px" }}
+        <img 
           src={Indicator}
           alt="indicators"
         />
-      </Button>
+      </button>
       <Menu
         id="simple-menu"
         anchorEl={anchorEl}
@@ -160,7 +159,7 @@ const IndicatorMenuTwo = () => {
                 control={
                   <Checkbox
                     className={classes.checkbox}
-                    style={{ color: "white"}}
+                    style={{ color: "white" }}
                     checked={stoch}
                     onChange={handleChange}
                     name="stoch"
