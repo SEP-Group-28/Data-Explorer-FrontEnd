@@ -16,10 +16,13 @@
     "@emotion/styled": "^11.10.4",
     "@mui/icons-material": "^5.10.6",
     "@mui/material": "^5.10.6",
+    "@mui/styles": "^5.10.6",
     "axios": "^0.27.2",
     "babel-loader": "^8.2.5",
     "bootstrap": "^5.2.1",
+    "cryptocurrency-icons": "^0.18.1",
     "dayjs": "^1.11.5",
+    "font-awesome-icons": "^1.6.0",
     "joi": "^17.6.0",
     "jsdom": "^20.0.0",
     "jwt-decode": "^3.1.2",
@@ -28,6 +31,9 @@
     "react-bootstrap": "^2.5.0",
     "react-dom": "^18.2.0",
     "react-google-button": "^0.7.2",
+    "react-icons": "^4.4.0",
+    "react-loader-spinner": "^5.3.4",
+    "react-pro-sidebar": "^0.7.1",
     "react-reveal": "^1.2.2",
     "react-router": "^6.4.0",
     "react-router-dom": "^6.4.0"
@@ -52,6 +58,8 @@
       "\\.(css|scss|png|bmp|gif|jpg|jpeg|mp4|png|psd|svg|webp|ttf|otf|m4v|mov|mp4|mpeg|mpg|webm|aac|aiff|caf|m4a|mp3|wav|html|pdf|obj)$": "<rootDir>/__mocks__/styleMock.js"
     },
     "testEnvironment": "jsdom",
-    "setupFilesAfterEnv": ["<rootDir>/src/setupTests.js"]
+    "setupFilesAfterEnv": [
+      "<rootDir>/src/setupTests.js"
+    ]
   }
 }
