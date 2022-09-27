@@ -20,8 +20,7 @@ import Logo from "../../assets/Logo.png";
 
 const userPages = ["Home", "Stock", "Crypto"];
 const pages = [...userPages, "Login","Sign up"];
-const settings = ["Profile", "Watch list", "Logout"];
-
+const settings = ["Profile", "Watchlist", "Logout"];
 const HeaderTwo = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -39,6 +38,7 @@ const HeaderTwo = () => {
   };
 
   const handleCloseUserMenu = () => {
+    console.log('got')
     setAnchorElUser(null);
   };
 
@@ -62,7 +62,7 @@ const HeaderTwo = () => {
   //    catch(err){
   //      user=null
   //    }
-   const user = false;
+   const user = true;
 
   return (
     <AppBar  className="AppBar" >
@@ -162,7 +162,13 @@ const HeaderTwo = () => {
                 >
                   {settings.map((setting) => (
                     <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                      <Typography textAlign="center">{setting}</Typography>
+                      <Link className="menu-names" to= {"/"+setting.toLowerCase()} 
+                        key={setting}
+                        name={setting}
+                        sx={{ my: 2, color: "white", display: "block" }}
+                      >
+                        {setting}
+                      </Link>
                     </MenuItem>
                   ))}
                 </Menu>

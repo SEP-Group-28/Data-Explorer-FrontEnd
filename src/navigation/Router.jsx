@@ -6,6 +6,7 @@ import Login from "../views/login/Login";
 import Register from "../views/register/Register";
 import Profile from "../views/profile/Profile";
 import UpdateProfile from "../views/profile/UpdateProfile";
+import Watchlist from "../views/watchlist/Watchlist";
 
 function Router() {
   return (
@@ -17,6 +18,7 @@ function Router() {
         <Route path="/" element={<HomeView />} />
         <Route path="/profile" element={<Profile/>} />
         <Route path="/updateProfile" element={<UpdateProfile/>}/>
+        <Route path="/watchlist" element={<Watchlist/>}/>
       </Routes>
     </BrowserRouter>
   );
