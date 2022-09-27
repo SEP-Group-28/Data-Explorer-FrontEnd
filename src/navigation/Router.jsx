@@ -10,6 +10,7 @@ import Unauthorized from "../views/invalid_prohibited/Unauthorized";
 import CryptoView from "../views/cryptoView/CryptoView";
 import Profile from "../views/profile/Profile";
 import UpdateProfile from "../views/profile/UpdateProfile";
+import Watchlist from "../views/watchlist/Watchlist";
 
 function Router() {
 
@@ -31,6 +32,7 @@ function Router() {
         <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="/profile" element={<Profile/>} />
         <Route path="/updateProfile" element={<UpdateProfile/>}/>
+        <Route path="/watchlist" element={<Watchlist/>}/>
       </Routes>
     </BrowserRouter>
   );

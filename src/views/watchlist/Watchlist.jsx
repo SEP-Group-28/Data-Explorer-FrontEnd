@@ -1,174 +1,129 @@
-// import React, { useEffect, useState } from 'react'
-// import { Paper, TableBody, TableCell, TableRow } from '@material-ui/core'
-// import useTable from '../components/hooks/useTable'
-// import NavBar from '../components/NavBar'
-// import Controls from '../components/controls/Controls'
+import React, { Component } from 'react'
+import HeaderTwo from '../../components/headers/HeaderTwo';
+import Button from '@mui/material/Button';
+import {DataGrid} from '@mui/x-data-grid';
+import { useState } from 'react';
+import { useEffect } from 'react';
+import DeleteIcon from '@mui/icons-material/Delete'
+import '../../assets/css/watchlist.css'
+import { autocompleteClasses, Container } from '@mui/material';
 
-// import { useDispatch, useSelector } from 'react-redux'
-// import { removeFromWatchlist, viewWatchlist } from '../redux/ducks/watchlist'
 
-// import FullPageLoader from '../components/Loading/FullPageLoader'
-// import Fade from 'react-reveal/Fade'
-// import CloseIcon from '@material-ui/icons/Close'
-// import { LISTEN_URL } from '../utils/CONSTANTS'
-// import ConfirmDialog from '../components/controls/ConfirmDialog'
-// import { openPopUp } from '../redux/ducks/notifications'
+// const styles = theme => ({
+//   activeSortIcon: {
+//     opacity: 1,
+//     color : 'blue',
+//   },
+//   inactiveSortIcon: {
+//     opacity: 0.4,
+//     color : 'green',
+//   },
+// });
 
-// const headCells = [
-//   //   { id: 'no', label: 'No', disableSorting: true },
-//   { id: 'symbol', label: 'Symbol' },
-//   { id: 'price', label: 'Price ($)' },
-//   { id: 'high', label: 'High' },
-//   { id: 'low', label: 'Low' },
-//   { id: 'volume', label: 'Volume' },
-//   { id: 'actions', label: 'Actions', disableSorting: true }
-// ]
+const rows = [
+  { id: 1, symbol: 'BTCUSD', price: 4343, high: 5554, low: 3544, volume: 456024 },
+  { id: 2, symbol: 'BTCUSD', price: 4344, high: 5554, low: 3544, volume: 456024 },
+  { id: 3, symbol: 'BTCUD', price: 4344, high: 5554, low: 3544, volume: 456024 },
+  { id: 4, symbol: 'BTCSD', price: 43435, high: 5554, low: 3544, volume: 456024 },
+  { id: 5, symbol: 'BTCUSD', price: 43432, high: 5554, low: 3544, volume: 456024 },
+  { id: 6, symbol: 'BTCUSD', price: 43431, high: 5554, low: 3544, volume: 456024 },
+  { id: 7, symbol: 'BTCUSD', price: 434322, high: 5554, low: 3544, volume: 456024 },
+  { id: 8, symbol: 'BTCSD', price: 43431, high: 5554, low: 3544, volume: 456024 },
+  { id: 9, symbol: 'BTCUSD', price: 4343, high: 5554, low: 3544, volume: 456024 }
+]
+export default function Watchlist() {
+  
 
-const WatchList = () => {
-  // const dispatch = useDispatch()
-  // const [eventSources, setEventSources] = useState([])
-  // const [records, setRecords] = useState([])
-  // const [records1, setRecords1] = useState(new Map())
-  // const [highVal, setHighVal] = useState(0)
-  // const token = useSelector(state => state.auth.token)
-  // let brands = useSelector(state => state.watchlist.brands)
-  // const isLoading = useSelector(state => state.watchlist.isLoading)
-  // const [tableLoading, setTableLoading] = useState(true)
-
-  // useEffect(() => {
-  //   dispatch(viewWatchlist(token))
-  // }, [])
-
-  // useEffect(() => {
-  //   let eventSource = null
-  //   if (brands !== null) {
-  //     for (let i in brands) {
-  //       if (brands.hasOwnProperty(i)) {
-  //         eventSource = new EventSource(LISTEN_URL + brands[i] + '/1d')
-  //         eventSource.addEventListener(
-  //           'message',
-  //           function (e) {
-  //             let parsedData = JSON.parse(e.data)
-  //             let object = {
-  //               id: i,
-  //               symbol: brands[i],
-  //               price: parseFloat(parsedData.k.c).toFixed(4),
-  //               high: parseFloat(parsedData.k.h).toFixed(4),
-  //               low: parseFloat(parsedData.k.l).toFixed(4),
-  //               volume: parseFloat(parsedData.k.v).toFixed(4)
-  //             }
-  //             setHighVal(parsedData.k.h)
-  //             let tempRecords = records1
-  //             tempRecords.set(brands[i], object)
-  //             setRecords1(tempRecords)
-  //           },
-  //           false
-  //         )
-
-  //         let tempEventSources = eventSources
-  //         tempEventSources.push(eventSource)
-  //         setEventSources(tempEventSources)
-  //       }
-  //     }
-  //   }
-  //   return () => {
-  //     if (eventSources.length !== 0) {
-  //       console.log(eventSources)
-  //       for (let e in eventSources) {
-  //         eventSources[e].close()
-  //         console.log('event source closed')
-  //       }
-  //       setEventSources([])
-  //     }
-  //   }
-  // }, [brands])
-
-  // useEffect(() => {
-  //   if (brands !== null && records1.size >= brands.length) {
-  //     let temp = []
-  //     for (let i in brands) {
-  //       if (brands.hasOwnProperty(i)) {
-  //         temp.push(records1.get(brands[i]))
-  //       }
-  //     }
-  //     setRecords(temp)
-  //     setTableLoading(false)
-  //   }
-  // }, [highVal])
-
-  // const [filterFn, setFilterFn] = useState({
-  //   fn: items => {
-  //     return items
-  //   }
+  const [data, setData] = useState(rows);
+  const handleDelete = (e, id) => {
+    setData(data.filter(elem=> elem.id !== id));
+  }
+  
+  const columns = [
+    { field:'id', hide:true},
+    { field: 'symbol', headerName: 'Symbol', width: 150, headerAlign:'center', align:'center' },
+    { field: 'price', headerName: 'Price',type: 'number', width: 130, headerAlign:'center', align:'center' },
+    { field: 'high', headerName: 'High', type: 'number',width: 130, headerAlign:'center', align:'center'  },
+    { field: 'low', headerName: 'Low',type: 'number', width: 130, headerAlign:'center', align:'center' },
+    { field: 'volume', headerName: 'Volume',type: 'number', width: 130, headerAlign:'center', align:'center' },
+    // {
+    //   field: 'age',
+    //   headerName: 'Age',
+    //   type: 'number',
+    //   width: 90,
+    // },
+    // {
+    //   field: 'fullName',
+    //   headerName: 'Full name',
+    //   description: 'This column has a value getter and is not sortable.',
+    //   sortable: false,
+    //   width: 160,
+    //   valueGetter: (params) =>
+    //     `${params.row.firstName || ''} ${params.row.lastName || ''}`,
+    // },
+    {
+      field: "Remove",
+      sortable: false,
+      filterable: false,
+      renderCell : (cellValues) => {
+        return (
+          <Button variant="outlined" 
+          startIcon={<DeleteIcon style={{position:'relative', left:'40%'}}/>}
+          color="primary"
+          sx= {{pr:3, pl:3, w:'auto'}}
+          onClick={(event) =>{
+            handleDelete(event, cellValues.id);
+          }}
+          
+          >
+          </Button>
+        );
+      },
+      headerAlign: 'center'
+    }
+  ];
+  
+  // const row_data= data.map((item, index) => {
+  //   return (
+  //     <tr key={index}>
+  //       <td>{item}</td>
+  //       <td><button onClick={e => handleDelete(index,e)}>Delete</button></td>
+  //     </tr>
+  //   )
   // })
-
-  // const {
-  //   TblContainer,
-  //   TblHead,
-  //   TblPagination,
-  //   recordsAfterPagingAndSorting
-  // } = useTable(records, headCells, filterFn)
-
-  // const handleDelete = symbol => {
-  //   dispatch(removeFromWatchlist({ token: token, brands: symbol }))
-  //   let tempRecords1 = records1
-  //   tempRecords1.delete(symbol)
-  //   setRecords1(tempRecords1)
-  // }
-
-  // return (
-  //   <div>
-  //     <Fade top>
-  //       <NavBar />
-  //     </Fade>
-
-  //     {isLoading || tableLoading ? (
-  //       <FullPageLoader />
-  //     ) : brands && brands.length < 1 ? (
-  //       <h1>No items currently in your Watch List</h1>
-  //     ) : (
-  //       <Paper>
-  //         <TblContainer>
-  //           <TblHead />
-  //           <TableBody>
-  //             {recordsAfterPagingAndSorting().map(item => (
-  //               <TableRow key={item.id}>
-  //                 {/* <TableCell>{item.id}</TableCell> */}
-  //                 <TableCell>{item.symbol}</TableCell>
-  //                 <TableCell>{item.price}</TableCell>
-  //                 <TableCell>{item.high}</TableCell>
-  //                 <TableCell>{item.low}</TableCell>
-  //                 <TableCell>{item.volume}</TableCell>
-  //                 <TableCell>
-  //                   <Controls.ActionButton
-  //                     color='secondary'
-  //                     // onClick={() => handleDelete(item.symbol)
-  //                     // }
-  //                     onClick={() =>
-  //                       dispatch(
-  //                         openPopUp({
-  //                           isOpen: true,
-  //                           title: 'Are you sure you want to delete this item!',
-  //                           subTitle:
-  //                             'This item will be deleted from the Watch List...!',
-  //                           item,
-  //                           handleDelete
-  //                         })
-  //                       )
-  //                     }
-  //                   >
-  //                     <CloseIcon fontSize='small' />
-  //                   </Controls.ActionButton>
-  //                 </TableCell>
-  //               </TableRow>
-  //             ))}
-  //           </TableBody>
-  //         </TblContainer>
-  //       </Paper>
-  //     )}
-  //     <ConfirmDialog handleDelete={handleDelete} />
-  //   </div>
-  // )
+  return (
+    data.length <= 0 
+    ? 
+    <div >
+    < HeaderTwo /> 
+    <h1 align='center' style={{ color:'white', left:'50%', size:'50px',marginTop:"20%"}}>No items to display in your watchlist</h1>
+    </div>
+    : 
+    <div >
+    < HeaderTwo />
+    <Container maxWidth="lg">
+    <div style={{ height: 400, width: '100%'}}>
+      
+      <DataGrid
+        rows={data}
+        columns={columns}
+        pageSize={5}
+        rowsPerPageOptions={[5]}
+        disableColumnFilter
+        disableColumnSelector
+        disableColumnMenu
+        sx={{
+          m:2,
+          boxShadow: 2,
+          border: 2,
+          borderColor: 'primary.light',
+          color: 'white'
+        }
+      }
+      />
+      </div>
+      </Container>
+    </div>
+  )
 }
 
-export default WatchList

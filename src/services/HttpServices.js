@@ -14,7 +14,7 @@ const axiosInstance = Axios.create({
 })
 
 axiosInstance.interceptors.request.use(async (req) => {
-    console.log('koo')
+    // console.log('koo')
     console.log(bearer_token)
     if (!bearer_token) {
         console.log(bearer_token)
