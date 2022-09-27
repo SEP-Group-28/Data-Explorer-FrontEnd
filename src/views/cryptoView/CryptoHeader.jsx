@@ -6,8 +6,8 @@ function CryptoHeader() {
     console.log("hey")
   }
   return (
-    <div className="CryptoHeader crypto-bar">
-      <header>BTCUSD</header>
+    <div className="CryptoHeader crypto-bar stock-header">
+      <header className='stock-header'>BTCUSD</header>
       <div className="d-flex flex-row justify-content-evenly">
         <p>Volume </p>
         <p>Total high </p>

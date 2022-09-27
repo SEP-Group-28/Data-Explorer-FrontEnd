@@ -232,6 +232,7 @@ const HeaderTwo = () => {
                   </IconButton>
                 </Tooltip>
                 <Menu
+                className={classes.menu}
                   sx={{ mt: "45px" }}
                   id="menu-appbar"
                   anchorEl={anchorElUser}

@@ -2,11 +2,11 @@ import React from 'react'
 // import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import { Audio } from 'react-loader-spinner';
 
-function Loader() {
+function Loader({position,top,left}) {
   return (
-    <div className="Loader">
+    <div className="Loader" style={{position:position,top:top,left:left} }>
       <Audio
-        height="70"
+        height="60"
         width="70"
         color="#286AEF"
         ariaLabel="audio-loading"
