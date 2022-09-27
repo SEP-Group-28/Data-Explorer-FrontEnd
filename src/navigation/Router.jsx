@@ -8,6 +8,8 @@ import Register from "../views/register/Register";
 import NotFound from "../views/invalid_prohibited/NotFound";
 import Unauthorized from "../views/invalid_prohibited/Unauthorized";
 import CryptoView from "../views/cryptoView/CryptoView";
+import Profile from "../views/profile/Profile";
+import UpdateProfile from "../views/profile/UpdateProfile";
 
 function Router() {
 
@@ -27,6 +29,8 @@ function Router() {
         {/* Invalid && prohibited routes  */}
         <Route path="*" element={<NotFound />}></Route>
         <Route path="/unauthorized" element={<Unauthorized />} />
+        <Route path="/profile" element={<Profile/>} />
+        <Route path="/updateProfile" element={<UpdateProfile/>}/>
       </Routes>
     </BrowserRouter>
   );

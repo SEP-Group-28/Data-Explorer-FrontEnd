@@ -19,15 +19,14 @@ function CryptoSec() {
           <img id="img1" src={Bitcoin} alt="" />
           <img id="img2" src={Etherium} alt="" />
         </div>
-        <header>Crypto</header>
-        <p>
-          You can analyse the real time crypto curerncies in time frames. This
-          website allows you to view the crypto price variations in candle stick
-          charts
-        </p>
-        <span>Click to analyse</span>
-      </div>
-    
+      <header>Crypto</header>
+      <p data-testid='cryptoDesc'>
+        You can analyse the real time crypto curerncies in time frames. This
+        website allows you to view the crypto price variations in candle stick
+        charts
+      </p>
+      <span >Click to analyse</span>
+    </div>
   );
 }
 

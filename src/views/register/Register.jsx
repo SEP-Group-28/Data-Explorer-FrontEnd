@@ -81,12 +81,12 @@ function Register() {
       <HeaderOne />
       <div className="register-container col-9 col-sm-8 col-lg-5 col-md-6 col-xl-5 col-xxl-5 container d-flex flex-column " style={{ backgroundColor: "rgb(17, 23, 38)" }}>
         <header style={{textAlign:"center"}}>Create your account</header>
-
+        
         <Form className="register-form container col-xl-10 d-flex flex-column ">
 
           <FormControl sx={{ m: 1  }} variant="outlined" className="register-form-control">
             <InputLabel sx={{fontSize:"13px",mt:"-7px"}} className="inputLabel" htmlFor="outlined-adornment-firstname">
-              First name
+              First
             </InputLabel>
             <OutlinedInput className="outLineInput" id="outlined-adornment-firstname" type={"text"}
               style={{ color: "rgb(194, 193, 193)", fontSize: "13px" }}
@@ -118,7 +118,7 @@ function Register() {
               <InputLabel sx={{fontSize:"13px",mt:"-7px"}} className="inputLabel" htmlFor="outlined-adornment-email">
                 Email
               </InputLabel>
-              <OutlinedInput className="outLineInput" id="outlined-adornment-email" type={"email"}
+              <OutlinedInput data-testid='email' className="outLineInput" id="outlined-adornment-email" type={"email"}
                 style={{ color: "rgb(194, 193, 193)", fontSize: "13px" }}
                 name="Email" onChange={handleChange} error={emailError != ""} label="Email"/>
             </FormControl>
@@ -135,7 +135,7 @@ function Register() {
             </InputLabel>
             <OutlinedInput className="outLineInput" id="outlined-adornment-password" type={showPassword ? "text" : "password"}
               style={{ color: "rgb(194, 193, 193)", fontSize: "13px" }}
-              name="Password" onChange={handleChange} error={passwordError != ""}
+              name="Password" placeholder='password' onChange={handleChange} error={passwordError != ""}
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton aria-label="toggle password visibility" onClick={togglePassword} edge="end">
@@ -175,7 +175,7 @@ function Register() {
             </p>
           )}
 
-            <button type="submit" className="login-btn signup-btn" id="login-btn" onClick={handleSubmit}>Sign up</button>
+            <button data-testid='register-elem' type="submit" className="login-btn signup-btn" id="login-btn" onClick={handleSubmit}>Sign up</button>
             <div className=" col-7 align-self-center justify-content-between register-login-footer register-footer">
               <p style={{ fontSize: "12px" }}>Already have an account?</p>
               <span style={{ fontSize: "12px" }}><Link style={{textDecoration:"none"}} to="/login">Login</Link></span>

@@ -31,6 +31,19 @@ const login = (data)=>{
   return {value, error};
 }
 
+const validateupdateprofile = (data) => {
+  const UserCompleteRegistrationValidationSchema = Joi.object({
+    "First Name": name_validation_joi_object(),
+    "Last Name": name_validation_joi_object(),
+    Email: email_validation_joi_object()
+  });
+  const { error, value } = UserCompleteRegistrationValidationSchema.validate(
+    data,
+    { abortEarly: false }
+  );
+  return { value, error };
+};
+
 const name_validation_joi_object = () => {
   return Joi.string()
     .required()
@@ -88,5 +101,7 @@ const custom_password = (value, helper) => {
 };
 
 export default {
-    register,login,
+    register,
+    login,
+    validateupdateprofile,
 }

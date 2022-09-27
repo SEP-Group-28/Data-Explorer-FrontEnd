@@ -4,34 +4,24 @@ import Register from "../register/Register";
 import { BrowserRouter } from 'react-router-dom';
 import userEvent from "@testing-library/user-event";
 
-
-describe("Test register component", () =>{
+describe("Test Register component", () =>{
     const createInstance=() => {
         render(<BrowserRouter><Register/></BrowserRouter>);
     }    
-    test("render register form with a button", () => {
+    it("render register form with signup button", () => {
         createInstance();
         const btnList = screen.getByTestId('register-elem');
         expect(btnList).not.toBeNull();
     });
-    test("email input should accept email", async() => {
+    it("email input should accept email", async() => {
         createInstance();
-        const email = screen.getByPlaceholderText("Enter email");
+        const email = screen.getByTestId("email");
         await userEvent.type(email, "nameonly");
         expect(email.value).not.toBe("nameonly@gmail.com");
     });
-    test("password input should have type password", () =>{
+    it("password input should have type password", () =>{
         createInstance();
-        const password = screen.getByTestId("password");
+        const password = screen.getByPlaceholderText("password");
         expect(password).toHaveAttribute("type", "password");
     });
-    // test("should be able to submit form", () => {
-    //     createInstance();
-    //     const signupBtn = screen.getByTestId("submit");
-    //     const email = screen.getByPlaceholderText("Enter email");
-    //     const password = screen.getByTestId("password");
-
-
-    // });
-});
-
+})
