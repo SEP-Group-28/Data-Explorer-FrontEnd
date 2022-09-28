@@ -3,6 +3,7 @@ import HeaderTwo from '../../components/headers/HeaderTwo'
 import CryptoHeader from './CryptoHeader';
 import CryptoIntervals from './CryptoIntervals';
 import CryptoTypes from './CryptoTypes';
+import CryptoChart from './CryptoChart';
 
 function CryptoView() {
   return (
@@ -13,8 +14,9 @@ function CryptoView() {
           <CryptoHeader />
           <CryptoIntervals />
         </div>
-        <div className='types-crypto'>
-          <CryptoTypes/>
+        <div className="types-crypto">
+          <CryptoTypes />
+          <CryptoChart />
         </div>
       </div>
     </div>
