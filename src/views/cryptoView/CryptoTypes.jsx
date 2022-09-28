@@ -2,7 +2,7 @@ import React from 'react'
 import { Table } from 'react-bootstrap'
 
 function CryptoTypes() {
-  const handleClick=()=>{
+  const handleClick=(type)=>{
 
   }
 
@@ -24,7 +24,7 @@ function CryptoTypes() {
                   <button
                     className="type-btn"
                     value={type}
-                    onClick={handleClick}
+                    onClick={()=>{handleClick(type)}}
                   >
                     {type}
                   </button>
