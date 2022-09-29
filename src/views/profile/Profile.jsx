@@ -151,7 +151,7 @@ const Profile = () => {
                     <InputLabel sx={{fontSize:"13px",mt:"-7px"}} className="inputLabel" htmlFor="outlined-adornment-firstname">
                     First Name
                     </InputLabel>
-                    <OutlinedInput style={style_} disabled='disabled' style={{color:'white'}} value={state['First Name']} className="outLineInput" id="outlined-adornment-firstname" type={"text"}
+                    <OutlinedInput style={style_} disabled='disabled'} value={state['First Name']} className="outLineInput" id="outlined-adornment-firstname" type={"text"}
                         style={{ color: "rgb(194, 193, 193)", fontSize: "13px" }}
                         name="First Name" onChange={handleChange} error={fNameError != ""} label="First Name"/>
                     </FormControl>
