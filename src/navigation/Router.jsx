@@ -12,6 +12,7 @@ import Profile from "../views/profile/Profile";
 import UpdateProfile from "../views/profile/UpdateProfile";
 import StockView from "../views/stockView/StockView";
 import Watchlist from "../views/watchlist/Watchlist";
+import AllUsers from './../views/all_users/AllUsers';
 
 function Router() {
 
@@ -35,6 +36,7 @@ function Router() {
         <Route path="/profile" element={<Profile/>} />
         <Route path="/updateProfile" element={<UpdateProfile/>}/>
         <Route path="/watchlist" element={<Watchlist/>}/>
+        <Route path="/users" element={<AllUsers/>}/>
       </Routes>
     </BrowserRouter>
   );

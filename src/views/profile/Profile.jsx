@@ -110,7 +110,7 @@ const Profile = () => {
                       />
                     </div> */}
                     <div className="profile-pic-div" style={{position: 'relative', left: '50%'}}>
-                      <img src="src/assets/userImages/user.jpg" id="photo" className='photo'/>
+                      <img src='' id="photo" className='photo'/>
                       <input type="file" id="file" className='file'/>
                       <label htmlFor="file" id="uploadBtn" className='uploadBtn'>Choose Photo</label>
                     </div>
