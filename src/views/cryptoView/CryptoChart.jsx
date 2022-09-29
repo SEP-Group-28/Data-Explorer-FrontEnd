@@ -12,13 +12,13 @@ function CryptoChart({market}) {
     const ref =useRef();
     const chart = useRef();
     const candleSeries = useRef();
-    const [marketdata,setMarket] = useState()
+    const [marketdata, setMarket] = useState(market);
     const [timeInterval,setTimeInterval] = useState("1m")
     const [chartData, setChartData] = useState([])
     const [timeLine, setTimeLine] = useState([])
     useEffect(()=>{
-        console.log(market)
-        setMarket(market)
+        console.log(marketdata);
+        
 
         setLoading(true)
         chart.current = createChart(ref.current, {
@@ -28,14 +28,14 @@ function CryptoChart({market}) {
             backgroundColor: "#282B30",
             textColor: "rgba(255, 255, 255, 0.9)",
           },
-          grid: {
-            vertLines: {
-              color: "rgba(197, 203, 206, 0.5)",
-            },
-            horzLines: {
-              color: "rgba(197, 203, 206, 0.5)",
-            },
-          },
+          // grid: {
+          //   vertLines: {
+          //     color: "rgba(197, 203, 206, 0.5)",
+          //   },
+          //   horzLines: {
+          //     color: "rgba(197, 203, 206, 0.5)",
+          //   },
+          // },
           crosshair: {
             mode: CrosshairMode.Normal,
           },
@@ -72,7 +72,7 @@ function CryptoChart({market}) {
         
         
 
-        let newCrypto = 'http://127.0.0.1:5000/history/'+ `${market}/15s`
+        let newCrypto = "http://127.0.0.1:5000/history/" + `${marketdata}/1m`;
 
       fetch(newCrypto)
         .then(res => res.json())
@@ -97,10 +97,10 @@ function CryptoChart({market}) {
             ...tempCandlesticks,
             ...chartData
           ]).sort(compare)
-          let tempTimeLineData = removeDuplicates([
-            ...tempTimeLine,
-            ...timeLine
-          ]).sort(compare)
+          // let tempTimeLineData = removeDuplicates([
+          //   ...tempTimeLine,
+          //   ...timeLine
+          // ]).sort(compare)
           let chars = [...tempTimeLine, ...timeLine]
           let tempTimeLineData = chars.filter((c, index) => {
             return chars.indexOf(c) === index
@@ -113,14 +113,30 @@ function CryptoChart({market}) {
           candleSeries.current.setData(tempChartData)
           setChartData(tempChartData)
           setTimeLine(tempTimeLineData)
+
+          function onVisibleTimeRangeChanged (newVisibleTimeRange) {
+            setVisibleRange(newVisibleTimeRange)
+          }
+        
+         chart.current
+            .timeScale()
+            .subscribeVisibleTimeRangeChange(onVisibleTimeRangeChanged)
+
+          chart.current.timeScale().setVisibleLogicalRange({ from: 0, to: 150 })
+
+          chart.current.timeScale().scrollToPosition(1)
        
         }) .catch()
 
         console.log('print')
-        market='SOL'
+
+        
+        
+          
+      
         let eventSource = new EventSource(
-          'http://127.0.0.1:5000/present/' + `${market}/`+'15s'
-        )
+          "http://127.0.0.1:5000/present/" + `${marketdata}/` + "1m"
+        );
         eventSource.addEventListener(
           'message',
           function (e) {
@@ -141,8 +157,15 @@ function CryptoChart({market}) {
           },
           false
         )
+
+        return ()=>{
+          chart.current.remove();
+          eventSource.close();
+          setChartData([])
+          setTimeLine([])
+        }
   
-    },[market])
+    },[marketdata,timeInterval])
 
   return (<div className="CryptoChart" ref={ref}>
 

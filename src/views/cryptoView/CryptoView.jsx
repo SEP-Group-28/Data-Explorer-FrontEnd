@@ -10,7 +10,7 @@ import CryptoChart from './CryptoChart';
 
 function CryptoView() {
   const location=useLocation()
-  const market="BTC/USD"
+  const market="BTC"
   return (
     <div className="CryptoView">
       <HeaderTwo />
