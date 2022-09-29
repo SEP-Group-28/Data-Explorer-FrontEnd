@@ -17,7 +17,22 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import Logo from "../../assets/Logo.png";
+import NotificationsRoundedIcon from '@mui/icons-material/NotificationsRounded';
+// import NotificationModal from '../../views/notification/NotificationModal';
+import Badge from '@mui/material/Badge';
+import NotificationModal from '@mui/material/Modal';
+import Notifications from "../../views/notification/Notifications";
+import DummyData from "../../views/notification/notificationDummyData.json"
 
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  width: 800,
+  maxWidth: 'calc(100% - 20px)',
+  transform: 'translate(-50%, -50%)',
+  bgcolor: 'background.paper',
+};
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,6 +48,7 @@ const useStyles = makeStyles((theme) => ({
     width: 120,
   },
 }));
+
 
 const userPages = ["Home", "Stock", "Crypto"];
 const pages = [...userPages, "Login","Sign up"];
@@ -81,8 +97,14 @@ const HeaderTwo = () => {
        user=null
      }
 
-
+   
+  // for modal
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   return (
+
+
     <AppBar className="AppBar">
       <Container maxWidth="xl">
         <Toolbar className="appbar-toolbar" disableGutters>
@@ -104,7 +126,7 @@ const HeaderTwo = () => {
             <IconButton
               style={{
                 alignItems: "center",
-                marginRight: user ? "60px" : "0px",
+                marginRight: user ? "100px" : "0px",
               }}
               size="large"
               aria-label="account of current user"
@@ -177,7 +199,7 @@ const HeaderTwo = () => {
                 ))}
             </Menu>
           </Box>
-          <div className="pages">
+          <div className="pages d-flex flex-row justify-content-evenly">
             <Box
               className="page-box justify-content-between"
               sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}
@@ -234,18 +256,35 @@ const HeaderTwo = () => {
                   >
                     {page}
                   </Link>
+                  
                 ))}
+                
             </Box>
-
+            { user &&
+                <div style={{marginRight:'18px'}}>
+                <Badge badgeContent={DummyData.length} color="primary">
+                <NotificationsRoundedIcon sx={{}} onClick={handleOpen}/>  
+                </Badge>
+                <NotificationModal
+                  open={open}
+                  onClose={handleClose}
+                  aria-labelledby="modal-modal-title"
+                  aria-describedby="modal-modal-description"
+                >
+                  <Box sx={style}>
+                    <Notifications/>
+                  </Box>
+                </NotificationModal>
+                </div>
+              }
             {user && (
-              <Box sx={{ flexGrow: 0 }}>
+              <Box sx={{ flexGrow: 0, marginRight:'5px' }}>
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                     <Avatar alt="Remy Sharp" />
                   </IconButton>
                 </Tooltip>
                 <Menu
-                className={classes.menu}
                   sx={{ mt: "45px" }}
                   id="menu-appbar"
                   anchorEl={anchorElUser}
