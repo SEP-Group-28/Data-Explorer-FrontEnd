@@ -6,6 +6,7 @@ import { compare } from '../../utils/functions'
 
 
 function CryptoChart({market}) {
+
     const [visibleRange, setVisibleRange] = useState({});
     const [loading, setLoading] = useState(true);
     const ref =useRef();
@@ -21,36 +22,33 @@ function CryptoChart({market}) {
 
         setLoading(true)
         chart.current = createChart(ref.current, {
-          width: 1000,
-          height: 400,
+          width: 700,
+          height: 350,
           layout: {
-            backgroundColor: "#000000",
+            backgroundColor: "#282B30",
             textColor: "rgba(255, 255, 255, 0.9)",
           },
           grid: {
             vertLines: {
               color: "rgba(197, 203, 206, 0.5)",
             },
-            grid: {
-              vertLines: {
-                color: "rgba(197, 203, 206, 0.5)",
-              },
-              horzLines: {
-                color: "rgba(197, 203, 206, 0.5)",
-              },
+            horzLines: {
+              color: "rgba(197, 203, 206, 0.5)",
             },
-            crosshair: {
-              mode: CrosshairMode.Normal,
-            },
-            rightPriceScale: {
-              borderColor: "rgba(197, 203, 206, 0.8)",
-            },
-            timeScale: {
-              borderColor: "rgba(197, 203, 206, 0.8)",
-            },
-          });
+          },
+          crosshair: {
+            mode: CrosshairMode.Normal,
+          },
+          rightPriceScale: {
+            borderColor: "rgba(197, 203, 206, 0.8)",
+          },
+          timeScale: {
+            borderColor: "rgba(197, 203, 206, 0.8)",
+          },
+        });
+          
 
-          candleSeries.chart.current = chart.current.addCandlestickSeries({
+          candleSeries.current = chart.current.addCandlestickSeries({
             upColor: "rgba(0,133,48,1)",
             downColor: "rgba(162,0,0,1)",
             borderDownColor: "rgba(162,0,0,1)",
@@ -93,24 +91,24 @@ function CryptoChart({market}) {
             }
             tempTimeLine.push(object.time)
             tempCandlesticks.push(object)
-            // console.log(object)
+            console.log(object)
           })
           let tempChartData = removeDuplicates([
             ...tempCandlesticks,
             ...chartData
           ]).sort(compare)
-          // let tempTimeLineData = removeDuplicates([
-          //   ...tempTimeLine,
-          //   ...timeLine
-          // ]).sort(compare)
+          let tempTimeLineData = removeDuplicates([
+            ...tempTimeLine,
+            ...timeLine
+          ]).sort(compare)
           let chars = [...tempTimeLine, ...timeLine]
           let tempTimeLineData = chars.filter((c, index) => {
             return chars.indexOf(c) === index
           })
 
-          // console.log(tempTimeLineData)
+          console.log(tempTimeLineData)
 
-          // candleSeries.current.setData(tempCandlesticks)
+          candleSeries.current.setData(tempCandlesticks)
           console.log('temp', tempCandlesticks)
           candleSeries.current.setData(tempChartData)
           setChartData(tempChartData)
@@ -145,8 +143,7 @@ function CryptoChart({market}) {
   
     },[market])
 
-  return (<div style={{marginLeft:'100px',marginTop:'50px'}}
-  ref={ref}>
+  return (<div className="CryptoChart" ref={ref}>
 
   </div>);
 }
