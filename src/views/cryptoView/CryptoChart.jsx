@@ -117,6 +117,7 @@ function CryptoChart({market}) {
         }) .catch()
 
         console.log('print')
+        market='SOL'
         let eventSource = new EventSource(
           'http://127.0.0.1:5000/present/' + `${market}/`+'15s'
         )

@@ -10,7 +10,7 @@ const getcryptolist = (data) => {
 
   return axios({
     method: "get",
-    url: APIEndpoint + "/get",
+    url: APIEndpoint + "/getcryptolist",
     //  headers: {Authorization: `Bearer ${token.getAccessToken()}`}
   });
 };
