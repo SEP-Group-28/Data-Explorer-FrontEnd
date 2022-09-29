@@ -107,8 +107,6 @@ function Register() {
                   {fNameError}
                 </p>
               )}
-
-
             <FormControl sx={{ m: 1 }} variant="outlined" className="register-form-control">
               <InputLabel sx={{fontSize:"13px",mt:"-7px"}} className="inputLabel" htmlFor="outlined-adornment-lastname">
                 Last name
