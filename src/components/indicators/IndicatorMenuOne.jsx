@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     transform: "scale(0.8)",
   },
   btn: {
-    width: "30px",
+    width: "35px",
     boxShadow: "inset 0px 4px 4px rgba(0, 0, 0, 0.25)",
   },
   formControl: {
@@ -66,18 +66,18 @@ const IndicatorMenuOne = () => {
 
   return (
     <div data-testid="internalSelect" className="indicator-select-btn">
-      <Button
+      <button className="indicator-img-btn"
         aria-controls="simple-menu"
         aria-haspopup="true"
         onClick={handleClick}
-        className={classes.btn}
+        
       >
         <img
-          style={{ backgroundColor: "#20232B", borderRadius: "3px" }}
+          
           src={candleStick}
           alt="candleStick"
         />
-      </Button>
+      </button>
       <Menu
         id="simple-menu"
         anchorEl={anchorEl}

@@ -7,7 +7,7 @@ import { useEffect } from "react";
 import { CLIENT_ID } from "../../config";
 import Validation from "../../Validations";
 import AuthServices from "../../services/AuthServices"
-
+import Loader from "../../components/loader/Loader";
 import IconButton from "@mui/material/IconButton";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
@@ -38,6 +38,8 @@ function Register() {
   const [showPassword,setShowPassword]=useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+  const [loader, setLoader] = useState(false);
+
   const togglePassword=()=>{
     setShowPassword(!showPassword);
   }
@@ -52,6 +54,7 @@ function Register() {
   };
 
   const handleSubmit= async(e)=>{
+    setLoader(true);
     e.preventDefault();
     const {value,error} = Validation.register(state);
     
@@ -74,116 +77,122 @@ function Register() {
         console.log("Failed registration")
       }
     }
+
+    setTimeout(() => {
+      setLoader(false);
+    }, 10000);
   }
 
-  return (
-    <div className="Register ">
-      <HeaderOne />
-      <div className="register-container col-9 col-sm-8 col-lg-5 col-md-6 col-xl-5 col-xxl-5 container d-flex flex-column " style={{ backgroundColor: "rgb(17, 23, 38)" }}>
-        <header style={{textAlign:"center"}}>Create your account</header>
-        
-        <Form className="register-form container col-xl-10 d-flex flex-column ">
+   if (loader) {
+     return <Loader position="absolute" top="45%" left="47%" />;
+   }else{
+    return (
+      <div className="Register ">
+        <HeaderOne />
+        <div className="register-container col-9 col-sm-8 col-lg-5 col-md-6 col-xl-5 col-xxl-5 container d-flex flex-column " style={{ backgroundColor: "rgb(17, 23, 38)" }}>
+          <header style={{textAlign:"center"}}>Create your account</header>
+          
+          <Form className="register-form container col-xl-10 d-flex flex-column ">
 
-          <FormControl sx={{ m: 1  }} variant="outlined" className="register-form-control">
-            <InputLabel sx={{fontSize:"13px",mt:"-7px"}} className="inputLabel" htmlFor="outlined-adornment-firstname">
-              First Name
-            </InputLabel>
-            <OutlinedInput className="outLineInput" id="outlined-adornment-firstname" type={"text"}
-              style={{ color: "rgb(194, 193, 193)", fontSize: "13px" }}
-              name="First Name" onChange={handleChange} error={fNameError != ""} label="First Name"/>
-          </FormControl>
-          {fNameError !== "" && (
-              <p className="login-signup-error  mb-0" style={{ color: "red", fontSize: "10px" }}>
-                {fNameError}
-              </p>
-            )}
+            <FormControl sx={{ m: 1  }} variant="outlined" className="register-form-control">
+              <InputLabel sx={{fontSize:"13px",mt:"-7px"}} className="inputLabel" htmlFor="outlined-adornment-firstname">
+                First
+              </InputLabel>
+              <OutlinedInput className="outLineInput" id="outlined-adornment-firstname" type={"text"}
+                style={{ color: "rgb(194, 193, 193)", fontSize: "13px" }}
+                name="First Name" onChange={handleChange} error={fNameError != ""} label="First Name"/>
+            </FormControl>
+            {fNameError !== "" && (
+                <p className="login-signup-error  mb-0" style={{ color: "red", fontSize: "10px" }}>
+                  {fNameError}
+                </p>
+              )}
+            <FormControl sx={{ m: 1 }} variant="outlined" className="register-form-control">
+              <InputLabel sx={{fontSize:"13px",mt:"-7px"}} className="inputLabel" htmlFor="outlined-adornment-lastname">
+                Last name
+              </InputLabel>
+              <OutlinedInput className="outLineInput" id="outlined-adornment-lastname" type={"text"}
+                style={{ color: "rgb(194, 193, 193)", fontSize: "13px" }}
+                name="Last Name" onChange={handleChange} error={lNameError != ""} label="Last Name"/>
+            </FormControl>
+            {lNameError !== "" && (
+                <p className=" login-signup-error mb-0" style={{ color: "red", fontSize: "10px" }}>
+                  {lNameError}
+                </p>
+              )}
 
 
-          <FormControl sx={{ m: 1 }} variant="outlined" className="register-form-control">
-            <InputLabel sx={{fontSize:"13px",mt:"-7px"}} className="inputLabel" htmlFor="outlined-adornment-lastname">
-              Last name
-            </InputLabel>
-            <OutlinedInput className="outLineInput" id="outlined-adornment-lastname" type={"text"}
-              style={{ color: "rgb(194, 193, 193)", fontSize: "13px" }}
-              name="Last Name" onChange={handleChange} error={lNameError != ""} label="Last Name"/>
-          </FormControl>
-          {lNameError !== "" && (
-              <p className=" login-signup-error mb-0" style={{ color: "red", fontSize: "10px" }}>
-                {lNameError}
-              </p>
-            )}
-
+              <FormControl sx={{ m: 1 }} variant="outlined" className="register-form-control">
+                <InputLabel sx={{fontSize:"13px",mt:"-7px"}} className="inputLabel" htmlFor="outlined-adornment-email">
+                  Email
+                </InputLabel>
+                <OutlinedInput data-testid='email' className="outLineInput" id="outlined-adornment-email" type={"email"}
+                  style={{ color: "rgb(194, 193, 193)", fontSize: "13px" }}
+                  name="Email" onChange={handleChange} error={emailError != ""} label="Email"/>
+              </FormControl>
+              {emailError !== "" && (
+                  <p className="login-signup-error mb-0" style={{ color: "red", fontSize: "10px" }}>
+                    {emailError}
+                  </p>
+                )
+              }
 
             <FormControl sx={{ m: 1 }} variant="outlined" className="register-form-control">
-              <InputLabel sx={{fontSize:"13px",mt:"-7px"}} className="inputLabel" htmlFor="outlined-adornment-email">
-                Email
+              <InputLabel sx={{fontSize:"13px",mt:"-7px"}} className="inputLabel"htmlFor="outlined-adornment-password">
+                Password
               </InputLabel>
-              <OutlinedInput data-testid='email' className="outLineInput" id="outlined-adornment-email" type={"email"}
+              <OutlinedInput className="outLineInput" id="outlined-adornment-password" type={showPassword ? "text" : "password"}
                 style={{ color: "rgb(194, 193, 193)", fontSize: "13px" }}
-                name="Email" onChange={handleChange} error={emailError != ""} label="Email"/>
+                name="Password" placeholder='password' onChange={handleChange} error={passwordError != ""}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton aria-label="toggle password visibility" onClick={togglePassword} edge="end">
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+                label="Password"
+              />
             </FormControl>
-            {emailError !== "" && (
-                <p className="login-signup-error mb-0" style={{ color: "red", fontSize: "10px" }}>
-                  {emailError}
-                </p>
-              )
-            }
+            {passwordError !== "" && (
+              <p className="login-signup-error mb-0" style={{ color: "red", fontSize: "10px" }}>
+                {passwordError}
+              </p>
+            )}
 
-           <FormControl sx={{ m: 1 }} variant="outlined" className="register-form-control">
-            <InputLabel sx={{fontSize:"13px",mt:"-7px"}} className="inputLabel"htmlFor="outlined-adornment-password">
-              Password
-            </InputLabel>
-            <OutlinedInput className="outLineInput" id="outlined-adornment-password" type={showPassword ? "text" : "password"}
-              style={{ color: "rgb(194, 193, 193)", fontSize: "13px" }}
-              name="Password" placeholder='password' onChange={handleChange} error={passwordError != ""}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton aria-label="toggle password visibility" onClick={togglePassword} edge="end">
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              }
-              label="Password"
-            />
-          </FormControl>
-          {passwordError !== "" && (
-            <p className="login-signup-error mb-0" style={{ color: "red", fontSize: "10px" }}>
-              {passwordError}
-            </p>
-          )}
+            <FormControl sx={{ m: 1 }} variant="outlined" className="register-form-control">
+              <InputLabel sx={{fontSize:"13px",mt:"-7px"}} className="inputLabel"htmlFor="outlined-adornment-confirmPassword">
+                Confirm Password
+              </InputLabel>
+              <OutlinedInput className="outLineInput" id="outlined-adornment-confirmPassword" type={showConfirmPassword ? "text" : "password"}
+                style={{ color: "rgb(194, 193, 193)", fontSize: "13px" }}
+                name="Confirm Password" onChange={handleChange} error={confirmPassError != ""}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton aria-label="toggle confrimPassword visibility" onClick={toggleConfirmPassword} edge="end">
+                      {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+                label="Confirm Password"
+              />
+            </FormControl>
+            {confirmPassError !== "" && (
+              <p className="login-signup-error mb-0" style={{ color: "red", fontSize: "10px" }}>
+                {confirmPassError}
+              </p>
+            )}
 
-          <FormControl sx={{ m: 1 }} variant="outlined" className="register-form-control">
-            <InputLabel sx={{fontSize:"13px",mt:"-7px"}} className="inputLabel"htmlFor="outlined-adornment-confirmPassword">
-              Confirm Password
-            </InputLabel>
-            <OutlinedInput className="outLineInput" id="outlined-adornment-confirmPassword" type={showConfirmPassword ? "text" : "password"}
-              style={{ color: "rgb(194, 193, 193)", fontSize: "13px" }}
-              name="Confirm Password" onChange={handleChange} error={confirmPassError != ""}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton aria-label="toggle confrimPassword visibility" onClick={toggleConfirmPassword} edge="end">
-                    {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              }
-              label="Confirm Password"
-            />
-          </FormControl>
-          {confirmPassError !== "" && (
-            <p className="login-signup-error mb-0" style={{ color: "red", fontSize: "10px" }}>
-              {confirmPassError}
-            </p>
-          )}
-
-            <button data-testid='register-elem' type="submit" className="login-btn signup-btn" id="login-btn" onClick={handleSubmit}>Sign up</button>
-            <div className=" col-7 align-self-center justify-content-between register-login-footer register-footer">
-              <p style={{ fontSize: "12px" }}>Already have an account?</p>
-              <span style={{ fontSize: "12px" }}><Link style={{textDecoration:"none"}} to="/login">Login</Link></span>
-            </div>
-        </Form>
+              <button data-testid='register-elem' type="submit" className="login-btn signup-btn" id="login-btn" onClick={handleSubmit}>Sign up</button>
+              <div className=" col-7 align-self-center justify-content-between register-login-footer register-footer">
+                <p style={{ fontSize: "12px" }}>Already have an account?</p>
+                <span style={{ fontSize: "12px" }}><Link style={{textDecoration:"none"}} to="/login">Login</Link></span>
+              </div>
+          </Form>
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 }
 
 export default Register;

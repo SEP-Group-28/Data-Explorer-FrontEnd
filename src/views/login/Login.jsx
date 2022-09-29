@@ -13,7 +13,8 @@ import { FormControl } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Loader from "../../components/loader/Loader";
-
+import jwtDecode from "jwt-decode";
+import Token from "../../services/Token";
 function Login() {
 
   // const navigate = useNavigate();
@@ -53,13 +54,19 @@ function Login() {
       error.details.map((item) => {
         errors[item.path[0]] = item.message;
       });
-      if (errors.Email) setEmailError(errors.Email);
+      if (errors.Email) setEmailError("Invalid email");
 
-      if (errors.Password) setPasswordError(errors.Password);
+      if (errors.Password) setPasswordError("Invalid password");
     } else {
       try {
         const response = await AuthServices.login(state);
         console.log(" response is", response);
+        try {
+          console.log(jwtDecode(Token.getAccessToken()));
+        } catch (error) {
+          
+        }
+        
 
         // navigate(from, { replace: true });
 
@@ -70,15 +77,13 @@ function Login() {
       setEmailError("");
       setPasswordError("");
     }
-    console.log("okaya")
-    setTimeout(() => {
-      console.log("Done");
+
       setLoader(false);
-    }, 200);
+    
   };
 
   if (loader) {
-    return <Loader style={{flex:"1", alignItems:"center"}}/>
+    return <Loader position="absolute" top="45%" left="47%"/>
   } else {
     return (
       <div className="Login">
