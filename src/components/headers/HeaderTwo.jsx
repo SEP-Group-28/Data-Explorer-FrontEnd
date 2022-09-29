@@ -89,14 +89,14 @@ const HeaderTwo = () => {
     e.target.style.background = "none";
    }
 
-  //  try{
-  //     var user=jwtDecode(Token.getAccessToken())
-  //     
-  //    }
-  //    catch(err){
-  //      user=null
-  //    }
-   const user = true;
+   try{
+      var user=jwtDecode(Token.getAccessToken())
+      
+     }
+     catch(err){
+       user=null
+     }
+  //  const user = true;
    
   // for modal
   const [open, setOpen] = React.useState(false);
@@ -285,6 +285,7 @@ const HeaderTwo = () => {
                   </IconButton>
                 </Tooltip>
                 <Menu
+                  className={classes.menu}
                   sx={{ mt: "45px" }}
                   id="menu-appbar"
                   anchorEl={anchorElUser}
