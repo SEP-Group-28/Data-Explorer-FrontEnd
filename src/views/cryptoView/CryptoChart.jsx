@@ -12,7 +12,7 @@ function CryptoChart({market}) {
     const ref =useRef();
     const chart = useRef();
     const candleSeries = useRef();
-    const [marketdata, setMarket] = useState(market);
+    const [marketdata, setMarket] = useState("SOL");
     const [timeInterval,setTimeInterval] = useState("1m")
     const [chartData, setChartData] = useState([])
     const [timeLine, setTimeLine] = useState([])
