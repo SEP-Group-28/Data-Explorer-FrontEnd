@@ -12,6 +12,7 @@ import Profile from "../views/profile/Profile";
 import UpdateProfile from "../views/profile/UpdateProfile";
 import StockView from "../views/stockView/StockView";
 import Watchlist from "../views/watchlist/Watchlist";
+import AllUsers from './../views/all_users/AllUsers';
 import Navigator from "./Navigator";
 import Logout from "../utils/Logout";
 
@@ -37,6 +38,7 @@ function Router() {
         {/* Invalid && prohibited routes  */}
         <Route path="*" element={<NotFound />}></Route>
         <Route path="/unauthorized" element={<Unauthorized />} />
+        <Route path="/users" element={<AllUsers/>}/>
         <Route path="/profile" element={<RequireAuth allowedRoles={[ROLES.User]}><Profile /></RequireAuth>} />
         <Route path="/updateProfile" element={<RequireAuth allowedRoles={[ROLES.User]}><UpdateProfile /></RequireAuth>} />
         <Route path="/watchlist" element={<RequireAuth allowedRoles={[ROLES.User]}><Watchlist /></RequireAuth>} />

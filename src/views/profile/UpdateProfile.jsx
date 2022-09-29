@@ -11,13 +11,7 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import Loader from '../../components/loader/Loader';
 // import moment from 'moment';
-import IconButton from "@mui/material/IconButton";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import InputLabel from "@mui/material/InputLabel";
-import InputAdornment from "@mui/material/InputAdornment";
-import { FormControl } from "@mui/material";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
+
 // import Messages from "../../helpers/Messages";
 
 const UpdateProfile = () => {
@@ -36,15 +30,6 @@ const UpdateProfile = () => {
     const [errordata, setError] = useState(formValues);
     const [user, setUser] = useState([])
     const [user_id, setUserID] = useState();
-    const [fNameError,setfNameError]=useState("")
-    const [lNameError,setlNameError]=useState("")
-    const [emailError, setEmailError] =useState("")
-
-    const handleChange =(e)=>{
-        setState({
-          ...state,[e.target.name] : e.target.value,
-        });
-    };
 
     const handleUser = (event) => {
         // console.log(event.target.value);
@@ -88,28 +73,39 @@ const UpdateProfile = () => {
             setLoader(false);
         }, 200);
     }
-    const handleSubmit= async(e)=>{
-    //     e.preventDefault();
-    //     const {value,error} = Validation.register(state);
-        
-    //     if(error){
-    //       error.details.map((item)=>{
-    //         errors[item.path[0]] = item.message;
-    //       });
-    //       if(errors["First Name"]) setfNameError(errors["First Name"])
-    //       if(errors["Last Name"]) setlNameError(errors["Last Name"])
-    //       if(errors["Email"]) setEmailError(errors["Email"])
-    
-    //     }else{
-    //     //   try{
-    //     //     const response = await AuthServices.register(state);
-    //     //     console.log(response);
-    //     //   }catch(error){
-    //     //     console.log(error.response.data.message)
-    //     //     console.log("Failed update")
-    //     //   }
-    //     }
-      }
+    const handleSubmit = async (event) => {
+        setLoader(true);
+        // console.log(state);
+        const { value, error } = Validations.validateupdateprofile(state)
+        event.preventDefault();
+        if (error) {
+            error.details.map(item => {
+                errors[item.path[0]] = item.message;
+            });
+            // console.log(error);
+        }
+        else {
+            try {
+                // const response = await UserServices.updateprofile(state);
+                // if (response.status === 200) {
+                //     Messages.SuccessMessage("User Updated Successfully");
+                //     navigate('/dashboard')
+                // }
+                console.log('done----')
+                // console.log(response)
+            } catch (error) {
+                // console.log(error.message);
+                Messages.ErrorMessage({
+                    error: error,
+                    main_part: "UPDATE FAILED",
+                });
+            }
+        }
+        setError(errors);
+        setTimeout(() => {
+            setLoader(false);
+        }, 200);
+    }
 
     if (loader) {
         return <Loader />
@@ -128,60 +124,42 @@ const UpdateProfile = () => {
                         </Link> */}
 
 
-                    <Form className="register-form container col-xl-10 d-flex flex-column ">
+                    <Form onSubmit={handleSubmit} className='mb-5'>
+                        <Form.Group as={Row} className='fa fw-bold col-xl-12 mb-2 mx-auto' controlId='First Name'>
+                            <Form.Label className='fa' column sm={4}>First Name</Form.Label>
+                            <Col sm={6} >
+                                <Form.Control className='fa' type="text" value={state['First Name']} name='First Name' placeholder='&#xf007; First Name' onChange={handleUser} />
+                                {errordata['First Name'] !== '' && <p className="error">{errordata['First Name']}</p>}
+                            </Col>
 
-                    <FormControl sx={{ m: 1  }} variant="outlined" className="register-form-control">
-                    <InputLabel sx={{fontSize:"13px",mt:"-7px"}} className="inputLabel" htmlFor="outlined-adornment-firstname">
-                    First Name
-                    </InputLabel>
-                    <OutlinedInput value={state['First Name']} className="outLineInput" id="outlined-adornment-firstname" type={"text"}
-                        style={{ color: "rgb(194, 193, 193)", fontSize: "13px" }}
-                        name="First Name" onChange={handleChange} error={fNameError != ""} label="First Name"/>
-                    </FormControl>
-                    {fNameError !== "" && (
-                        <p className="login-signup-error  mb-0" style={{ color: "red", fontSize: "10px" }}>
-                        {fNameError}
-                        </p>
-                    )}
+                        </Form.Group>
 
+                        <Form.Group as={Row} className='fa fw-bold col-xl-12 mb-2 mx-auto' controlId='Last Name'>
+                            <Form.Label className='fa' column sm={4} >Last Name </Form.Label>
+                            <Col sm={6}>
+                                <Form.Control className='fa' type="text" value={state['Last Name']} name='Last Name' placeholder='&#xf234; Last Name' onChange={handleUser} />
+                                {errordata['Last Name'] !== '' && <p className="error">{errordata['Last Name']}</p>}
+                            </Col>
 
-                    <FormControl sx={{ m: 1 }} variant="outlined" className="register-form-control">
-                    <InputLabel sx={{fontSize:"13px",mt:"-7px"}} className="inputLabel" htmlFor="outlined-adornment-lastname">
-                    Last Name
-                    </InputLabel>
-                    <OutlinedInput value={state['Last Name']} className="outLineInput" id="outlined-adornment-lastname" type={"text"}
-                        style={{ color: "rgb(194, 193, 193)", fontSize: "13px" }}
-                        name="Last Name" onChange={handleChange} error={lNameError != ""} label="Last Name"/>
-                    </FormControl>
-                    {lNameError !== "" && (
-                        <p className=" login-signup-error mb-0" style={{ color: "red", fontSize: "10px" }}>
-                        {lNameError}
-                        </p>
-                    )}
+                        </Form.Group>
 
+                        <Form.Group as={Row} className='fa fw-bold col-xl-12 mb-4 mx-auto ' controlId='Email'>
+                            <Form.Label className='fa' column sm={4} >Email</Form.Label>
+                            <Col sm={6}>
+                                <Form.Control className='fa' type="text" value={state['Email']} name='Email' placeholder='&#xf0e0; Email' onChange={handleUser} />
+                                {errordata.Email !== '' && <p className="error">{errordata.Email}</p>}
+                            </Col>
 
-                    <FormControl sx={{ m: 1 }} variant="outlined" className="register-form-control">
-                        <InputLabel sx={{fontSize:"13px",mt:"-7px"}} className="inputLabel" htmlFor="outlined-adornment-email">
-                        Email
-                        </InputLabel>
-                        <OutlinedInput value={state['Email']} data-testid='email' className="outLineInput" id="outlined-adornment-email" type={"email"}
-                        style={{ color: "rgb(194, 193, 193)", fontSize: "13px" }}
-                        name="Email" onChange={handleChange} error={emailError != ""} label="Email"/>
-                    </FormControl>
-                    {emailError !== "" && (
-                        <p className="login-signup-error mb-0" style={{ color: "red", fontSize: "10px" }}>
-                            {emailError}
-                        </p>
-                        )
-                    }
+                        </Form.Group>
 
-                    <button data-testid='register-elem' type="submit" className="login-btn signup-btn" id="login-btn" onClick={handleSubmit}>Update</button>
-                        </Form>
+                        <Button className='btn btn-secondary button w-20 update-btn' size="lg" type="submit">Update</Button>
+
+                    </Form> 
 
                 </div>
-                </div >
-                    )
-                }
+            </div >
+        )
+    }
 }
 
 export default UpdateProfile;

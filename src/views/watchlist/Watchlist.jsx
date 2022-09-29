@@ -42,10 +42,25 @@ export default function Watchlist() {
   const columns = [
     { field:'id', hide:true},
     { field: 'symbol', headerName: 'Symbol', width: 150, headerAlign:'center', align:'center' },
-    { field: 'price', headerName: 'Price',type: 'number', width: 180, headerAlign:'center', align:'center' },
-    { field: 'high', headerName: 'High', type: 'number',width: 180, headerAlign:'center', align:'center'  },
-    { field: 'low', headerName: 'Low',type: 'number', width: 180, headerAlign:'center', align:'center' },
-    { field: 'volume', headerName: 'Volume',type: 'number', width: 180, headerAlign:'center', align:'center' },
+    { field: 'price', headerName: 'Price',type: 'number', width: 130, headerAlign:'center', align:'center' },
+    { field: 'high', headerName: 'High', type: 'number',width: 130, headerAlign:'center', align:'center'  },
+    { field: 'low', headerName: 'Low',type: 'number', width: 130, headerAlign:'center', align:'center' },
+    { field: 'volume', headerName: 'Volume',type: 'number', width: 130, headerAlign:'center', align:'center' },
+    // {
+    //   field: 'age',
+    //   headerName: 'Age',
+    //   type: 'number',
+    //   width: 90,
+    // },
+    // {
+    //   field: 'fullName',
+    //   headerName: 'Full name',
+    //   description: 'This column has a value getter and is not sortable.',
+    //   sortable: false,
+    //   width: 160,
+    //   valueGetter: (params) =>
+    //     `${params.row.firstName || ''} ${params.row.lastName || ''}`,
+    // },
     {
       field: "Remove",
       sortable: false,
@@ -64,9 +79,7 @@ export default function Watchlist() {
           </Button>
         );
       },
-      headerAlign: 'center',
-      align: 'center',
-      width: 150
+      headerAlign: 'center'
     }
   ];
   
@@ -104,8 +117,7 @@ export default function Watchlist() {
           boxShadow: 2,
           border: 2,
           borderColor: 'primary.light',
-          color: 'white',
-          backgroundColor: '#393C45'
+          color: 'white'
         }
       }
       />
