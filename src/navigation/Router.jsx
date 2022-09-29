@@ -10,6 +10,7 @@ import Unauthorized from "../views/invalid_prohibited/Unauthorized";
 import CryptoView from "../views/cryptoView/CryptoView";
 import Profile from "../views/profile/Profile";
 import UpdateProfile from "../views/profile/UpdateProfile";
+import StockView from "../views/stockView/StockView";
 import Watchlist from "../views/watchlist/Watchlist";
 
 function Router() {
@@ -26,6 +27,7 @@ function Router() {
 
         <Route path="/" element={<HomeView />} />
         <Route path="/crypto" element={<CryptoView />} />
+        <Route path="/stock" element={<StockView />} />
 
         {/* Invalid && prohibited routes  */}
         <Route path="*" element={<NotFound />}></Route>

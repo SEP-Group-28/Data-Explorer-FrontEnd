@@ -165,6 +165,10 @@ const HeaderTwo = () => {
                     key={page}
                   >
                     <Link
+                    state={{market:page=='Crypto'?
+                  'BTC': page=='Stock'?
+                  'TESLA':''}}
+                  
                       style={{ color: "white" }}
                       to={
                         page == "Home"
@@ -183,6 +187,9 @@ const HeaderTwo = () => {
                 userPages.map((page) => (
                   <MenuItem key={page}>
                     <Link
+                     state={{market:page=='Crypto'?
+                     'BTC': page=='Stock'?
+                     'TESLA':''}}
                       to={page == "Home" ? "/" : "/" + page}
                       className="menu-names"
                     >
@@ -200,6 +207,9 @@ const HeaderTwo = () => {
               {!user &&
                 pages.map((page) => (
                   <Link
+                  state={{market:page=='Crypto'?
+                  'BTC': page=='Stock'?
+                  'TESLA':''}}
                     style={{
                       backgroundColor: page == "Sign up" ? "#286AEF" : "none",
                     }}
@@ -225,6 +235,9 @@ const HeaderTwo = () => {
               {user &&
                 userPages.map((page) => (
                   <Link
+                  state={{market:page=='Crypto'?
+                  'BTC': page=='Stock'?
+                  'TESLA':''}}
                     className={
                       page == "Sign up"
                         ? "Signup-HeaderTwo page-buttons"
@@ -272,7 +285,6 @@ const HeaderTwo = () => {
                   </IconButton>
                 </Tooltip>
                 <Menu
-                  className={classes.menu}
                   sx={{ mt: "45px" }}
                   id="menu-appbar"
                   anchorEl={anchorElUser}
