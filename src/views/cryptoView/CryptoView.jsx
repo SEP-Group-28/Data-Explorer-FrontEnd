@@ -10,7 +10,7 @@ import CryptoChart from './CryptoChart';
 
 function CryptoView() {
   const location=useLocation()
-  const market=location.state.market
+  const market="BTC"
   return (
     <div className="CryptoView">
       <HeaderTwo />
@@ -20,8 +20,8 @@ function CryptoView() {
           <CryptoIntervals />
           <CryptoChart market={market}/>
         </div>
-        <div className='types-crypto'>
-          <CryptoTypes/>
+        <div className="types-crypto">
+          <CryptoTypes />
         </div>
       </div>
     </div>
