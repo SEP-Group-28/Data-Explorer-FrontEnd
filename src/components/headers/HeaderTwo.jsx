@@ -89,14 +89,14 @@ const HeaderTwo = () => {
     e.target.style.background = "none";
    }
 
-  //  try{
-  //     var user=jwtDecode(Token.getAccessToken())
-  //     
-  //    }
-  //    catch(err){
-  //      user=null
-  //    }
-   const user = true;
+   try{
+      var user=jwtDecode(Token.getAccessToken())
+      
+     }
+     catch(err){
+       user=null
+     }
+
    
   // for modal
   const [open, setOpen] = React.useState(false);
