@@ -65,7 +65,7 @@ function StockChart ({ market }) {
         upColor: UP_CANDLESTICK_COLOUR,
         downColor: DOWN_CANDLESTICK_COLOUR
       })
-
+      
       chart.current.applyOptions({
         timeScale: {
           visible: true,
