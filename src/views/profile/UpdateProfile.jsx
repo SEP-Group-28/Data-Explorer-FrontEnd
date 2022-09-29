@@ -154,7 +154,7 @@ const UpdateProfile = () => {
 
                         <Button className='btn btn-secondary button w-20 update-btn' size="lg" type="submit">Update</Button>
 
-                    </Form>
+                    </Form> 
 
                 </div>
             </div >
