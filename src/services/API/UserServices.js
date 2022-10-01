@@ -1,27 +1,30 @@
 import config from "../../config.json";
-import axios from "../HttpServices";
+// import axios from "../HttpServices";
 import token from "../Token";
+import axios from 'axios';
 
 //API endpoint
 const APIEndpoint = config.DOMAIN_NAME + "/api";
 
-const updateprofile = (data) => {
+const updateprofile = (data,id) => {
+  console.log(data)
   return axios({
     method: "post",
-    url: APIEndpoint + "/user/update-profile",
+    url: APIEndpoint + `/user/update-profile/${id}`,
     data: {
       firstname: data["First Name"],
       lastname: data["Last Name"],
-      email: data["Email"],
+     
+      dob:data['DOB']
     },
     headers: { Authorization: `Bearer ${token.getAccessToken()}` },
   });
 };
 
-const getUser = () => {
+const getUser = (id) => {
   return axios({
     method: 'get',
-    url: APIEndpoint + '/user/user',
+    url: APIEndpoint + `/user/${id}`,
     headers: { Authorization: `Bearer ${token.getAccessToken()}` }
   });
 }
@@ -40,8 +43,22 @@ const updatePasswordByUser = (data) => {
   });
 }
 
+
+const updatePhoto = (id,formData) => {
+  console.log(id,formData)
+  return axios({
+    method: "post",
+    url: APIEndpoint + `/user/update-photo/${id}`,
+    data:formData,
+    headers: { Authorization: `Bearer ${token.getAccessToken()}` },
+  });
+}
+
+
+
 export default {
   updateprofile,
   getUser,
   updatePasswordByUser,
+  updatePhoto
 }
