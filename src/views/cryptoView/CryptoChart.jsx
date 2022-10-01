@@ -68,7 +68,7 @@ function CryptoChart({market}) {
           },
         });
 
-        let newCrypto = 'http://127.0.0.1:5000/history/'+ `${market}/15s`
+        let newCrypto = 'http://127.0.0.1:5000/history/'+ `${market}/1m`
 
       fetch(newCrypto)
         .then(res => res.json())
@@ -115,7 +115,7 @@ function CryptoChart({market}) {
         console.log('print')
         market='SOL'
         let eventSource = new EventSource(
-          'http://127.0.0.1:5000/present/' + `${market}/`+'15s'
+          'http://127.0.0.1:5000/present/' + `${market}/`+'1m'
         )
         eventSource.addEventListener(
           'message',
