@@ -29,6 +29,7 @@ import TextField from '@mui/material/TextField';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
+import { CountryDropdown } from 'react-country-region-selector';
 // import Messages from "../../helpers/Messages";
 import { useRef } from 'react';
 
@@ -89,8 +90,8 @@ const Profile = ({id}) => {
     const formValues = {
         'First Name': '',
         'Last Name': '',
-        'Email': '',
-        'DOB':''
+        'DOB':'',
+        'Country':''
     }
 
     var [state, setState] = useState(formValues);
@@ -136,7 +137,8 @@ const Profile = ({id}) => {
                 'Last Name' : getuser['lastname'],
                 // 'Email'     : getuser['email'],
                 'ImagePath':getuser['imagepath'],
-                'DOB':getuser['dob']
+                'DOB':getuser['dob'],
+                'Country':getuser['country']
             }
             setState(state)
 
@@ -228,11 +230,17 @@ const Profile = ({id}) => {
         // console.log(newValue['$d'].toLocaleDateString())
         setState({...state,'DOB':newValue['$d'].toLocaleDateString()});
       };
+    
 
+    const handleCountryChange=(value)=>{
+        setState({...state,'Country':value})
+
+    }
     
 
     const handleChange = event => {
       // 👇️ toggle shown state
+      console.log(event)
       console.log(event.target.value)
       setState({...state,[event.target.name]:event.target.value})
         
@@ -317,17 +325,21 @@ const Profile = ({id}) => {
                     }
 
 
+                    <CountryDropdown
+                            style={{'color':'white','fontSize':'15px','paddingTop':'15px','backgroundColor':'black'}}
+                            value={state['Country']}
+                            name={'Country'}
+                            onChange={handleCountryChange} />
 
 
-
-                    <FormControl sx={{ m: 1 }} variant="outlined" className="register-form-control">
+                    {/* <FormControl sx={{ m: 1 }} variant="outlined" className="register-form-control">
                         <InputLabel sx={{fontSize:"13px",mt:"-7px"}} className="inputLabel" htmlFor="outlined-adornment-Location">
                     Country
                         </InputLabel>
                         <OutlinedInput  value={state['Location']} data-testid='DOB' className="outLineInput" id="outlined-adornment-Location" type={"text"}
                         style={{ color: "rgb(194, 193, 193)", fontSize: "13px" }}
                         name="DOB" onChange={handleChange} error={emailError != ""} label="Location"/>
-                    </FormControl>
+                    </FormControl> */}
                     {emailError !== "" && (
                         <p className="login-signup-error mb-0" style={{ color: "red", fontSize: "10px" }}>
                             {emailError}
