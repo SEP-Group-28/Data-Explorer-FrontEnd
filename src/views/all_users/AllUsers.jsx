@@ -4,7 +4,7 @@ import Searchbar from "../../components/Searchbar/Searchbar";
 import { Card, Form, Button, Table, FormControl, InputGroup, DropdownButton, Dropdown, Pagination, } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-// import AdminServices from "../../services/API/AdminServices";
+import AdminServices from "../../services/API/AdminServices";
 import UserServices from "../../services/API/UserServices";
 import Paginate from "../../components/pagination/paginate";
 // import { toast } from 'react-toastify';
@@ -95,21 +95,22 @@ const AllUsers = () => {
   const [users, setUsers] = useState([]);
   
   useEffect(() => {
-    getUsers("doctor", skip, take, search);
+    getUsers( skip, take, search);
   }, []);
 
-  const getUsers = async (usertype, skip_value, take, search) => {
+  const getUsers = async ( skip_value, take, search) => {
     setLoader(true);
     try {
       let response = null;
-      if (usertype === "doctor") {
-        response = await AdminServices.getDoctors(skip_value, take, search);
-        setusertype('doctor');
-      }
-      else if (usertype === "examiner") {
-        response = await AdminServices.getExaminers(skip_value, take, search);
-        setusertype('examiner');
-      }
+      // if (usertype === "doctor") {
+      response = await AdminServices.getUsers(skip_value, take, search);
+      // setusertype('doctor');
+      print(response)
+      // }
+      // else if (usertype === "examiner") {
+      //   response = await AdminServices.getExaminers(skip_value, take, search);
+      //   setusertype('examiner');
+      // }
       setSearch(search);
       setSkip(skip_value);
       setUsers(response.data.data);
@@ -133,12 +134,12 @@ const AllUsers = () => {
     }, 200);
   };
 
-  if (loader) {
-    return <Loader />
-  } else {
+  // if (loader) {
+  //   return <Loader />
+  // } else {
     return (
       <div className="all_users">
-        <HeaderTwo />
+        {/* <HeaderTwo /> */}
 
         <h1 className="alluser_header">All Users</h1>
 
@@ -282,7 +283,7 @@ const AllUsers = () => {
 
       </div>
     );
-  }
+  
 
 
 };
