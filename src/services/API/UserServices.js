@@ -14,6 +14,7 @@ const updateprofile = (data,id) => {
     data: {
       firstname: data["First Name"],
       lastname: data["Last Name"],
+      country:data['Country'],
      
       dob:data['DOB']
     },
