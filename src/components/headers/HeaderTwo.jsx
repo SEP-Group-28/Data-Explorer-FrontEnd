@@ -23,16 +23,20 @@ import Badge from '@mui/material/Badge';
 import NotificationModal from '@mui/material/Modal';
 import Notifications from "../../views/notification/Notifications";
 import DummyData from "../../views/notification/notificationDummyData.json"
+import Snackbar from '@mui/material/Snackbar';
+import CloseIcon from '@mui/icons-material/Close';
 import { useEffect } from "react";
 
 const style = {
-  position: 'absolute',
-  top: '50%',
+  position: 'relative',
+  top: '40%',
   left: '50%',
   width: 800,
   maxWidth: 'calc(100% - 20px)',
   transform: 'translate(-50%, -50%)',
-  bgcolor: 'background.paper',
+  paddingLeft: 0,
+  paddingRight:0
+  // bgcolor: 'background.paper',
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -57,8 +61,10 @@ const settings = ["Profile", "Watchlist", "Logout"];
 const HeaderTwo = ({imagepath}) => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const[image,setImage]=React.useState(imagepath)
   
+  var [count, setCount] = React.useState(0);
+
+  const[image,setImage]=React.useState(imagepath)
   const classes = useStyles();
   console.log('allloooo')
   console.log('IMAGE PATH',imagepath)
@@ -66,6 +72,11 @@ const HeaderTwo = ({imagepath}) => {
     console.log('aaaaaaaweeeeeee')
     setImage(imagepath)
   },[imagepath])
+
+  const increment = () =>{
+    count = count+1
+    setCount(count)
+  }
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -97,19 +108,22 @@ const HeaderTwo = ({imagepath}) => {
     e.target.style.background = "none";
    }
 
-   try{
-      var user=jwtDecode(Token.getAccessToken())
+  //  try{
+  //     var user=jwtDecode(Token.getAccessToken())
       
-     }
-     catch(err){
-       user=null
-     }
-  //  const user = true;
+  //    }
+  //    catch(err){
+  //      user=null
+  //    }
+   const user = true;
    
   // for modal
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  
+  
   return (
 
 
@@ -270,17 +284,17 @@ const HeaderTwo = ({imagepath}) => {
             </Box>
             { user &&
                 <div style={{marginRight:'18px'}}>
-                <Badge badgeContent={DummyData.length} color="primary">
+                <Badge badgeContent={DummyData.length-count} color="primary">
                 <NotificationsRoundedIcon sx={{}} onClick={handleOpen}/>  
                 </Badge>
-                <NotificationModal
+                <NotificationModal sx={{mt:-8, borderWidth:0 }}
                   open={open}
                   onClose={handleClose}
                   aria-labelledby="modal-modal-title"
                   aria-describedby="modal-modal-description"
                 >
                   <Box sx={style}>
-                    <Notifications/>
+                    <Notifications increment={increment}/>
                   </Box>
                 </NotificationModal>
                 </div>
