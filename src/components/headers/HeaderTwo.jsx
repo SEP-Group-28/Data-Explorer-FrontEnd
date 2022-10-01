@@ -23,6 +23,7 @@ import Badge from '@mui/material/Badge';
 import NotificationModal from '@mui/material/Modal';
 import Notifications from "../../views/notification/Notifications";
 import DummyData from "../../views/notification/notificationDummyData.json"
+import { useEffect } from "react";
 
 const style = {
   position: 'absolute',
@@ -53,11 +54,18 @@ const useStyles = makeStyles((theme) => ({
 const userPages = ["Home", "Stock", "Crypto"];
 const pages = [...userPages, "Login","Sign up"];
 const settings = ["Profile", "Watchlist", "Logout"];
-const HeaderTwo = () => {
+const HeaderTwo = ({imagepath}) => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-
+  const[image,setImage]=React.useState(imagepath)
+  
   const classes = useStyles();
+  console.log('allloooo')
+  console.log('IMAGE PATH',imagepath)
+  useEffect(()=>{
+    console.log('aaaaaaaweeeeeee')
+    setImage(imagepath)
+  },[imagepath])
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -65,7 +73,7 @@ const HeaderTwo = () => {
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
-
+  console.log('ssssssssss',imagepath)
   const handleCloseNavMenu = (e) => {
     setAnchorElNav(null);
     
@@ -281,7 +289,8 @@ const HeaderTwo = () => {
               <Box sx={{ flexGrow: 0, marginRight:'5px' }}>
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt="Remy Sharp" />
+                    {console.log('kkkkk')}
+                    <Avatar key={image} alt="Remy Sharp" src={image}/>
                   </IconButton>
                 </Tooltip>
                 <Menu

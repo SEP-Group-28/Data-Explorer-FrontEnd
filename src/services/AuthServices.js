@@ -6,7 +6,7 @@ import token from "./Token";
 const APIEndpoint = config.DOMAIN_NAME + "/auth";
 
 const register = (data) => {
-  console.log(data);
+  // console.log(data);
 
   return axios({
     method: "post",
