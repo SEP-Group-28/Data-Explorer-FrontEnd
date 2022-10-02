@@ -6,6 +6,14 @@ import { compare } from '../../utils/functions'
 
 
 function CryptoChart({market}) {
+
+  const location = useLocation();
+  try {
+    var marketState = location.state.market;
+  } catch (error) {
+    marketState = "BTC";
+  }
+  
     const [visibleRange, setVisibleRange] = useState({});
     const [loading, setLoading] = useState(true);
     const ref =useRef();
@@ -66,7 +74,7 @@ function CryptoChart({market}) {
           },
         });
 
-        let newCrypto = 'http://127.0.0.1:5000/history/'+ `${market}/15s`
+        let newCrypto = "http://127.0.0.1:5000/history/" + `${marketState}/15s`;
 
       fetch(newCrypto)
         .then(res => res.json())
@@ -110,11 +118,12 @@ function CryptoChart({market}) {
        
         }) .catch()
 
-        console.log('print')
+     
   
         let eventSource = new EventSource(
-          'http://127.0.0.1:5000/present/' + `${market}/`+'15s'
-        )
+          "http://127.0.0.1:5000/present/" + `${marketState}/` + "15s"
+        );
+       
         eventSource.addEventListener(
           'message',
           function (e) {
