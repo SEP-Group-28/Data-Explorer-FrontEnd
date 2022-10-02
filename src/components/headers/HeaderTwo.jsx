@@ -209,7 +209,7 @@ const HeaderTwo = () => {
                   <Link
                   state={{market:page=='Crypto'?
                   'BTC': page=='Stock'?
-                  'TESLA':''}}
+                  'TSLA':''}}
                     style={{
                       backgroundColor: page == "Sign up" ? "#286AEF" : "none",
                     }}
@@ -237,7 +237,7 @@ const HeaderTwo = () => {
                   <Link
                   state={{market:page=='Crypto'?
                   'BTC': page=='Stock'?
-                  'TESLA':''}}
+                  'TSLA':''}}
                     className={
                       page == "Sign up"
                         ? "Signup-HeaderTwo page-buttons"
@@ -285,6 +285,7 @@ const HeaderTwo = () => {
                   </IconButton>
                 </Tooltip>
                 <Menu
+                className={classes.menu}
                   sx={{ mt: "45px" }}
                   id="menu-appbar"
                   anchorEl={anchorElUser}

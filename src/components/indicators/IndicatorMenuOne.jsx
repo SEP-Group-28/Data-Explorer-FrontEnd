@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const IndicatorMenuOne = () => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = React.useState();
   const [indicators, setIndicators] = React.useState({
     ma: false,
     sma: false,

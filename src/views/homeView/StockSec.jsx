@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import Stock1 from "../../assets/stock1.png";
 import Stock2 from "../../assets/stock2.png";
 
@@ -7,7 +7,7 @@ function StockSec() {
   return (
     <div
       onClick={() => {
-        window.location.href = "/stock";
+        <Navigate to="/stock" state={{ market: "TSLA" }} />;
       }}
       className="CryptoSec d-flex flex-column"
     >

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import HeaderTwo from '../../components/headers/HeaderTwo'
 import CryptoHeader from './CryptoHeader';
 import CryptoIntervals from './CryptoIntervals';
@@ -10,7 +10,11 @@ import CryptoChart from './CryptoChart';
 
 function CryptoView() {
   const location=useLocation()
-  const market="BTC"
+  const defaultMarket = location.state.market;
+  const [market, setMarket] = useState(defaultMarket);
+  const changeCryptoType=(marketType)=>{
+    setMarket(marketType);
+  }
   return (
     <div className="CryptoView">
       <HeaderTwo />
@@ -18,10 +22,10 @@ function CryptoView() {
         <div className="crypto-charts d-flex flex-column">
           <CryptoHeader />
           <CryptoIntervals />
-          <CryptoChart market={market}/>
+          <CryptoChart market={market} />
         </div>
         <div className="types-crypto">
-          <CryptoTypes />
+          <CryptoTypes changeCryptoType={changeCryptoType} />
         </div>
       </div>
     </div>

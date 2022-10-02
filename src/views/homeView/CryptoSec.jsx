@@ -1,7 +1,8 @@
 import React from 'react'
-import { Link } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import Bitcoin from "../../assets/bitcoin.png";
 import Etherium from "../../assets/etherium.png";
+
 
 
 function CryptoSec() {
@@ -11,7 +12,7 @@ function CryptoSec() {
     
       <div
         onClick={() => {
-          window.location.href = "/crypto";
+          <Navigate to="/crypto" state={{ market : "BTC"}} />;
         }}
         className="CryptoSec d-flex flex-column"
       >
