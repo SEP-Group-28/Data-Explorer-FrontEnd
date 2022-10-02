@@ -18,6 +18,7 @@ import { FormControl } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
+
 // import moment from 'moment';
 
 // import Messages from "../../helpers/Messages";
@@ -129,9 +130,9 @@ const ChangePassword = () => {
     } else {
 
         return (
-            <div>
+            <div style={{ maxWidth: '50%' , margin:'auto', backgroundColor:'white', marginTop:'15%'}}>
 
-                <div className='form-container col-xl-5 mt-5 pt-5' style={{ background: 'none'}}>
+                <div className='form-container mt-5 pt-5' style={{ background: 'none'}}>
 
                     <h1 className='fs-1 text-primary'>Change Password</h1>
 

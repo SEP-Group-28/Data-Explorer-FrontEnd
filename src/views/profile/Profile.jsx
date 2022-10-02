@@ -30,14 +30,27 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { CountryDropdown } from 'react-country-region-selector';
+import ChangePassModal from '@mui/material/Modal';
 // import Messages from "../../helpers/Messages";
 import { useRef } from 'react';
+import { Box } from '@mui/system';
 
 const style_ = {
     // outLineInput:disabled {
     //     background: #dddddd,
     // }
 }
+const style = {
+    position: 'relative',
+    top: '40%',
+    left: '50%',
+    width: 800,
+    maxWidth: 'calc(100% - 20px)',
+    transform: 'translate(-50%, -50%)',
+    paddingLeft: 0,
+    paddingRight:0
+    // bgcolor: 'background.paper',
+  };
 const style_1 = {
     position: 'relative',
     top: '50%',
@@ -69,6 +82,7 @@ const Profile = ({id}) => {
     const [open, setOpen] = React.useState(false);
     const [show, setShow] = React.useState(false);
     const handleShow = () => setShow(true);
+    const handleClose = () => setShow(false);
     const handleSubmit = async() => {
         
         console.log(state)
@@ -362,8 +376,15 @@ const Profile = ({id}) => {
                     </div>
                 }
                 { show &&
-                    <div>
-                    <ChangePassword/>
+                    <div style={{marginRight:'18px', width:'10px'}}>
+                    <ChangePassModal sx={{mt:-8, borderWidth:0 }}
+                    open={show}
+                    onClose={handleClose}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                    >
+                        <ChangePassword sx={{w:'10px'}}/>
+                    </ChangePassModal>
                     </div>
 
                 }
