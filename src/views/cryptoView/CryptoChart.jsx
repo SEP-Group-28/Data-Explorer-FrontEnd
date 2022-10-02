@@ -65,7 +65,7 @@ function CryptoChart({market}) {
             autoScale: true,
           },
         });
-
+      
         let newCrypto = 'http://127.0.0.1:5000/history/'+ `${market}/15s`
 
       fetch(newCrypto)
@@ -111,7 +111,6 @@ function CryptoChart({market}) {
         }) .catch()
 
         console.log('print')
-  
         let eventSource = new EventSource(
           'http://127.0.0.1:5000/present/' + `${market}/`+'15s'
         )
