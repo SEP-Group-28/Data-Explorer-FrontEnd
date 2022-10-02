@@ -311,6 +311,7 @@ const Profile = ({id}) => {
                                 inputFormat="MM/DD/YYYY"
                                 value={state['DOB']? state['DOB']:dayjs('01/01/2004')}
                                 name={'DOB'}
+                                style={{'color':'red'}}
                                 onChange={handleDOBChange}
                                 renderInput={(params) => <TextField {...params} />}
                                 />

@@ -27,21 +27,21 @@ const AllUsers = () => {
   const changePage = async (skip_value) => {
     // console.log(skip_value);
     // setSkip(skip_value);
-    getUsers(usertype, skip_value, take, '');
+    getUsers(skip_value, take, '');
   }
 
-  const [usertype, setusertype] = useState('doctor');
+  // const [usertype, setusertype] = useState('doctor');
   //When Doctor or Examiner is clicked
-  const displayDoctors = () => {
-    // setSkip(0);
-    getUsers("doctor", 0, take, '');
+  // const displayDoctors = () => {
+  //   // setSkip(0);
+  //   getUsers("doctor", 0, take, '');
 
-  }
-  const displayExaminers = () => {
-    // setSkip(0);
-    getUsers("examiner", 0, take, '');
+  // }
+  // const displayExaminers = () => {
+  //   // setSkip(0);
+  //   getUsers("examiner", 0, take, '');
 
-  }
+  // }
 
   // When update button is clicked
   const navigate = useNavigate();
@@ -52,14 +52,15 @@ const AllUsers = () => {
 
   // When activate/deactivate is clicked
   const changeActivation = async (user_id) => {
-    setLoader(true);
+    // setLoader(true);
     // console.log("Inside activate changing");
     try {
       const response = await UserServices.changeActivation( {user_id} );
-      // console.log(response);
+      console.log(response);
       if (response.status === 200) {
-        Messages.SuccessMessage("Changed activation successfully");
-        getUsers("doctor", skip, take, search);
+        // Messages.SuccessMessage("Changed activation successfully");
+        
+        getUsers(skip, take, search);
         
       }
     } catch (error) {
@@ -105,7 +106,7 @@ const AllUsers = () => {
       // if (usertype === "doctor") {
       response = await AdminServices.getUsers(skip_value, take, search);
       // setusertype('doctor');
-      print(response)
+      console.log(response)
       // }
       // else if (usertype === "examiner") {
       //   response = await AdminServices.getExaminers(skip_value, take, search);
@@ -113,10 +114,11 @@ const AllUsers = () => {
       // }
       setSearch(search);
       setSkip(skip_value);
-      setUsers(response.data.data);
-      setTotalItems(response.data.total_items);
+      setUsers(response.data.data.users);
+      setTotalItems(response.data.data.usercount);
       // console.log(response);
     } catch (error) {
+      console.log(error)
       // console.log(error);
       // if(Token.getAuth()===null){
       //   console.log("SESSION EXPIRED");
@@ -144,7 +146,7 @@ const AllUsers = () => {
         <h1 className="alluser_header">All Users</h1>
 
         <div className="container users">
-
+{/* 
           <div className="d-flex form">
             <div className="row">
               <DropdownButton title={usertype.charAt(0).toUpperCase() + usertype.slice(1)} placeholder="&#xf2c2;" id="bg-vertical-dropdown-3" style={{ color: "black" }}>
@@ -152,11 +154,11 @@ const AllUsers = () => {
                 <Dropdown.Item eventKey="2" onClick={displayExaminers}>Examiners</Dropdown.Item>
               </DropdownButton>
             </div>
-          </div>
+          </div> */}
 
           <div className="title_search">
-            {usertype === 'doctor' && <h4 className="category">Doctors</h4>}
-            {usertype === 'examiner' && <h4 className="category">Examiners</h4>}
+            {/* {usertype === 'doctor' && <h4 className="category">Doctors</h4>}
+            {usertype === 'examiner' && <h4 className="category">Examiners</h4>} */}
             {/* <input
               type="search"
               placeholder={"   Search " + usertype}
@@ -173,12 +175,12 @@ const AllUsers = () => {
               onChange={(event) => setSearch(event.target.value)}
             /> */}
           </div>
-
+            <div></div>
           <div className="search display-fixed">
             <Button variant="outline-primary" onClick={() => searchUser()} style={{ borderRadius: "20px", float: "right" }}>Search</Button>
             <input
               type="search"
-              placeholder={"   Search " + usertype}
+              placeholder={"   Search " }
               className="me-2"
               aria-label="Search"
               onChange={(event) => setSearch(event.target.value)}
@@ -194,7 +196,8 @@ const AllUsers = () => {
 
           <div className="user_display">
             {users.length === 0 &&
-              <div><h5 style={{ color: "black", textAlign: "center", margin: "10px" }}>No {usertype} to display</h5>
+              <div>
+                {/* <h5 style={{ color: "black", textAlign: "center", margin: "10px" }}>No {usertype} to display</h5> */}
                 <div className="image">
                   <img src="https://i.ibb.co/TLJmmJW/404.png" alt="" />
                 </div>
@@ -207,10 +210,10 @@ const AllUsers = () => {
                     <th>User ID</th>
                     <th>First Name</th>
                     <th>Last Name</th>
-                    <th>NIC</th>
-                    <th>Contact No</th>
+                    {/* <th>Contact No</th> */}
                     <th>Email</th>
                     <th>Birthday</th>
+                    <th>Country</th>
                   </tr>
                 </thead>
                 <tbody style={{ color: "black" }}>
@@ -221,18 +224,19 @@ const AllUsers = () => {
                     return (
                       <tr key={key}>
                         <td>
-                          {value.auth.active ? <i className="fa fa-check-square" aria-hidden="true" style={{color: "green"}}/> : <i className="fa fa-power-off" aria-hidden="true" style={{margin: "5px", color: "crimson"}}/>}
+                          {parseInt(value.active) ? <i className="fa fa-check-square" aria-hidden="true" style={{color: "green"}}/> : <i className="fa fa-power-off" aria-hidden="true" style={{margin: "5px", color: "crimson"}}/>}
                           <i className=""></i>
                         </td>
-                        <td>{value.auth.id}</td>
+                        <td>{value['_id']}</td>
                         <td>{value.firstname}</td>
                         <td>{value.lastname}</td>
-                        <td>{value.nic}</td>
-                        <td>{value.contact_no}</td>
-                        <td>{value.email}</td>
-                        <td>{value.birthday && value.birthday.slice(0, 10)}</td>
+                        {/* <td>{value.nic}</td> */}
+                        {/* <td>{value['Contact No']}</td> */}
+                        <td>{value['email']}</td>
+                        <td>{value['DOB'] && value['DOB'].slice(0, 10)}</td>
+                        <td>{value['Country']}</td>
                         <td>
-                          <Link to={"/update-user"} state={{ user_id: value.auth.id }}>
+                          {/* <Link to={"/update-user"} state={{ user_id: value['_id'] }}>
                             <Button
                               variant="outline-primary"
                               className=""
@@ -240,15 +244,17 @@ const AllUsers = () => {
                             >
                               Update
                             </Button>
-                          </Link>
+                          </Link> */}
                         </td>
                         <td>
-                          {value.auth.active ? (
+                          {console.log(value['active'])}
+                          {console.log(parseInt(value.active))}
+                          {parseInt(value.active) ? (
                             <Button
                               variant="outline-danger"
                               className=""
                               style={{ borderRadius: "20px" }}
-                              onClick={() => changeActivation(value.auth.id)}
+                              onClick={() => changeActivation(value['_id'])}
                             >
                               <i className="fa fa-power-off" aria-hidden="true" style={{margin: "5px"}}></i>Deactivate
                             </Button>
@@ -257,7 +263,7 @@ const AllUsers = () => {
                               variant="outline-success"
                               className=""
                               style={{ borderRadius: "20px" }}
-                              onClick={() => changeActivation(value.auth.id)}
+                              onClick={() => changeActivation(value['_id'])}
                             >
                               <i className="fa fa-check-square" aria-hidden="true" style={{margin: "5px"}}/>Activate
                             </Button>
