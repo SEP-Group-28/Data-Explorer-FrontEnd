@@ -9,8 +9,12 @@ import CryptoChart from './CryptoChart';
 
 
 function CryptoView() {
-  const location=useLocation()
-  const defaultMarket = location.state.market;
+  const location = useLocation();
+  try {
+    var defaultMarket = location.state.market;
+  } catch (error) {
+    defaultMarket = "BTC";
+  }
   const [market, setMarket] = useState(defaultMarket);
   const changeCryptoType=(marketType)=>{
     setMarket(marketType);
