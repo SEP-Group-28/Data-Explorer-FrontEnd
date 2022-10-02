@@ -615,6 +615,19 @@ margin-right:40px;
   font-size: 15px;
 }
 
+.StockChart{
+  margin-top: 10px;
+  align-self: center;
+  margin-left: 10px;
+}
+
+
+.CryptoChart{
+  margin-top: 10px;
+  align-self: center;
+  margin-left: 10px;
+}
+
 
 
 
@@ -698,20 +711,26 @@ margin-right:40px;
       align-items: center;
       box-shadow: 5px 4px 5px 1px rgba(0, 0, 0, 0.8);
     }
+    .StockChart{
+      margin-left: 6px;
+    }
+    .CryptoChart{
+      margin-left: 6px;
+    }
 
-        .interval-btns button {
-          margin-left: 7px;
-          width: 30px;
-          font-size: 12px;
-          border: none;
-          background: none !important;
-          color: rgb(214, 214, 214);
-          background-color: #282B30 !important;
-          padding: 2px;
-          border-radius: 5px;
-          cursor: pointer !important;
-    
-        }
+    .interval-btns button {
+      margin-left: 7px;
+      width: 30px;
+      font-size: 12px;
+      border: none;
+      background: none !important;
+      color: rgb(214, 214, 214);
+      background-color: #282B30 !important;
+      padding: 2px;
+      border-radius: 5px;
+      cursor: pointer !important;
+
+    }
         .AppBar img {
           width: 220px;
         }

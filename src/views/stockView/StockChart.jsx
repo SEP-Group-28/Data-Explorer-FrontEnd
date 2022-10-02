@@ -1,15 +1,22 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { createChart, CrosshairMode } from 'lightweight-charts'
 import Loader from "../../components/loader/Loader"
+import { useLocation } from 'react-router'
 // import ChartLoader from '../Loading/ChartLoader'
 
 import { compare } from '../../utils/functions'
 
 function StockChart ({ market }) {
+  const location = useLocation()
+  try{
+    var marketState = location.state.market;
+  }catch(error){
+    marketState="tsla";
+  }
+  
   const ref = React.useRef()
   const [loading, setLoading] = useState(true)
   const [visibleRange, setVisibleRange] = useState({})
-  const [marketdata, setMarket] = useState("tsla");
 
   const [chartData, setChartData] = useState([])
   const [timeLine,setTempTimeLine]=useState([])
@@ -37,30 +44,30 @@ function StockChart ({ market }) {
   useEffect(() => {
     
       chart.current = createChart(ref.current, {
-        width: 400,
-        height: 600,
-        // layout: {
-        //     backgroundColor: '#f2f2f2',
-        //     textColor: 'rgba(255, 255, 255, 0.9)',
-        // },
-        // grid: {
-        //     vertLines: {
-        //         color: 'rgba(197, 203, 206, 0.5)',
-        //     },
-        //     horzLines: {
-        //         color: 'rgba(197, 203, 206, 0.5)',
-        //     },
-        // },
+        width: 0,
+        height: 300,
+        layout: {
+          backgroundColor: "#393C45",
+          textColor: "rgba(255, 255, 255, 0.9)",
+        },
+        grid: {
+          vertLines: {
+            color: "rgba(197, 203, 206, 0.5)",
+          },
+          horzLines: {
+            color: "rgba(197, 203, 206, 0.5)",
+          },
+        },
         crosshair: {
-          mode: CrosshairMode.Normal
-        }
+          mode: CrosshairMode.Normal,
+        },
         // rightPriceScale: {
         //     borderColor: 'rgba(197, 203, 206, 0.8)',
         // },
         // timeScale: {
         //     borderColor: 'rgba(197, 203, 206, 0.8)',
         // },
-      })
+      });
       candleSeries.current = chart.current.addCandlestickSeries({
         upColor: "rgba(0,133,48,1)",
         downColor: "rgba(162,0,0,1)",
@@ -77,14 +84,12 @@ function StockChart ({ market }) {
           secondsVisible: true
         }
       })
+      
 
-      fetch(
-        "http://127.0.0.1:5000" +
-          `/stockhistory/${marketdata}/5m`
-      )
+      fetch("http://127.0.0.1:5000" + `/stockhistory/${market.toLowerCase() || marketState.toLowerCase()}/5m`)
         .then((res) => res.json())
         .then((data) => {
-          console.log(data)
+          console.log(data);
           let tempCandlesticks = [];
           let tempTimeLine = [];
           data.forEach((row) => {
@@ -133,6 +138,31 @@ function StockChart ({ market }) {
       
     
   }, [market])
+
+
+  function getWindowDimension() {
+    const { innerWidth: width, innerHeight: height } = window;
+    return { width, height };
+  }
+
+  const [windowDimensions, setWindowDimensions] = useState(
+    getWindowDimension()
+  );
+
+  useEffect(() => {
+    function handleResize() {
+      setWindowDimensions(getWindowDimension());
+    }
+
+    window.addEventListener("resize", handleResize);
+    return () =>{ 
+      window.removeEventListener("resize", handleResize)
+      chart.current.resize(windowDimensions["width"]*(0.85), 300);
+  };
+  });
+  useEffect(()=>{
+    
+  })
 
   // useEffect(() => {
   //   timeStamp !== 0 &&
@@ -193,7 +223,7 @@ function StockChart ({ market }) {
   return (
     <>
       {/* {loading ? <Loader position="relative" top="40%" left="45%"/> : null} */}
-      <div ref={ref} onMouseUpCapture={handleDrag} />
+      <div className='StockChart' ref={ref} onMouseUpCapture={handleDrag} />
     </>
   )
 }

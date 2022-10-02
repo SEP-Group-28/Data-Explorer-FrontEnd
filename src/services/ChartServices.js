@@ -15,6 +15,16 @@ const getcryptolist = (data) => {
   });
 };
 
+const getstocklist = (data) => {
+  console.log(data);
+
+  return axios({
+    method: "get",
+    url: APIEndpoint + "/getstocklist",
+    //  headers: {Authorization: `Bearer ${token.getAccessToken()}`}
+  });
+};
+
 export default{
-    getcryptolist
+    getcryptolist,getstocklist
 }
