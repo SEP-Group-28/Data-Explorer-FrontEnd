@@ -317,13 +317,14 @@ font-weight: 900;
 
 .crypto-imgs img{
   object-fit: contain;
-  width: 100px;
+  width: 86px;
   margin-bottom: 10px;
+  margin-left: 10px;
 }
 
 .crypto-imgs #img2{
   object-fit: contain;
-  width: 86px;
+
   
   
 } 
@@ -576,11 +577,14 @@ margin-right:40px;
   background-color: #393C45;
   box-shadow: 5px 4px 5px 1px rgba(0, 0, 0, 0.8);
   margin-top: 120px;
+  height: 275px;
+  overflow-y: scroll;
 
 }
 .CryptoTypes Table{
   width: 100px;
   font-size: 15px;
+
   
 }
 .type-btn{
@@ -588,6 +592,20 @@ margin-right:40px;
   background: none;
   color:rgb(208, 200, 200);
   border: none;
+  height: 30px;
+}
+
+.type-btn-inter{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 20px;
+  align-self: center !important;
+}
+
+.type-btn-inter p{
+  margin-top: 15px;
+  margin-left: 5px;
 }
 
 .CryptoTypes Table th {
@@ -597,7 +615,41 @@ margin-right:40px;
   font-size: 15px;
 }
 
+.StockChart{
+  margin-top: 10px;
+  align-self: center;
+  margin-left: 10px;
+}
 
+
+.CryptoChart{
+  margin-top: 10px;
+  align-self: center;
+  margin-left: 10px;
+}
+
+
+
+
+::-webkit-scrollbar{
+  width: 7px;
+  border-radius: 10px;
+  
+}
+
+::-webkit-scrollbar-track {
+  background: #585858;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(24, 24, 24);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(31, 31, 31);
+}
 
 @media only screen and (max-width: 900px) {
 
@@ -659,19 +711,28 @@ margin-right:40px;
       align-items: center;
       box-shadow: 5px 4px 5px 1px rgba(0, 0, 0, 0.8);
     }
+    .StockChart{
+      margin-left: 6px;
+    }
+    .CryptoChart{
+      margin-left: 6px;
+    }
 
-        .interval-btns button {
-          margin-left: 7px;
-          width: 30px;
-          font-size: 12px;
-          border: none;
-          background: none !important;
-          color: rgb(214, 214, 214);
-          background-color: #282B30 !important;
-          padding: 2px;
-          border-radius: 5px;
-          cursor: pointer !important;
-    
+    .interval-btns button {
+      margin-left: 7px;
+      width: 30px;
+      font-size: 12px;
+      border: none;
+      background: none !important;
+      color: rgb(214, 214, 214);
+      background-color: #282B30 !important;
+      padding: 2px;
+      border-radius: 5px;
+      cursor: pointer !important;
+
+    }
+        .AppBar img {
+          width: 220px;
         }
 }
 
@@ -714,6 +775,10 @@ margin-right:40px;
       border-radius: 5px;
       cursor: pointer !important;
 
+    }
+
+    .AppBar img{
+      width: 160px;
     }
 }
 
@@ -765,10 +830,7 @@ margin-right:40px;
       padding-top: 1px;
       padding-bottom: 1px;
     }
-    .indicator-img-btn img{
-      object-fit: contain;
-      width: 19px;
-    }
+
 
     .crypto-bar {
       margin-left: 2px;
@@ -788,7 +850,7 @@ margin-right:40px;
       font-size: 12px;
     }
     .CryptoTypes Table td {
-      font-size: 10px;
+      font-size: 8px;
     }
 
 
