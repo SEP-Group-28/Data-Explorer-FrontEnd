@@ -17,9 +17,9 @@ import jwtDecode from "jwt-decode";
 import Token from "../../services/Token";
 function Login() {
 
-  // const navigate = useNavigate();
-  // const location = useLocation();
-  // const from = location.state?.from || "/navigate";
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from || "/navigate";
 
   const formValues = {
     Email: "",
@@ -68,7 +68,7 @@ function Login() {
         }
         
 
-        // navigate(from, { replace: true });
+        navigate(from, { replace: true });
 
       } catch (error) {
         console.log("error",error?.response?.data?.message);
