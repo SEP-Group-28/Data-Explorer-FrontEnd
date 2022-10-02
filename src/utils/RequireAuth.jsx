@@ -18,4 +18,5 @@ function RequireAuth({children,allowedRoles}) {
   );
 }
 
+
 export default RequireAuth

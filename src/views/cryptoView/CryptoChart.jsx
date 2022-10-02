@@ -11,20 +11,18 @@ function CryptoChart({market}) {
     const ref =useRef();
     const chart = useRef();
     const candleSeries = useRef();
-    const [marketdata,setMarket] = useState()
+    
     const [timeInterval,setTimeInterval] = useState("1m")
     const [chartData, setChartData] = useState([])
     const [timeLine, setTimeLine] = useState([])
     useEffect(()=>{
-        console.log(market)
-        setMarket(market)
 
         setLoading(true)
         chart.current = createChart(ref.current, {
-          width: 1000,
-          height: 400,
+          width: 0,
+          height: 300,
           layout: {
-            backgroundColor: "#000000",
+            backgroundColor: "#393C45",
             textColor: "rgba(255, 255, 255, 0.9)",
           },
           grid: {
@@ -38,12 +36,12 @@ function CryptoChart({market}) {
           crosshair: {
             mode: CrosshairMode.Normal,
           },
-          rightPriceScale: {
-            borderColor: "rgba(197, 203, 206, 0.8)",
-          },
-          timeScale: {
-            borderColor: "rgba(197, 203, 206, 0.8)",
-          },
+          // rightPriceScale: {
+          //   borderColor: "rgba(197, 203, 206, 0.8)",
+          // },
+          // timeScale: {
+          //   borderColor: "rgba(197, 203, 206, 0.8)",
+          // },
         });
 
         candleSeries.current = chart.current.addCandlestickSeries({
@@ -113,7 +111,7 @@ function CryptoChart({market}) {
         }) .catch()
 
         console.log('print')
-        market='SOL'
+  
         let eventSource = new EventSource(
           'http://127.0.0.1:5000/present/' + `${market}/`+'15s'
         )
@@ -137,13 +135,44 @@ function CryptoChart({market}) {
           },
           false
         )
+
+        return ()=>{
+          chart.current.remove();
+          eventSource.close();
+          setChartData([])
+          setTimeLine([])
+        }
   
-    },[market])
+    },[market,timeInterval])
 
-  return (<div style={{marginLeft:'100px',marginTop:'50px'}}
-  ref={ref}>
 
-  </div>);
-}
+    function getWindowDimension() {
+      const { innerWidth: width, innerHeight: height } = window;
+      return { width, height };
+    }
+
+    const [windowDimensions, setWindowDimensions] = useState(
+      getWindowDimension()
+    );
+
+    useEffect(() => {
+      function handleResize() {
+        setWindowDimensions(getWindowDimension());
+      }
+
+      window.addEventListener("resize", handleResize);
+      return () => {
+        window.removeEventListener("resize", handleResize);
+        chart.current.resize(windowDimensions["width"] * 0.85, 300);
+      };
+    });
+  
+
+  return (
+        <div className="CryptoChart" ref={ref}>
+
+        </div>);
+    }
+
 
 export default CryptoChart;

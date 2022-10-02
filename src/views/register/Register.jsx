@@ -1,5 +1,5 @@
 import React,{useState} from "react";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import HeaderOne from "../../components/headers/HeaderOne";
 import { Form } from "react-bootstrap";
 import GoogleButton from "react-google-button";
@@ -17,6 +17,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 function Register() {
+  const Navigate = useNavigate();
 
   const formValues = {
     "First Name": "",
@@ -62,16 +63,39 @@ function Register() {
       error.details.map((item)=>{
         errors[item.path[0]] = item.message;
       });
-      if (errors["Confirm Password"]) setConfirmPassError(errors["Confim Password"])
-      if (errors["Password"]) setPasswordError(errors["Password"])
-      if(errors["First Name"]) setfNameError(errors["First Name"])
-      if(errors["Last Name"]) setlNameError(errors["Last Name"])
-      if(errors["Email"]) setEmailError(errors["Email"])
+      if (errors["Confirm Password"])
+       {setConfirmPassError(errors["Confim Password"]); setState({...state,["Confirm Password"]:"",})}
+       else{
+        setConfirmPassError("");
+       }
+      if (errors["Password"])
+       {setPasswordError(errors["Password"]); setState({...state,["Password"]:"",})}
+       else{
+        setPasswordError("")
+       }
+      if(errors["First Name"])
+       {setfNameError(errors["First Name"]); setState({ ...state, ["First Name"]: "" });}
+       else{
+        setfNameError("")
+       }
+      if(errors["Last Name"])
+       {setlNameError(errors["Last Name"]); setState({ ...state, ["Last Name"]: "" });}
+       else{
+        setlNameError("")
+       }
+      if(errors["Email"])
+       {setEmailError(errors["Email"]); setState({ ...state, ["Email"]: "" });}
+       else{
+        setEmailError("")
+       }
 
     }else{
       try{
         const response = await AuthServices.register(state);
         console.log(response);
+        if(response.status==201){
+          Navigate("/login")
+        }
       }catch(error){
         console.log(error.response.data.message)
         console.log("Failed registration")
@@ -80,7 +104,8 @@ function Register() {
 
     setTimeout(() => {
       setLoader(false);
-    }, 10000);
+    }, 10);
+    console.log(state)
   }
 
    if (loader) {
@@ -100,7 +125,7 @@ function Register() {
               </InputLabel>
               <OutlinedInput className="outLineInput" id="outlined-adornment-firstname" type={"text"}
                 style={{ color: "rgb(194, 193, 193)", fontSize: "13px" }}
-                name="First Name" onChange={handleChange} error={fNameError != ""} label="First Name"/>
+                name="First Name" value={state["First Name"]} onChange={handleChange} error={fNameError != ""} label="First Name"/>
             </FormControl>
             {fNameError !== "" && (
                 <p className="login-signup-error  mb-0" style={{ color: "red", fontSize: "10px" }}>
@@ -113,7 +138,7 @@ function Register() {
               </InputLabel>
               <OutlinedInput className="outLineInput" id="outlined-adornment-lastname" type={"text"}
                 style={{ color: "rgb(194, 193, 193)", fontSize: "13px" }}
-                name="Last Name" onChange={handleChange} error={lNameError != ""} label="Last Name"/>
+                name="Last Name" value={state["Last Name"]} onChange={handleChange} error={lNameError != ""} label="Last Name"/>
             </FormControl>
             {lNameError !== "" && (
                 <p className=" login-signup-error mb-0" style={{ color: "red", fontSize: "10px" }}>
@@ -128,7 +153,7 @@ function Register() {
                 </InputLabel>
                 <OutlinedInput data-testid='email' className="outLineInput" id="outlined-adornment-email" type={"email"}
                   style={{ color: "rgb(194, 193, 193)", fontSize: "13px" }}
-                  name="Email" onChange={handleChange} error={emailError != ""} label="Email"/>
+                  name="Email" value={state["Email"]} onChange={handleChange} error={emailError != ""} label="Email"/>
               </FormControl>
               {emailError !== "" && (
                   <p className="login-signup-error mb-0" style={{ color: "red", fontSize: "10px" }}>
@@ -143,7 +168,7 @@ function Register() {
               </InputLabel>
               <OutlinedInput className="outLineInput" id="outlined-adornment-password" type={showPassword ? "text" : "password"}
                 style={{ color: "rgb(194, 193, 193)", fontSize: "13px" }}
-                name="Password" placeholder='password' onChange={handleChange} error={passwordError != ""}
+                name="Password" value={state["Password"]} placeholder='password' onChange={handleChange} error={passwordError != ""}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton aria-label="toggle password visibility" onClick={togglePassword} edge="end">
@@ -166,7 +191,7 @@ function Register() {
               </InputLabel>
               <OutlinedInput className="outLineInput" id="outlined-adornment-confirmPassword" type={showConfirmPassword ? "text" : "password"}
                 style={{ color: "rgb(194, 193, 193)", fontSize: "13px" }}
-                name="Confirm Password" onChange={handleChange} error={confirmPassError != ""}
+                name="Confirm Password" value={state["Confirm Password"]} onChange={handleChange} error={confirmPassError != ""}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton aria-label="toggle confrimPassword visibility" onClick={toggleConfirmPassword} edge="end">
