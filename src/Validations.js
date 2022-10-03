@@ -43,6 +43,20 @@ const validateupdateprofile = (data) => {
   );
   return { value, error };
 };
+const userUpdatePwd = (data) => {
+  console.log("checking.........");
+  console.log(data)
+  const user_update_pwd_schema = Joi.object({
+    password: password_joi_object(),
+    re_password: password_joi_object(),
+  });
+
+  const { error, value } = user_update_pwd_schema.validate(data, {
+    abortEarly: false,
+  });
+
+  return { value, error };
+};
 
 const name_validation_joi_object = () => {
   return Joi.string()
@@ -104,4 +118,5 @@ export default {
     register,
     login,
     validateupdateprofile,
+    userUpdatePwd,
 }

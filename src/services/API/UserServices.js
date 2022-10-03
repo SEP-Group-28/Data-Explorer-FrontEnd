@@ -32,6 +32,7 @@ const getUser = (id) => {
 
 
 const updatePasswordByUser = (data) => {
+  console.log("data sent", data)
   return axios({
     method: "post",
     url: APIEndpoint + "/user/update-password-by-user",

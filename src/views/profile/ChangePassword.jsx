@@ -17,6 +17,8 @@ import InputAdornment from "@mui/material/InputAdornment";
 import { FormControl } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import Token from "../../services/Token";
+import jwtDecode from "jwt-decode";
 
 
 // import moment from 'moment';
@@ -42,6 +44,7 @@ const ChangePassword = () => {
     const [currPasswordError,setCurrPasswordError] = useState("")
     const [newPasswordError,setNewPasswordError]=useState("")
     const [confirmPassError,setConfirmPassError]=useState("")
+    const [pwdErr, setPwdErr] = useState("")
 
     const [showPassword,setShowPassword]=useState(false)
     const [showNewPassword,setShowNewPassword]=useState(false)
@@ -104,27 +107,79 @@ const ChangePassword = () => {
         }, 200);
     }
     const handleSubmit= async(e)=>{
-        e.preventDefault();
-        const {value,error} = Validations.register(state);
-        
-        if(error){
-          error.details.map((item)=>{
-            errors[item.path[0]] = item.message;
-          });
-          if (errors["Confirm Password"]) setConfirmPassError(errors["Confim Password"])
-          if(errors["Current Password"]) setCurrPasswordError(errors["Current Passowrd"])
-          if(errors["New Password"]) setNewPasswordError(errors["New Passowrd"])
-
-        }else{
-          try{
-            const response = await AuthServices.register(state);
-            console.log(response);
-          }catch(error){
-            console.log(error.response.data.message)
-            console.log("Failed registration")
-          }
+        e.preventDefault()
+        console.log("handle submit called")
+        const password = state["New Password"]
+        const re_password = state["Confirm Password"]
+        console.log(password, re_password, "he hee")
+        try {
+            var userDecode = jwtDecode(Token.getAccessToken())
+            console.log("user ", userDecode)
+        } catch (error) {
+            userDecode= null   
+            console.log(error) 
         }
-      }
+        const user_id = userDecode['user_id']
+        setLoader(true);
+
+        setPwdErr('');
+        const { value, error } = Validations.userUpdatePwd({ password, re_password });
+        console.log("handle submit, user id", user_id)
+        if (error) {
+            console.log(error);
+            const errors = {};
+            error.details.map(item => {
+                errors[item.path[0]] = item.message;
+            });
+            if (errors.password)
+                setPwdErr('Password you entered does not match. Try again');
+            if (errors.re_password)
+                setPwdErr('Two passwords do not match. Try again');
+
+        }
+        else {
+            try {
+                // const user_id = params.user_id;
+                // const user_id = '6338626c4ecd3c07364102b8';
+                const response = await UserServices.updatePasswordByUser({ password, old_password, user_id });
+                if (response.status === 200) {            
+                    Messages.SuccessMessage("Password Updated Successfully");
+                    setTimeout(navigate('/dashboard'), 3000);
+                }
+
+            } catch (error) {
+                Messages.ErrorMessage({
+                    error: error,
+                    custom_message: `Password update failed.`,
+                  });
+            }
+        }
+        setTimeout(() => {
+            setLoader(false);
+        }, 200);
+    }
+    // const handleSubmit= async(e)=>{
+    //     e.preventDefault();
+    //     const {value,error} = Validations.register(state);
+        
+    //     if(error){
+    //       error.details.map((item)=>{
+    //         errors[item.path[0]] = item.message;
+    //       });
+    //       if (errors["Confirm Password"]) setConfirmPassError(errors["Confim Password"])
+    //       if(errors["Current Password"]) setCurrPasswordError(errors["Current Passowrd"])
+    //       if(errors["New Password"]) setNewPasswordError(errors["New Passowrd"])
+
+    //     }else{
+    //       try{
+    //         const response = await AuthServices.register(state);
+    //         console.log(response);
+    //       }catch(error){
+    //         console.log(error.response.data.message)
+    //         console.log("Failed registration")
+    //       }
+    //     }
+    //   }
         return (
             <div style={{ margin:'auto', backgroundColor:'white', marginTop:'15%'}}>
 
@@ -205,8 +260,8 @@ const ChangePassword = () => {
                             {confirmPassError}
                             </p>
                         )}
-
-                        <button data-testid='register-elem' type="submit" className="login-btn signup-btn" id="login-btn" onClick={handleSubmit}>Save</button>
+                        {console.log("aiyooo")}
+                        <button data-testid='register-elem'  className="login-btn signup-btn" id="login-btn" onClick={handleSubmit}>Save</button>
 
                     </Form>
         </div>
