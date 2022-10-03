@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { createChart, CrosshairMode } from "lightweight-charts";
 import { removeDuplicates } from '../../utils/functions'
 import { compare } from '../../utils/functions'
+import {useLocation} from "react-router-dom"
 
 
 
@@ -74,7 +75,7 @@ function CryptoChart({market}) {
           },
         });
 
-        let newCrypto = "http://127.0.0.1:5000/history/" + `${marketState}/15s`;
+        let newCrypto = "http://127.0.0.1:5000/history/" + `${market.toLowerCase() || marketState.toLowerCase()}/15s`;
 
       fetch(newCrypto)
         .then(res => res.json())
@@ -121,7 +122,7 @@ function CryptoChart({market}) {
      
   
         let eventSource = new EventSource(
-          "http://127.0.0.1:5000/present/" + `${marketState}/` + "15s"
+          "http://127.0.0.1:5000/present/" + `${market.toLowerCase() || marketState.toLowerCase()}/` + "15s"
         );
        
         eventSource.addEventListener(
