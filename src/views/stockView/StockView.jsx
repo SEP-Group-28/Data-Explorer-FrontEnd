@@ -1,7 +1,6 @@
 import React,{useState} from 'react'
 import HeaderTwo from "../../components/headers/HeaderTwo";
 import StockHeader from './StockHeader';
-
 import StockIntervals from './StockIntervals';
 import StockChart from './StockChart';
 import StockTypes from './StockTypes';

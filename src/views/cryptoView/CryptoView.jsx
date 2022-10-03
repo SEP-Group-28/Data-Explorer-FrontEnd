@@ -9,24 +9,28 @@ import CryptoChart from './CryptoChart';
 
 
 function CryptoView() {
-  const location = useLocation();
-  try {
-    var defaultMarket = location.state.market;
-  } catch (error) {
-    defaultMarket = "BTC";
-  }
-  const [market, setMarket] = useState(defaultMarket);
+  // const location = useLocation();
+  // try {
+  //   var defaultMarket = location.state.market;
+  // } catch (error) {
+  //   defaultMarket = "BTC";
+  // }
+  const [market, setMarket] = useState("");
+  const [interval, setInterval] = useState("");
   const changeCryptoType=(marketType)=>{
     setMarket(marketType);
   }
+  const changeInterval = (interval) => {
+    setInterval(interval);
+  };
   return (
     <div className="CryptoView">
       <HeaderTwo />
       <div className="d-flex flex-row">
         <div className="crypto-charts d-flex flex-column">
-          <CryptoHeader />
-          <CryptoIntervals />
-          <CryptoChart market={market} />
+          <CryptoHeader market={market} interval={interval} />
+          <CryptoIntervals changeInterval={changeInterval} />
+          <CryptoChart market={market} interval={interval} />
         </div>
         <div className="types-crypto">
           <CryptoTypes changeCryptoType={changeCryptoType} />
