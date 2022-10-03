@@ -105,7 +105,7 @@ const ChangePassword = () => {
     }
     const handleSubmit= async(e)=>{
         e.preventDefault();
-        const {value,error} = Validation.register(state);
+        const {value,error} = Validations.register(state);
         
         if(error){
           error.details.map((item)=>{
@@ -125,12 +125,8 @@ const ChangePassword = () => {
           }
         }
       }
-    if (loader) {
-        return <Loader />
-    } else {
-
         return (
-            <div style={{ maxWidth: '50%' , margin:'auto', backgroundColor:'white', marginTop:'15%'}}>
+            <div style={{ margin:'auto', backgroundColor:'white', marginTop:'15%'}}>
 
                 <div className='form-container mt-5 pt-5' style={{ background: 'none'}}>
 
@@ -217,6 +213,6 @@ const ChangePassword = () => {
     </div >
         )
     }
-}
+
 
 export default ChangePassword;

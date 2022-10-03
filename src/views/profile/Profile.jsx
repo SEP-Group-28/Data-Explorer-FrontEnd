@@ -34,6 +34,9 @@ import ChangePassModal from '@mui/material/Modal';
 // import Messages from "../../helpers/Messages";
 import { useRef } from 'react';
 import { Box } from '@mui/system';
+import Token from "../../services/Token";
+import jwtDecode from "jwt-decode";
+
 
 const style_ = {
     // outLineInput:disabled {
@@ -70,7 +73,7 @@ const style_2 = {
     bgcolor: 'background.paper',
 };
 
-const Profile = ({id}) => {
+const Profile = () => {
     // const refprofilepicdiv=useRef(null)
     // const refimg=useRef(null)
     // const reffile=useRef(null)
@@ -83,11 +86,20 @@ const Profile = ({id}) => {
     const [show, setShow] = React.useState(false);
     const handleShow = () => setShow(true);
     const handleClose = () => setShow(false);
+    try {
+        var userDecode = jwtDecode(Token.getAccessToken())
+        console.log(userDecode)
+    } catch (error) {
+        userDecode= null   
+        console.log(error) 
+    }
+    const id = userDecode['user_id']
+    console.log("id:", id)
     const handleSubmit = async() => {
         
         console.log(state)
         try {
-            id='6336ef11737b6053883339c6'
+            
             const response=await UserServices.updateprofile(state,id)
         } catch (error) {
             console.log(error)
@@ -136,7 +148,6 @@ const Profile = ({id}) => {
     const getUser = async () => {
         setLoader(true);
         try {
-            id='6336ef11737b6053883339c6'
             const response = await UserServices.getUser(id);
             const getuser=response.data.data
             console.log('response',getuser)
@@ -203,13 +214,13 @@ const Profile = ({id}) => {
     
                 reader.readAsDataURL(choosedFile);
                 try{
-                    console.log(state)
+                    console.log(choosedFile)
                     const formData=new FormData();
                     formData.append('Image',choosedFile)
                     // formData.append('ImageName',choosedFile.name)
                     // print('chooosed name',choosedFile.name)
                     const call=async()=>{
-                        const id='6336ef11737b6053883339c6';
+                        
                         // print('formData',formData)
                         try { 
                             const response =await UserServices.updatePhoto(id,formData);
@@ -365,16 +376,16 @@ const Profile = ({id}) => {
 
                     <Button data-testid='register-elem' className="login-btn signup-btn" id="login-btn" size="lg" onClick={handleSubmit} style={{fontSize:'14px'}}>Save</Button>
                     <Button data-testid='register-elem' className="login-btn signup-btn" id="login-btn" onClick={handleShow}>Change Password</Button>
-                    <Button className='btn btn-secondary button w-20 update-btn' size="lg" onClick={handleOpen} style={{fontSize:'14px'}}>Edit</Button>
+                    {/* <Button className='btn btn-secondary button w-20 update-btn' size="lg" onClick={handleOpen} style={{fontSize:'14px'}}>Edit</Button> */}
             </Form>
 
 
                 </div>
-                { open &&
+                {/* { open &&
                     <div style={{position:'relative', left:'55%', top:'-5px', transform: 'translate(2%, -203%)'}}>
                     <UpdateProfile/>
                     </div>
-                }
+                } */}
                 { show &&
                     <div style={{marginRight:'18px', width:'10px'}}>
                     <ChangePassModal sx={{mt:-8, borderWidth:0 }}
@@ -383,7 +394,9 @@ const Profile = ({id}) => {
                     aria-labelledby="modal-modal-title"
                     aria-describedby="modal-modal-description"
                     >
+                        <Box style={{maxWidth:'50%', transform:'translate(50%, 30%)'}}>                        
                         <ChangePassword sx={{w:'10px'}}/>
+                        </Box>
                     </ChangePassModal>
                     </div>
 

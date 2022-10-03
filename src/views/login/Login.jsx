@@ -71,6 +71,7 @@ function Login() {
         navigate(from, { replace: true });
 
       } catch (error) {
+        console.log(error)
         console.log("error",error?.response?.data?.message);
         console.log("Login failed");
       }
