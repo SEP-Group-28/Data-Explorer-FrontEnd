@@ -41,10 +41,10 @@ const ChangePassword = () => {
     const [errordata, setError] = useState(formValues);
     // const [user, setUser] = useState([])
     // const [user_id, setUserID] = useState();
-    const [currPasswordError,setCurrPasswordError] = useState("")
+    // const [currPasswordError,setCurrPasswordError] = useState("")
     const [newPasswordError,setNewPasswordError]=useState("")
     const [confirmPassError,setConfirmPassError]=useState("")
-    const [pwdErr, setPwdErr] = useState("")
+    // const [pwdErr, setPwdErr] = useState("")
 
     const [showPassword,setShowPassword]=useState(false)
     const [showNewPassword,setShowNewPassword]=useState(false)
@@ -111,6 +111,7 @@ const ChangePassword = () => {
         console.log("handle submit called")
         const password = state["New Password"]
         const re_password = state["Confirm Password"]
+        const old_password = state["Current Password"]
         console.log(password, re_password, "he hee")
         try {
             var userDecode = jwtDecode(Token.getAccessToken())
@@ -122,36 +123,44 @@ const ChangePassword = () => {
         const user_id = userDecode['user_id']
         setLoader(true);
 
-        setPwdErr('');
+        // setPwdErr('');
         const { value, error } = Validations.userUpdatePwd({ password, re_password });
         console.log("handle submit, user id", user_id)
         if (error) {
             console.log(error);
             const errors = {};
+            console.log(error.details)
             error.details.map(item => {
                 errors[item.path[0]] = item.message;
             });
+            
             if (errors.password)
-                setPwdErr('Password you entered does not match. Try again');
-            if (errors.re_password)
-                setPwdErr('Two passwords do not match. Try again');
+                setNewPasswordError(errors.password);
+            else if (errors.re_password)
+                setNewPasswordError("")
+                setConfirmPassError('Two passwords do not match. Try again');
 
         }
         else {
+            setConfirmPassError("")
             try {
                 // const user_id = params.user_id;
                 // const user_id = '6338626c4ecd3c07364102b8';
                 const response = await UserServices.updatePasswordByUser({ password, old_password, user_id });
+                console.log("Password Update....", response)
                 if (response.status === 200) {            
-                    Messages.SuccessMessage("Password Updated Successfully");
-                    setTimeout(navigate('/dashboard'), 3000);
+                    // Messages.SuccessMessage("Password Updated Successfully");
+                    setTimeout(navigate('/logout'), 3000);
                 }
 
             } catch (error) {
-                Messages.ErrorMessage({
-                    error: error,
-                    custom_message: `Password update failed.`,
-                  });
+                // snackbar
+                console.log(error.response)
+                
+                // Messages.ErrorMessage({
+                //     error: error,
+                //     custom_message: `Password update failed.`,
+                //   });
             }
         }
         setTimeout(() => {
@@ -198,7 +207,7 @@ const ChangePassword = () => {
                                     </InputLabel>
                                     <OutlinedInput className="outLineInput" id="outlined-adornment-password" type={showPassword ? "text" : "password"}
                                     style={{ color: "rgb(194, 193, 193)", fontSize: "13px" }}
-                                    name="Password" placeholder='password' onChange={handleChange} error={currPasswordError != ""}
+                                    name="Current Password" placeholder='password' onChange={handleChange}
                                     endAdornment={
                                         <InputAdornment position="end">
                                         <IconButton aria-label="toggle password visibility" onClick={togglePassword} edge="end">
@@ -209,11 +218,11 @@ const ChangePassword = () => {
                                     label="Password"
                                     />
                         </FormControl>
-                        {currPasswordError !== "" && (
+                        {/* {currPasswordError !== "" && (
                             <p className="login-signup-error mb-0" style={{ color: "red", fontSize: "10px" }}>
                             {currPasswordError}
                             </p>
-                        )}
+                        )} */}
 
                         <FormControl sx={{ m: 1 }} variant="outlined" className="register-form-control">
                                 <InputLabel sx={{fontSize:"13px",mt:"-7px"}} className="inputLabel"htmlFor="outlined-adornment-password">
@@ -261,7 +270,7 @@ const ChangePassword = () => {
                             </p>
                         )}
                         {console.log("aiyooo")}
-                        <button data-testid='register-elem'  className="login-btn signup-btn" id="login-btn" onClick={handleSubmit}>Save</button>
+                        <button data-testid='register-elem' type='submit'  className="login-btn signup-btn" id="login-btn" onClick={handleSubmit}>Save</button>
 
                     </Form>
         </div>
