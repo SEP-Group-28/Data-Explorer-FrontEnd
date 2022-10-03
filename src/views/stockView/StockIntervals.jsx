@@ -24,7 +24,6 @@ function StockIntervals({changeInterval}) {
                    type="button"
                    className="interval-btn"
                    onClick={()=>{handleClick(interval)}}
-                   value={interval}
                  >
                    {interval}
                  </button>
