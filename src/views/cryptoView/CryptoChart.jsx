@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { createChart, CrosshairMode } from "lightweight-charts";
 import { removeDuplicates } from '../../utils/functions'
 import { compare } from '../../utils/functions'
-import { useLocation } from "react-router";
+import {useLocation} from "react-router-dom"
 
 
 
