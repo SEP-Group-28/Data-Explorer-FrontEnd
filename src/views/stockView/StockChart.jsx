@@ -6,13 +6,20 @@ import { useLocation } from 'react-router'
 
 import { compare } from '../../utils/functions'
 
-function StockChart ({ market }) {
+function StockChart ({ market, interval }) {
   const location = useLocation()
+
   try{
     var marketState = location.state.market;
   }catch(error){
-    marketState="tsla";
+    marketState="TSLA";
   }
+    var intervalState = location?.state?.interval || "5m";
+  
+    
+  console.log("Interval state", intervalState)
+  console.log("Interval", interval);
+
   
   const ref = React.useRef()
   const [loading, setLoading] = useState(true)
@@ -81,20 +88,21 @@ function StockChart ({ market }) {
         timeScale: {
           visible: true,
           timeVisible: true,
-          secondsVisible: true
+          // secondsVisible: true
         }
       })
       
 
-      fetch("http://127.0.0.1:5000" + `/stockhistory/${market.toLowerCase() || marketState.toLowerCase()}/5m`)
+      fetch("http://127.0.0.1:5000" + `/stockhistory/${market || marketState}/${interval || intervalState}`)
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
+          // console.log("data is",data)
+          // console.log(data);
           let tempCandlesticks = [];
           let tempTimeLine = [];
           data.forEach((row) => {
             let object = {
-              time: row[0] / 1000,
+              time: row[0]/1000 ,
               open: row[1],
               high: row[2],
               low: row[3],
@@ -112,24 +120,25 @@ function StockChart ({ market }) {
           let tempTimeLineData = chars.filter((c, index) => {
             return chars.indexOf(c) === index;
           });
-
+          console.log("temp data is", tempChartData);
           candleSeries.current.setData(tempChartData);
           setChartData(tempChartData);
           setTempTimeLine(tempTimeLineData);
+
+
+          // function onVisibleTimeRangeChanged(newVisibleTimeRange) {
+          //   setVisibleRange(newVisibleTimeRange);
+          // }
+
+          // chart.current
+          //   .timeScale()
+          //   .subscribeVisibleTimeRangeChange(onVisibleTimeRangeChanged);
+          // chart.current
+          //   .timeScale()
+          //   .setVisibleLogicalRange({ from: 0, to: 150 });
+          // chart.current.timeScale().scrollToPosition(1);
         })
-        // const barsInfo = candleSeries.barsInLogicalRange(
-        //   chart.current.timeScale().getVisibleLogicalRange()
-        // )
-        // console.log(barsInfo)
-        // function onVisibleTimeRangeChanged (newVisibleTimeRange) {
-        //   setVisibleRange(newVisibleTimeRange)
-        // }
-
-        // chart.current
-        //   .timeScale()
-        //   .subscribeVisibleTimeRangeChange(onVisibleTimeRangeChanged)
-
-        .catch();
+          .catch();
 
       return () => {
         chart.current.remove()
@@ -137,7 +146,7 @@ function StockChart ({ market }) {
 
       
     
-  }, [market])
+  }, [market,interval])
 
 
   function getWindowDimension() {
@@ -157,7 +166,7 @@ function StockChart ({ market }) {
     window.addEventListener("resize", handleResize);
     return () =>{ 
       window.removeEventListener("resize", handleResize)
-      chart.current.resize(windowDimensions["width"]*(0.85), 300);
+      chart.current.resize(windowDimensions["width"]*(0.85), 350);
   };
   });
   useEffect(()=>{
