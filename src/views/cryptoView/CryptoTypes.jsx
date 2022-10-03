@@ -49,7 +49,7 @@ function CryptoTypes({changeCryptoType}) {
                     className="type-btn d-flex align-items-center"
                     value={type.substr(0, type.indexOf("/"))}
                     onClick={() => {
-                      handleClick(type);
+                      handleClick(type.substr(0, type.indexOf("/")));
                     }}
                   >
                     <div className="type-btn-inter">
