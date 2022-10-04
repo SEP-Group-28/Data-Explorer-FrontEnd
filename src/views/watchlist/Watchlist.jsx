@@ -7,6 +7,8 @@ import { useEffect } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete'
 import '../../assets/css/watchlist.css'
 import { autocompleteClasses, Container } from '@mui/material';
+import Token from '../../services/Token';
+import WatchlistServices from '../../services/WatchlistServices';
 
 
 // const styles = theme => ({
@@ -34,10 +36,28 @@ const rows = [
 export default function Watchlist() {
   
 
-  const [data, setData] = useState(rows);
+  const [data, setData] = useState([]);
   const handleDelete = (e, id) => {
     setData(data.filter(elem=> elem.id !== id));
   }
+  
+  const [itemArr, setItemArr] = useState([])
+  const userDecode = Token.getAuth()
+  const user_id = userDecode['user_id']
+
+  
+  useEffect(()=>{
+    getWatchlist()
+
+  }, []);
+  const getWatchlist = async() => {
+    const response = await WatchlistServices.viewWatchlist()
+    const data_ = response.data.data
+    if (data_==null)
+      setData([])
+    else
+      setData(data_)
+  };
   
   const columns = [
     { field:'id', hide:true},

@@ -86,13 +86,8 @@ const Profile = () => {
     const [show, setShow] = React.useState(false);
     const handleShow = () => setShow(true);
     const handleClose = () => setShow(false);
-    try {
-        var userDecode = jwtDecode(Token.getAccessToken())
-        console.log(userDecode)
-    } catch (error) {
-        userDecode= null   
-        console.log(error) 
-    }
+    
+    const userDecode = Token.getAuth()
     const id = userDecode['user_id']
     console.log("id:", id)
     const handleSubmit = async() => {
@@ -326,33 +321,33 @@ const Profile = () => {
                         </p>
                     )}
                     {console.log(state['Email'])}
-
-
-                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <Stack >
+                        <FormControl sx={{ m: 1 }} variant="outlined" className="register-form-control">
+                        <InputLabel sx={{fontSize:"13px",mt:"-7px"}} className="inputLabel" htmlFor="outlined-adornment-lastname">
+                        Date
+                        </InputLabel>
+                        <LocalizationProvider dateAdapter={AdapterDayjs} >
                             
                                 <MobileDatePicker
-                                label="Date "
+                                label="Date Pick"
                                 inputFormat="MM/DD/YYYY"
                                 value={state['DOB']? state['DOB']:dayjs('01/01/2004')}
                                 name={'DOB'}
-                                style={{'color':'red'}}
+                                sx={{ backgroundColor:'#0d6efd'}}
                                 onChange={handleDOBChange}
                                 renderInput={(params) => <TextField {...params} />}
                                 />
-                            
-                            </Stack>
                             </LocalizationProvider>
+                        </FormControl>
                             {emailError !== "" && (
                         <p className="login-signup-error mb-0" style={{ color: "red", fontSize: "10px" }}>
                             {dobError}
                         </p>
-                        )
-                    }
+                            )
+                        }
 
 
                     <CountryDropdown
-                            style={{'color':'white','fontSize':'15px','paddingTop':'15px','backgroundColor':'black'}}
+                            style={{color:'#C1C0C0', paddingBottom:'16.5px',paddingLeft:'14px',paddingRight:'14px', backgroundColor:'#30353F', fontSize:"13px", marginTop:"-7px", maxWidth:'98%', marginLeft:'7px'}}
                             value={state['Country']}
                             name={'Country'}
                             onChange={handleCountryChange} />
