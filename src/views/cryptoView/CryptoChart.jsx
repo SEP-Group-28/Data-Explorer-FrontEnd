@@ -25,7 +25,7 @@ function CryptoChart({ market, interval }) {
   useEffect(() => {
     setLoading(true);
     chart.current = createChart(ref.current, {
-      width: 0,
+      width: 1067,
       height: 300,
       layout: {
         backgroundColor: "#393C45",
@@ -57,8 +57,8 @@ function CryptoChart({ market, interval }) {
       timeScale: {
         visible: true,
         timeVisible: true,
-        secondsVisible: true,
-        autoScale: false,
+        secondsVisible: false,
+        // autoScale: true,
         shiftVisibleRangeOnNewBar: false,
       },
       priceScale: {
@@ -77,7 +77,8 @@ function CryptoChart({ market, interval }) {
         let tempTimeLine = [];
         data.data.forEach((row) => {
           let object = {
-            time: row[0] / 1000,
+            // time: Number((row[0]).toString().split('.')[0]),
+            time :row[0],
             open: row[1],
             high: row[2],
             low: row[3],
@@ -104,17 +105,15 @@ function CryptoChart({ market, interval }) {
 
         // candleSeries.current.setData(tempCandlesticks)
         console.log("temp", tempCandlesticks);
-        candleSeries.current.setData(tempChartData);
-        setChartData(tempChartData);
-        setTimeLine(tempTimeLineData);
+        candleSeries.current.setData(tempCandlesticks);
+        // setChartData(tempChartData);
+        // setTimeLine(tempTimeLineData);
       })
       .catch();
 
     let eventSource = new EventSource(
       "http://127.0.0.1:5000/present/" +
-        `${market || marketState}/${
-          interval || intervalState
-        }`
+        `${market || marketState}/${interval || intervalState}`
     );
 
     eventSource.addEventListener(
@@ -125,14 +124,14 @@ function CryptoChart({ market, interval }) {
         // console.log(parsedData)
 
         let object = {
-          time: parsedData[0],
+          time: (parsedData[0]),
           open: parsedData[1],
           high: parsedData[2],
           low: parsedData[3],
           close: parsedData[4],
         };
         candleSeries.current.update(object);
-        console.log(object);
+        console.log(object["time"]);
       },
       false
     );
@@ -143,7 +142,7 @@ function CryptoChart({ market, interval }) {
       setChartData([]);
       setTimeLine([]);
     };
-  }, [market, timeInterval]);
+  }, [market, interval]);
 
   function getWindowDimension() {
     const { innerWidth: width, innerHeight: height } = window;

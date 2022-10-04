@@ -3,7 +3,7 @@ import IndicatorMenuOne from '../../components/indicators/IndicatorMenuOne';
 import IndicatorMenuTwo from '../../components/indicators/IndicatorMenuTwo';
 
 function CryptoIntervals({ changeInterval }) {
-  const intervals = ["1m", "5m", "15m", "1h", "1d"];
+  const intervals = ["1m", "5m", "30m", "1h", "1d"];
 
   const handleClick = (interval) => {
     changeInterval(interval);
