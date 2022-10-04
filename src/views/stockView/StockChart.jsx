@@ -6,24 +6,33 @@ import { useLocation } from 'react-router'
 
 import { compare } from '../../utils/functions'
 
-function StockChart ({ market }) {
+function StockChart ({ market, interval }) {
+
+    function getWindowDimension() {
+      const { innerWidth: width, innerHeight: height } = window;
+      return { width, height };
+    }
+
+    
   const location = useLocation()
+
   try{
     var marketState = location.state.market;
   }catch(error){
-    marketState="tsla";
+    marketState="TSLA";
   }
+    var intervalState = location?.state?.interval || "5m";
   
   const ref = React.useRef()
-  const [loading, setLoading] = useState(true)
-  const [visibleRange, setVisibleRange] = useState({})
+  const [loading, setLoading] = useState(false)
+  // const [visibleRange, setVisibleRange] = useState({})
 
   const [chartData, setChartData] = useState([])
-  const [timeLine,setTempTimeLine]=useState([])
+  // const [timeLine,setTempTimeLine]=useState([])
 
   const chart = useRef()
   const candleSeries = useRef()
-  const [timeStamp,setTimeStamp] = useState(0);
+  // const [timeStamp,setTimeStamp] = useState(0);
 
   const removeDuplicates = arr => {
     const seen = new Set()
@@ -42,10 +51,10 @@ function StockChart ({ market }) {
   // const { ma, sma, ema, wma, bbands } = internalIndicators
 
   useEffect(() => {
-    
+      setLoading(true)
       chart.current = createChart(ref.current, {
-        width: 0,
-        height: 300,
+        width: 1000,
+        height: 350,
         layout: {
           backgroundColor: "#393C45",
           textColor: "rgba(255, 255, 255, 0.9)",
@@ -61,12 +70,7 @@ function StockChart ({ market }) {
         crosshair: {
           mode: CrosshairMode.Normal,
         },
-        // rightPriceScale: {
-        //     borderColor: 'rgba(197, 203, 206, 0.8)',
-        // },
-        // timeScale: {
-        //     borderColor: 'rgba(197, 203, 206, 0.8)',
-        // },
+
       });
       candleSeries.current = chart.current.addCandlestickSeries({
         upColor: "rgba(0,133,48,1)",
@@ -81,88 +85,79 @@ function StockChart ({ market }) {
         timeScale: {
           visible: true,
           timeVisible: true,
-          secondsVisible: true
+          // secondsVisible: true
         }
       })
       
 
-      fetch("http://127.0.0.1:5000" + `/stockhistory/${market.toLowerCase() || marketState.toLowerCase()}/5m`)
+      fetch("http://127.0.0.1:5000" + `/stockhistory/${market || marketState}/${interval || intervalState}`)
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
-          let tempCandlesticks = [];
-          let tempTimeLine = [];
+          let fetchedData = [];
+          // let tempTimeLine = [];
           data.forEach((row) => {
             let object = {
-              time: row[0] / 1000,
+              time: row[0]/1000 ,
               open: row[1],
               high: row[2],
               low: row[3],
               close: row[4],
             };
-            tempCandlesticks.push(object);
-            tempTimeLine.push(object.time);
+            fetchedData.push(object);
+            // tempTimeLine.push(object.time);
           });
+          console.log("Chart data is",chartData);
           let tempChartData = removeDuplicates([
-            ...tempCandlesticks,
+            ...fetchedData,
             ...chartData,
           ]).sort(compare);
 
-          let chars = [...tempTimeLine, ...timeLine];
-          let tempTimeLineData = chars.filter((c, index) => {
-            return chars.indexOf(c) === index;
-          });
-
-          candleSeries.current.setData(tempChartData);
+          // let chars = [...tempTimeLine, ...timeLine];
+          // let tempTimeLineData = chars.filter((c, index) => {
+          //   return chars.indexOf(c) === index;
+          // });
+          // console.log("temp data is", tempChartData);
+          candleSeries.current.setData(fetchedData);
           setChartData(tempChartData);
-          setTempTimeLine(tempTimeLineData);
+          // setTempTimeLine(tempTimeLineData);
+          setLoading(false);
+
+
+          // function onVisibleTimeRangeChanged(newVisibleTimeRange) {
+          //   setVisibleRange(newVisibleTimeRange);
+          // }
+
+          // chart.current
+          //   .timeScale()
+          //   .subscribeVisibleTimeRangeChange(onVisibleTimeRangeChanged);
+          // chart.current
+          //   .timeScale()
+          //   .setVisibleLogicalRange({ from: 0, to: 150 });
+          // chart.current.timeScale().scrollToPosition(1);
         })
-        // const barsInfo = candleSeries.barsInLogicalRange(
-        //   chart.current.timeScale().getVisibleLogicalRange()
-        // )
-        // console.log(barsInfo)
-        // function onVisibleTimeRangeChanged (newVisibleTimeRange) {
-        //   setVisibleRange(newVisibleTimeRange)
-        // }
-
-        // chart.current
-        //   .timeScale()
-        //   .subscribeVisibleTimeRangeChange(onVisibleTimeRangeChanged)
-
-        .catch();
+          .catch();
 
       return () => {
-        chart.current.remove()
+        console.log("returning")
+        chart.current.remove()   
       }
+  }, [market,interval])
 
-      
+  // const [windowDimensions, setWindowDimensions] = useState(getWindowDimension());
+
+
+  // useEffect(() => {
     
-  }, [market])
+  //   function handleResize() {
+  //     setWindowDimensions(getWindowDimension());
+  //   }
 
-
-  function getWindowDimension() {
-    const { innerWidth: width, innerHeight: height } = window;
-    return { width, height };
-  }
-
-  const [windowDimensions, setWindowDimensions] = useState(
-    getWindowDimension()
-  );
-
-  useEffect(() => {
-    function handleResize() {
-      setWindowDimensions(getWindowDimension());
-    }
-
-    window.addEventListener("resize", handleResize);
-    return () =>{ 
-      window.removeEventListener("resize", handleResize)
-      chart.current.resize(windowDimensions["width"]*(0.85), 300);
-  };
-  });
-  useEffect(()=>{
-    
-  })
+  //   window.addEventListener("resize", handleResize);
+  //   return () =>{ 
+  //     window.removeEventListener("resize", handleResize)
+  //     chart.current.resize(windowDimensions["width"]*(0.85), 350);
+  // };
+  // });
 
   // useEffect(() => {
   //   timeStamp !== 0 &&
@@ -172,7 +167,7 @@ function StockChart ({ market }) {
   //     )
   //       .then(res => res.json())
   //       .then(data => {
-  //         let tempCandlesticks = []
+  //         let fetchedData = []
   //         let tempTimeLine = []
   //         data.forEach(row => {
   //           let object = {
@@ -182,11 +177,11 @@ function StockChart ({ market }) {
   //             low: row[3],
   //             close: row[4]
   //           }
-  //           tempCandlesticks.push(object)
+  //           fetchedData.push(object)
   //           tempTimeLine.push(object.time)
   //         })
   //         let tempChartData = removeDuplicates([
-  //           ...tempCandlesticks,
+  //           ...fetchedData,
   //           ...chartData
   //         ]).sort(compare)
 
@@ -198,7 +193,7 @@ function StockChart ({ market }) {
   //         })
 
   //         candleSeries.current.setData(tempChartData)
-  //         // setChartData([...chartData, ...tempCandlesticks])
+  //         // setChartData([...chartData, ...fetchedData])
 
   //         // dispatch(
   //         //   updateChartData({
@@ -211,19 +206,19 @@ function StockChart ({ market }) {
   //       .catch()
   // }, [timeStamp])
 
-  const handleDrag = () => {
-    console.log('api call to load data')
-    console.log(visibleRange.from)
-    if (timeLine[0] === visibleRange.from) {
-      // setTimeStamp(visibleRange.from)
-      setTimeStamp(visibleRange.from)
-    }
-  }
+  // const handleDrag = () => {
+  //   console.log('api call to load data')
+  //   console.log(visibleRange.from)
+  //   if (timeLine[0] === visibleRange.from) {
+  //     // setTimeStamp(visibleRange.from)
+  //     setTimeStamp(visibleRange.from)
+  //   }
+  // }
 
   return (
     <>
-      {/* {loading ? <Loader position="relative" top="40%" left="45%"/> : null} */}
-      <div className='StockChart' ref={ref} onMouseUpCapture={handleDrag} />
+      {loading ? <Loader /> : null}
+      <div className='StockChart' ref={ref}  />
     </>
   )
 }
