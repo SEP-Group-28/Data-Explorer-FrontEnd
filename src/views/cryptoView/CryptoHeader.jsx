@@ -1,9 +1,11 @@
 import React from 'react'
 import { useLocation } from "react-router-dom";
+import WatchlistServices from '../../services/WatchlistServices';
 
 function CryptoHeader({ market, interval }) {
-  const handleClick = () => {
-    console.log("hey");
+  const handleClick = async() => {
+    const response = await WatchlistServices.addMarket({crypto:'BTC/USDT'})
+    console.log(response)
   };
 
   const location = useLocation();
