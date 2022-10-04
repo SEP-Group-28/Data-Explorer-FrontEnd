@@ -53,6 +53,7 @@ export default function Watchlist() {
   const getWatchlist = async() => {
     const response = await WatchlistServices.viewWatchlist()
     const data_ = response.data.data
+    console.log("data of list", data_)
     if (data_==null)
       setData([])
     else
