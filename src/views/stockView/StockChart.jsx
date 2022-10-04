@@ -21,10 +21,10 @@ function StockChart ({ market, interval }) {
   }catch(error){
     marketState="TSLA";
   }
-    var intervalState = location?.state?.interval || "1d";
+    var intervalState = location?.state?.interval || "5m";
   
   const ref = React.useRef()
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   // const [visibleRange, setVisibleRange] = useState({})
 
   const [chartData, setChartData] = useState([])
@@ -51,7 +51,7 @@ function StockChart ({ market, interval }) {
   // const { ma, sma, ema, wma, bbands } = internalIndicators
 
   useEffect(() => {
-    
+      setLoading(true)
       chart.current = createChart(ref.current, {
         width: 1000,
         height: 350,
@@ -120,6 +120,7 @@ function StockChart ({ market, interval }) {
           candleSeries.current.setData(fetchedData);
           setChartData(tempChartData);
           // setTempTimeLine(tempTimeLineData);
+          setLoading(false);
 
 
           // function onVisibleTimeRangeChanged(newVisibleTimeRange) {
@@ -216,7 +217,7 @@ function StockChart ({ market, interval }) {
 
   return (
     <>
-      {/* {loading ? <Loader position="relative" top="40%" left="45%"/> : null} */}
+      {loading ? <Loader /> : null}
       <div className='StockChart' ref={ref}  />
     </>
   )

@@ -53,8 +53,8 @@ function CryptoTypes({changeCryptoType}) {
                     }}
                   >
                     <div className="type-btn-inter">
-                      {/* <img style={{width:"17px",height:"17px"}} src={type=="BTC/USDT"?BitcoinIcon: type=="ETH/USDT"? EthIcon:
-                        type=="SOL/USDT"?SolanIcon : type=="BNB/USDT"? BinanceIcon: type=="AVAX/USDT"?AvaxIcon: type=="TRX/USDT"?TrxIcon:"none"}/> */}
+                      <img style={{width:"17px",height:"17px"}} src={type=="BTC/USDT"?BitcoinIcon: type=="ETH/USDT"? EthIcon:
+                        type=="SOL/USDT"?SolanIcon : type=="BNB/USDT"? BinanceIcon: type=="AVAX/USDT"?AvaxIcon: type=="TRX/USDT"?TrxIcon:"none"}/>
                       <p >{type}</p>
                     </div>
                   </button>
