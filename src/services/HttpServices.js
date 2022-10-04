@@ -23,7 +23,7 @@ axiosInstance.interceptors.request.use(async (req) => {
         req.headers.Authorization = `Bearer ${bearer_token}`
     }
     if (bearer_token) {
-        bearer_token = Token.getAccessToken();
+        // bearer_token = Token.getAccessToken();
 
         const user = await jwtDecode(bearer_token);
         // unix time expired 
@@ -37,8 +37,8 @@ axiosInstance.interceptors.request.use(async (req) => {
         }
 
         try {
-            // refresh token in cookie get the request
-            console.log('aaaa')
+            // refresh token in coockie get the request
+       
             const response = await Axios({
                 method: "get",
                 url: config.DOMAIN_NAME + "/auth/new-token",
