@@ -13,7 +13,7 @@ function Logout() {
     
     try {
       setLoader(true);
-      const response = await AuthServices.logout();
+      // const response = await AuthServices.logout();
       localStorage.clear();
       window.location.href="/login";
 

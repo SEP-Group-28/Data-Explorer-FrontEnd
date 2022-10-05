@@ -107,14 +107,14 @@ const HeaderTwo = ({imagepath}) => {
     e.target.style.background = "none";
    }
 
-  //  try{
-  //     var user=jwtDecode(Token.getAccessToken())
+   try{
+      var user=jwtDecode(Token.getAccessToken())
       
-  //    }
-  //    catch(err){
-  //      user=null
-  //    }
-   const user = true;
+     }
+     catch(err){
+       user=null
+     }
+  //  const user = true;
    
   // for modal
   const [open, setOpen] = React.useState(false);
@@ -195,7 +195,7 @@ const HeaderTwo = ({imagepath}) => {
                         page == "Home"
                           ? "/"
                           : page == "Sign up"
-                          ? "register"
+                          ? "/register"
                           : "/" + page
                       }
                       className="menu-names"
@@ -243,7 +243,7 @@ const HeaderTwo = ({imagepath}) => {
                       page == "Home"
                         ? "/"
                         : page == "Sign up"
-                        ? "register"
+                        ? "/register"
                         : "/" + page
                     }
                     key={page}

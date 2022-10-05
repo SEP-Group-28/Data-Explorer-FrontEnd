@@ -13,10 +13,6 @@ function StockHeader({market,interval}) {
     <div>
       <div className="CryptoHeader crypto-bar stock-header">
         <header>{market || marketState} - <span>{interval || intervalState}</span></header>
-        <div className="d-flex flex-row justify-content-evenly">
-          <p>Volume </p>
-
-        </div>
       </div>
     </div>
   );
