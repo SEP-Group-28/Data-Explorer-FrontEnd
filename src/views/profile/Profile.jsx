@@ -36,6 +36,7 @@ import { useRef } from 'react';
 import { Box } from '@mui/system';
 import Token from "../../services/Token";
 import jwtDecode from "jwt-decode";
+import { ClassNames } from '@emotion/react';
 
 
 const style_ = {
@@ -48,8 +49,8 @@ const style = {
     top: '40%',
     left: '50%',
     width: 800,
-    maxWidth: 'calc(100% - 20px)',
-    transform: 'translate(-50%, -50%)',
+    maxWidth: '80%',
+    transform: 'translate(-60%, -5%)',
     paddingLeft: 0,
     paddingRight:0
     // bgcolor: 'background.paper',
@@ -57,21 +58,37 @@ const style = {
 const style_1 = {
     position: 'relative',
     top: '50%',
-    left: '30%',
     width: 800,
-    maxWidth: 'calc(100% - 20px)',
-    transform: 'translate(-50%, -5%)',
+    maxWidth: '100%',
+    transform: 'translate(0%, -5%)',
     bgcolor: 'background.paper',
+    marginTop: -48,
+    height: '650px'
 };
-const style_2 = {
-    position: 'relative',
-    top: '50%',
-    left: '28%',
-    width: 800,
-    maxWidth: 'calc(100% - 20px)',
-    transform: 'translate(-94%, -5%)',
-    bgcolor: 'background.paper',
-};
+const styles = theme => ({
+    textField: {
+        width: '90%',
+        marginLeft: 'auto',
+        marginRight: 'auto',            
+        paddingBottom: 0,
+        marginTop: 0,
+        fontWeight: 500,
+        color: 'white',
+        backgroundColor: 'blue',
+    },
+    input: {
+        color: 'white'
+    }
+});
+// const style_2 = {
+//     position: 'relative',
+//     top: '50%',
+//     left: '28%',
+//     width: 800,
+//     maxWidth: 'calc(100% - 20px)',
+//     transform: 'translate(-94%, -5%)',
+//     bgcolor: 'background.paper',
+// };
 
 const Profile = () => {
     // const refprofilepicdiv=useRef(null)
@@ -86,13 +103,8 @@ const Profile = () => {
     const [show, setShow] = React.useState(false);
     const handleShow = () => setShow(true);
     const handleClose = () => setShow(false);
-    try {
-        var userDecode = jwtDecode(Token.getAccessToken())
-        console.log(userDecode)
-    } catch (error) {
-        userDecode= null   
-        console.log(error) 
-    }
+    
+    const userDecode = Token.getAuth()
     const id = userDecode['user_id']
     console.log("id:", id)
     const handleSubmit = async() => {
@@ -282,12 +294,12 @@ const Profile = () => {
             <div>
                 {console.log('image',state['ImagePath'])}
                 <HeaderTwo  imagepath={state['ImagePath']}/>
-                <div className='form-container col-xl-5 mt-5 pt-5 mx-auto' style={ !open ? style_1: style_2}>
+                <div className='form-container col-xl-5 mt-5 pt-5 mx-auto' style={ style_1}>
                     
-                    <h1 className='fs-1 text-primary'>Profile Details</h1>
+                    <h1 className='fs-1 text-primary' style={{marginTop:'-40px'}}>Profile Details</h1>
 
             
-                    <div onMouseEnter={()=>setIsShown(true)} onMouseLeave={()=>setIsShown(false)} className="profile-pic-div" style={{position: 'relative', left: '50%', marginTop:'150px'}}>
+                    <div onMouseEnter={()=>setIsShown(true)} onMouseLeave={()=>setIsShown(false)} className="profile-pic-div" style={{position: 'relative', left: '50%', marginTop:'-200px', maxWidth:'50%'}}>
                       <img  src={state['ImagePath']? state['ImagePath']:''} id="photo" className='photo'/>
                       <input onChange={handleChangePhoto} type="file" id="file" className='file'/>
                      {isShown &&(<label    htmlFor="file" id="uploadBtn" className='uploadBtn'>Choose Photo</label>)}
@@ -295,7 +307,7 @@ const Profile = () => {
                     {/* <Helmet>
                     <script type='module' src="src/views/profile/photoUpload.jsx"/>
                     </Helmet> */}
-                    <Form className="register-form container col-xl-10 d-flex flex-column ">
+                    <Form className="register-form container col-xl-10 d-flex flex-column " style={style}>
 
                     <FormControl sx={{ m: 1  }} variant="outlined" className="register-form-control">
                     <InputLabel sx={{fontSize:"13px",mt:"-7px"}} className="inputLabel" htmlFor="outlined-adornment-firstname">
@@ -326,37 +338,48 @@ const Profile = () => {
                         </p>
                     )}
                     {console.log(state['Email'])}
-
-
-                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <Stack >
+                        <FormControl sx={{ m: 1 }} variant="outlined" className="register-form-control">
+                
+                        <LocalizationProvider dateAdapter={AdapterDayjs} style={{backgroundColor:'white'}} >
                             
                                 <MobileDatePicker
-                                label="Date "
+                                label="Date of Birth"
                                 inputFormat="MM/DD/YYYY"
                                 value={state['DOB']? state['DOB']:dayjs('01/01/2004')}
                                 name={'DOB'}
-                                style={{'color':'red'}}
+                                sx={{ backgroundColor:'#0d6efd'}}
                                 onChange={handleDOBChange}
-                                renderInput={(params) => <TextField {...params} />}
+                                renderInput={(params) => <TextField {...params} 
+                                    sx={{
+                                        width: 'auto',
+                                        "& .MuiInputBase-root": {
+                                            height: 40,
+                                        color:'#C1C0C0',
+                                        fontSize:'14px'
+                                        },
+                                        ".css-1sumxir-MuiFormLabel-root-MuiInputLabel-root":{
+                                            color:'#C1C0C0',
+                                            marginTop:'-5px',
+                                            fontSize: '14px'
+                                        }
+                                    }}
+                                    />}
                                 />
-                            
-                            </Stack>
                             </LocalizationProvider>
+                        </FormControl>
                             {emailError !== "" && (
                         <p className="login-signup-error mb-0" style={{ color: "red", fontSize: "10px" }}>
                             {dobError}
                         </p>
-                        )
-                    }
-
+                            )
+                        }
 
                     <CountryDropdown
-                            style={{'color':'white','fontSize':'15px','paddingTop':'15px','backgroundColor':'black'}}
+                            className="register-form-control"
+                            style={{color:'#C1C0C0', paddingTop:"8px", paddingBottom:'8px',paddingLeft:'14px',paddingRight:'14px', backgroundColor:'#30353F', fontSize:"13px", marginTop:"5px", maxWidth:'98%', marginLeft:'7px', marginRight:'8px'}}
                             value={state['Country']}
                             name={'Country'}
                             onChange={handleCountryChange} />
-
 
                     {/* <FormControl sx={{ m: 1 }} variant="outlined" className="register-form-control">
                         <InputLabel sx={{fontSize:"13px",mt:"-7px"}} className="inputLabel" htmlFor="outlined-adornment-Location">
@@ -375,7 +398,7 @@ const Profile = () => {
 
 
                     <Button data-testid='register-elem' className="login-btn signup-btn" id="login-btn" size="lg" onClick={handleSubmit} style={{fontSize:'14px'}}>Save</Button>
-                    <Button data-testid='register-elem' className="login-btn signup-btn" id="login-btn" onClick={handleShow}>Change Password</Button>
+                    <Button data-testid='register-elem' className="login-btn signup-btn" id="login-btn" onClick={handleShow} style={{position:'relative', transform:'translate(0%, -180%)', fontSize:'14px'}}>Change Password</Button>
                     {/* <Button className='btn btn-secondary button w-20 update-btn' size="lg" onClick={handleOpen} style={{fontSize:'14px'}}>Edit</Button> */}
             </Form>
 
@@ -394,7 +417,7 @@ const Profile = () => {
                     aria-labelledby="modal-modal-title"
                     aria-describedby="modal-modal-description"
                     >
-                        <Box style={{maxWidth:'50%', transform:'translate(50%, 30%)'}}>                        
+                        <Box style={{ maxWidth:'50%', transform:'translate(50%, 45%)'}}>                        
                         <ChangePassword sx={{w:'10px'}}/>
                         </Box>
                     </ChangePassModal>

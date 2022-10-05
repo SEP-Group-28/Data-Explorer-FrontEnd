@@ -3,11 +3,14 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import { useLocation } from "react-router-dom";
 import config from "../../config.json"
+import WatchlistServices from '../../services/WatchlistServices';
 
 function CryptoHeader({ market, interval }) {
   const [volume,setVolume] = useState(0)
-  const handleClick = () => {
-    console.log("hey");
+
+  const handleClick = async() => {
+    const response = await WatchlistServices.addMarket({crypto:(market=="") ? marketState+"/USDT" : market+"/USDT"})
+    console.log(response)
   };
   const location = useLocation();
   const marketState = "BTC";

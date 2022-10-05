@@ -190,7 +190,7 @@ const ChangePassword = () => {
     //     }
     //   }
         return (
-            <div style={{ margin:'auto', backgroundColor:'white', marginTop:'15%'}}>
+            <div style={{ margin:'auto', backgroundColor:'#20232B', marginTop:'15%'}}>
 
                 <div className='form-container mt-5 pt-5' style={{ background: 'none'}}>
 
