@@ -4,13 +4,13 @@ import WatchlistServices from '../../services/WatchlistServices';
 
 function CryptoHeader({ market, interval }) {
   const handleClick = async() => {
-    const response = await WatchlistServices.addMarket({crypto:'BTC/USDT'})
+    const response = await WatchlistServices.addMarket({crypto:(market=="") ? marketState+"/USDT" : market+"/USDT"})
     console.log(response)
   };
 
   const location = useLocation();
 
-  const marketState = "BTC/USDT";
+  const marketState = "BTC";
   var intervalState = location?.state?.interval || "1m";
   return (
     <div className="CryptoHeader crypto-bar stock-header">

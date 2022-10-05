@@ -99,7 +99,7 @@ function Login() {
               <InputLabel sx={{fontSize:"13px",mt:"-7px"}} className="inputLabel" htmlFor="outlined-adornment-email">
                 Email
               </InputLabel>
-              <OutlinedInput className="outLineInput" id="outlined-adornment-email" type={"email"}
+              <OutlinedInput data-testid="email" className="outLineInput" id="outlined-adornment-email" type={"email"}
                 style={{ color: "rgb(194, 193, 193)" , fontSize: "13px"}}
                 name="Email" onChange={handleChange} error={emailError != "" && true} label="Password"/>
             </FormControl>
@@ -113,7 +113,7 @@ function Login() {
               <InputLabel sx={{fontSize:"13px",mt:"-7px"}} className="inputLabel"htmlFor="outlined-adornment-password">
                 Password
               </InputLabel>
-              <OutlinedInput className="outLineInput" id="outlined-adornment-password" type={showPassword ? "text" : "password"}
+              <OutlinedInput placeholder="password" className="outLineInput" id="outlined-adornment-password" type={showPassword ? "text" : "password"}
                 style={{ color: "rgb(194, 193, 193)", fontSize: "13px" }}
                 name="Password" onChange={handleChange} error={passwordError != ""}
                 endAdornment={
@@ -132,7 +132,7 @@ function Login() {
               </p>
             )}
 
-            <button type="submit"className="login-btn mb-10" id="login-btn" onClick={handleSubmit} >
+            <button data-testid='login-elem' type="submit"className="login-btn mb-10" id="login-btn" onClick={handleSubmit} >
               Login
             </button>
 
