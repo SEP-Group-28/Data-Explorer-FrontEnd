@@ -31,7 +31,7 @@ const removeMarket = (data) => {
         method: "delete",
         url: APIEndpoint + "/remove-market",
         data: {
-            crypto: data["crypto"]
+            crypto: data
         },
         headers: { Authorization: `Bearer ${token.getAccessToken()}` }
     });

@@ -40,8 +40,36 @@ export default function Watchlist() {
   const [rows, setRows] = useState([]);
   const [eventSources, setEventSources] = useState([])
   const [records, setRecords] = useState(new Map())
-  const handleDelete = (e, id) => {
-    setData(data.filter(elem=> elem.id !== id));
+  const handleDelete = async(e, id, symbol) => {
+    console.log("handle delete ", symbol)
+    const response = await WatchlistServices.removeMarket(symbol)
+    // console.log("symbol", symbol)
+    // // console.log("filter", data.filter(elem=> elem.symbol !== symbol))
+    // const index = data.indexOf(symbol)
+    // console.log("index symbol",index, symbol)
+    // if(index >= 0 ){
+    //   data.splice(index, 1)
+    // }
+    // console.log("data", data)
+    // setData(data);
+    // console.log("data print line 47", data)
+    console.log("response :", response)
+    // setData(response.data.data)
+    // setEventSources([])
+    // records.delete(id)
+    // setRecords(records)
+    // console.log("records :", records)
+    // console.log("before delete",rows)
+    // const index = rows.indexOf(id)
+    // if(index >= 0){
+    //   rows.splice(index, 1)
+    //   setRows(rows)
+    // }
+    // console.log("after delete",rows)
+    let record_ = records
+    record_.delete(symbol)
+    console.log("table records", record_)
+    setRecords(record_)
   }
   
   const [itemArr, setItemArr] = useState([])
@@ -73,7 +101,7 @@ export default function Watchlist() {
             'message',
             function(e){
               let parsedData = JSON.parse(e.data)
-              console.log(parsedData)
+              // console.log(parsedData)
               let object = {
                 id: i,
                 symbol: data[i],
@@ -82,11 +110,12 @@ export default function Watchlist() {
                 low: parseFloat(parsedData[2]).toFixed(4),
                 volume: parseFloat(parsedData[5]).toFixed(4)
               }
-              console.log("Object", object)
+              // console.log("Object", object)
               // setHighVal(parsedData.k.h)
               records.set(data[i], object)
               setRecords(records)
               setformat()
+              // console.log("function call set format")
             }
           )
           eventSources.push(watcheventSource)
@@ -97,10 +126,10 @@ export default function Watchlist() {
 
     return () => {
       if (eventSources.length !== 0) {
-        console.log(eventSources)
+        // console.log(eventSources)
         for (let eventsource of eventSources) {
           eventsource.close()
-          console.log('event source closed')
+          // console.log('event source closed')
         }
         setEventSources([])
       }
@@ -111,16 +140,17 @@ export default function Watchlist() {
   // const handlePresentCrypto=(e,i) =>
   // eth:{id,symbl,price,high,low,volume},bth
   const setformat=()=>{
-    console.log("function call")
+
+    // console.log("function inside : set format")
     const rows=[]
     for (let [key, value] of records){
-      console.log("key value", key, value)
+      // console.log("key value", key, value)
       rows.push(value)
       
     }
-    console.log("rows:", rows)
+    // console.log("rows:", rows)
     setRows(rows)
-    
+    console.log("rows", rows)
   }
   const columns = [
     { field:'id', hide:true},
@@ -140,7 +170,8 @@ export default function Watchlist() {
           color="primary"
           sx= {{pr:3, pl:3, w:'auto'}}
           onClick={(event) =>{
-            handleDelete(event, cellValues.id);
+            console.log("cell values", cellValues)
+            handleDelete(event, cellValues.row.id, cellValues.row.symbol);
           }}
           
           >
@@ -162,18 +193,17 @@ export default function Watchlist() {
   //   )
   // })
   return (
-    data.length <= 0 
+    <div>
+      <HeaderTwo/>
+    {data.length <= 0 
     ? 
     <div >
-    < HeaderTwo /> 
     <h1 align='center' style={{ color:'white', left:'50%', size:'50px',marginTop:"20%"}}>No items to display in your watchlist</h1>
     </div>
     : 
     <div >
-    < HeaderTwo />
     <Container maxWidth="lg">
     <div style={{ height: 400, width: '100%'}}>
-      btc:id
       <DataGrid
         rows={
          rows
@@ -196,6 +226,7 @@ export default function Watchlist() {
       />
       </div>
       </Container>
+    </div>}
     </div>
   )
 }
