@@ -490,6 +490,8 @@ margin-right:40px;
   font-size: 22px;
   color: white;
   margin-left: 15px;
+  border: 1px solid;
+  padding: 1px;
 }
 
 .CryptoHeader p{
@@ -498,6 +500,13 @@ margin-right:40px;
   margin-right: 8px;
   font-size: 20px;
   font-weight: lighter !important;
+  margin-bottom: -4px;
+}
+
+.volume-value{
+  font-size: 13px;
+  color: #b8b9be;
+  margin-left: 15px;
 }
 
 .watchlist-btn{
@@ -557,6 +566,11 @@ margin-right:40px;
   /* background: #2c2f37 !important;  */
   opacity: 0.7;
 }
+
+/* .active-interval{
+  border: 1px solid white;
+  background-color: blue;
+} */
 .interval-btns button{
   margin-left: 10px;
   width: 40px;
