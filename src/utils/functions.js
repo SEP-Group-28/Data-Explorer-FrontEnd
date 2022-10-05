@@ -1,11 +1,19 @@
-export const removeDuplicates = arr => {
-  const seen = new Set()
-  const filteredArr = arr.filter(el => {
-    const duplicate = seen.has(el.time)
-    seen.add(el.time)
-    return !duplicate
+export const removeDuplicates = (arr) => {
+  const uniqueData = []
+
+  const unique = arr.filter(element=>{
+    var time = element.time.toString().split(".")[0];
+    const isDuplicate = uniqueData.includes(time);
+
+    if(!isDuplicate){
+      uniqueData.push(time);
+      return true;
+    }
+    return false
   })
-  return filteredArr
+  console.log("returning non duplicate data list")
+  return unique;
+
 }
 
 export const compare = (a, b) => {
