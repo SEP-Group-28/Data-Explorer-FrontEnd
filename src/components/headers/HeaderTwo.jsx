@@ -36,7 +36,6 @@ const style = {
   transform: 'translate(-50%, -50%)',
   paddingLeft: 0,
   paddingRight:0
-  // bgcolor: 'background.paper',
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -127,8 +126,8 @@ const HeaderTwo = ({imagepath}) => {
   return (
 
 
-    <AppBar className="AppBar">
-      <Container maxWidth="xl">
+    <AppBar className="AppBar" >
+      <Container maxWidth="xl" sx={{backgroundColor:"#20232B"}}>
         <Toolbar className="appbar-toolbar" disableGutters>
           <img
             src={Logo}
