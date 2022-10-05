@@ -65,10 +65,10 @@ const HeaderTwo = ({imagepath}) => {
 
   const[image,setImage]=React.useState(imagepath)
   const classes = useStyles();
-  console.log('allloooo')
-  console.log('IMAGE PATH',imagepath)
+  // console.log('allloooo')
+  // console.log('IMAGE PATH',imagepath)
   useEffect(()=>{
-    console.log('aaaaaaaweeeeeee')
+    // console.log('aaaaaaaweeeeeee')
     setImage(imagepath)
   },[imagepath])
 
@@ -83,20 +83,20 @@ const HeaderTwo = ({imagepath}) => {
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
-  console.log('ssssssssss',imagepath)
+  // console.log('ssssssssss',imagepath)
   const handleCloseNavMenu = (e) => {
     setAnchorElNav(null);
     
   };
 
   const handleCloseUserMenu = () => {
-    console.log('got')
+    // console.log('got')
     setAnchorElUser(null);
   };
 
    const directPage=(e)=>{
     setAnchorElNav(null);
-    console.log("page is",e.target.name);
+    // console.log("page is",e.target.name);
    }
 
    function colorBackground(e) {
@@ -302,7 +302,7 @@ const HeaderTwo = ({imagepath}) => {
               <Box sx={{ flexGrow: 0, marginRight:'5px' }}>
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    {console.log('kkkkk')}
+                    {/* {console.log('kkkkk')} */}
                     <Avatar key={image} alt="Remy Sharp" src={image}/>
                   </IconButton>
                 </Tooltip>
