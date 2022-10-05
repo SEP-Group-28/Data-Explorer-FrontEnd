@@ -22,21 +22,24 @@ import WatchlistServices from '../../services/WatchlistServices';
 //   },
 // });
 
-const rows = [
-  { id: 1, symbol: 'BTCUSD', price: 4343, high: 5554, low: 3544, volume: 456024 },
-  { id: 2, symbol: 'BTCUSD', price: 4344, high: 5554, low: 3544, volume: 456024 },
-  { id: 3, symbol: 'BTCUD', price: 4344, high: 5554, low: 3544, volume: 456024 },
-  { id: 4, symbol: 'BTCSD', price: 43435, high: 5554, low: 3544, volume: 456024 },
-  { id: 5, symbol: 'BTCUSD', price: 43432, high: 5554, low: 3544, volume: 456024 },
-  { id: 6, symbol: 'BTCUSD', price: 43431, high: 5554, low: 3544, volume: 456024 },
-  { id: 7, symbol: 'BTCUSD', price: 434322, high: 5554, low: 3544, volume: 456024 },
-  { id: 8, symbol: 'BTCSD', price: 43431, high: 5554, low: 3544, volume: 456024 },
-  { id: 9, symbol: 'BTCUSD', price: 4343, high: 5554, low: 3544, volume: 456024 }
-]
+// const rows = [
+//   { id: 1, symbol: 'BTCUSD', price: 4343, high: 5554, low: 3544, volume: 456024 },
+//   { id: 2, symbol: 'BTCUSD', price: 4344, high: 5554, low: 3544, volume: 456024 },
+//   { id: 3, symbol: 'BTCUD', price: 4344, high: 5554, low: 3544, volume: 456024 },
+//   { id: 4, symbol: 'BTCSD', price: 43435, high: 5554, low: 3544, volume: 456024 },
+//   { id: 5, symbol: 'BTCUSD', price: 43432, high: 5554, low: 3544, volume: 456024 },
+//   { id: 6, symbol: 'BTCUSD', price: 43431, high: 5554, low: 3544, volume: 456024 },
+//   { id: 7, symbol: 'BTCUSD', price: 434322, high: 5554, low: 3544, volume: 456024 },
+//   { id: 8, symbol: 'BTCSD', price: 43431, high: 5554, low: 3544, volume: 456024 },
+//   { id: 9, symbol: 'BTCUSD', price: 4343, high: 5554, low: 3544, volume: 456024 }
+// ]
 export default function Watchlist() {
   
 
   const [data, setData] = useState([]);
+  const [rows, setRows] = useState([]);
+  const [eventSources, setEventSources] = useState([])
+  const [records, setRecords] = useState(new Map())
   const handleDelete = (e, id) => {
     setData(data.filter(elem=> elem.id !== id));
   }
@@ -59,7 +62,61 @@ export default function Watchlist() {
     else
       setData(data_)
   };
-  
+
+  useEffect(()=>{
+
+    let watcheventSource = null
+    if (data !== null) {
+      for (let i in data) {
+          watcheventSource  = new EventSource( "http://127.0.0.1:5000/present/" + data[i].split('/')[0] + '/1m')
+          watcheventSource.addEventListener(
+            'message',
+            ()=>{handlePresentCrypto(i)}
+          )
+          eventSources.push(watcheventSource)
+          setEventSources(eventSources)
+
+      }
+    }
+
+    return () => {
+      if (eventSources.length !== 0) {
+        console.log(eventSources)
+        for (let eventsource of eventSources) {
+          eventsource.close()
+          console.log('event source closed')
+        }
+        setEventSources([])
+      }
+    }
+
+  },[data])
+
+  const handlePresentCrypto=(e,i) =>{
+    let parsedData = JSON.parse(e.data)
+    let object = {
+      id: i,
+      symbol: data[i],
+      price: parseFloat(parsedData.k.c).toFixed(4),
+      high: parseFloat(parsedData.k.h).toFixed(4),
+      low: parseFloat(parsedData.k.l).toFixed(4),
+      volume: parseFloat(parsedData.k.v).toFixed(4)
+    }
+    setHighVal(parsedData.k.h)
+    records.set(data[i], object)
+    setRecords(records)
+    setformat()
+  }
+  // eth:{id,symbl,price,high,low,volume},bth
+  const setformat=()=>{
+    const rows=[]
+    for (i of records.keys()){
+      rows.push(records[i])
+
+    }
+    setRows(rows)
+    
+  }
   const columns = [
     { field:'id', hide:true},
     { field: 'symbol', headerName: 'Symbol', width: 150, headerAlign:'center', align:'center' },
@@ -111,9 +168,11 @@ export default function Watchlist() {
     < HeaderTwo />
     <Container maxWidth="lg">
     <div style={{ height: 400, width: '100%'}}>
-      
+      btc:id
       <DataGrid
-        rows={data}
+        rows={
+         rows
+        }
         columns={columns}
         pageSize={5}
         rowsPerPageOptions={[5]}
