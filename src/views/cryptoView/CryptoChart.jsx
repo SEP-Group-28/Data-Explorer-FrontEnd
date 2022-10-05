@@ -3,6 +3,8 @@ import { createChart, CrosshairMode } from "lightweight-charts";
 import { removeDuplicates } from '../../utils/functions'
 import { compare } from '../../utils/functions'
 import {useLocation} from "react-router-dom"
+import Loader from "../../components/loader/Loader";
+import config from "../../config.json"
 
 function CryptoChart({ market, interval }) {
   const location = useLocation();
@@ -13,20 +15,18 @@ function CryptoChart({ market, interval }) {
   }
   var intervalState = location?.state?.interval || "1m";
 
-  const [visibleRange, setVisibleRange] = useState({});
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const ref = useRef();
   const chart = useRef();
   const candleSeries = useRef();
 
-  const [timeInterval, setTimeInterval] = useState("1m");
   const [chartData, setChartData] = useState([]);
   const [timeLine, setTimeLine] = useState([]);
   useEffect(() => {
-    setLoading(true);
+    setLoading(true)
     chart.current = createChart(ref.current, {
-      width: 1067,
-      height: 300,
+      width: 0,
+      height: 0,
       layout: {
         backgroundColor: "#393C45",
         textColor: "rgba(255, 255, 255, 0.9)",
@@ -58,8 +58,8 @@ function CryptoChart({ market, interval }) {
         visible: true,
         timeVisible: true,
         secondsVisible: false,
-        // autoScale: true,
-        shiftVisibleRangeOnNewBar: false,
+        autoScale: false,
+        shiftVisibleRangeOnNewBar: true,
       },
       priceScale: {
         autoScale: true,
@@ -67,7 +67,7 @@ function CryptoChart({ market, interval }) {
     });
 
     let newCrypto =
-      "http://127.0.0.1:5000/history/" +
+      config.DOMAIN_NAME+"/history/" +
       `${market || marketState}/${interval || intervalState}`;
 
     fetch(newCrypto)
@@ -77,7 +77,6 @@ function CryptoChart({ market, interval }) {
         let tempTimeLine = [];
         data.data.forEach((row) => {
           let object = {
-            // time: Number((row[0]).toString().split('.')[0]),
             time :row[0],
             open: row[1],
             high: row[2],
@@ -86,54 +85,34 @@ function CryptoChart({ market, interval }) {
           };
           tempTimeLine.push(object.time);
           tempCandlesticks.push(object);
-          // console.log(object)
         });
-        let tempChartData = removeDuplicates([
-          ...tempCandlesticks,
-          ...chartData,
-        ]).sort(compare);
-        // let tempTimeLineData = removeDuplicates([
-        //   ...tempTimeLine,
-        //   ...timeLine
-        // ]).sort(compare)
-        let chars = [...tempTimeLine, ...timeLine];
-        let tempTimeLineData = chars.filter((c, index) => {
-          return chars.indexOf(c) === index;
-        });
+        let tempChartData = removeDuplicates(
+          tempCandlesticks
+        ).sort(compare);
 
-        // console.log(tempTimeLineData)
-
-        // candleSeries.current.setData(tempCandlesticks)
         console.log("temp", tempCandlesticks);
-        candleSeries.current.setData(tempCandlesticks);
-        // setChartData(tempChartData);
-        // setTimeLine(tempTimeLineData);
+        candleSeries.current.setData(tempChartData);
+        setLoading(false);   
+        chart.current.resize(1067, 380);
       })
       .catch();
-
+      console.log(config.DOMAIN_NAME);
     let eventSource = new EventSource(
-      "http://127.0.0.1:5000/present/" +
-        `${market || marketState}/${interval || intervalState}`
+      `${config.DOMAIN_NAME}/present/` +`${market || marketState}/${interval || intervalState}`
     );
-
     eventSource.addEventListener(
       "message",
       function (e) {
         let parsedData = JSON.parse(e.data);
-
-        // console.log(parsedData)
-
         let object = {
-          time: (parsedData[0]),
+          time: parsedData[0],
           open: parsedData[1],
           high: parsedData[2],
           low: parsedData[3],
           close: parsedData[4],
         };
         candleSeries.current.update(object);
-        console.log(object["time"]);
-      },
-      false
+      }
     );
 
     return () => {
@@ -153,19 +132,26 @@ function CryptoChart({ market, interval }) {
     getWindowDimension()
   );
 
-  useEffect(() => {
-    function handleResize() {
-      setWindowDimensions(getWindowDimension());
-    }
+  // useEffect(() => {
+  //   function handleResize() {
+  //     setWindowDimensions(getWindowDimension());
+  //   }
 
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-      chart.current.resize(windowDimensions["width"] * 0.85, 300);
-    };
-  });
+  //   window.addEventListener("resize", handleResize);
+  //   return () => {
+  //     window.removeEventListener("resize", handleResize);
+  //     chart.current.resize(windowDimensions["width"] * 0.85, 380);
+  //   };
+  // });
 
-  return <div className="CryptoChart" ref={ref}></div>;
+  return (
+    <>
+      {loading ? <Loader position="relative" left="46.5%" top="9%" /> : null}
+      <div className="CryptoChart" ref={ref}></div>;
+    </>
+  );
+  
+   
 }
 
 
