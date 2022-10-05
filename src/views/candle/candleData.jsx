@@ -148,4 +148,5 @@ export const marketData=[
 	{ time: '2019-05-22', open: 190.49, high: 192.22, low: 188.05, close: 188.91 },
 	{ time: '2019-05-23', open: 188.45, high: 192.54, low: 186.27, close: 192.00 },
 	{ time: '2019-05-24', open: 192.54, high: 193.86, low: 190.41, close: 193.59 },
+	{ time: '2019-05-24', open: 192.54, high: 193.86, low: 190.41, close: 193.59 },
 ];

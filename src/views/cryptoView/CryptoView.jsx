@@ -29,7 +29,7 @@ function CryptoView() {
       <div className="d-flex flex-row">
         <div className="crypto-charts d-flex flex-column">
           <CryptoHeader market={market} interval={interval} />
-          <CryptoIntervals changeInterval={changeInterval} />
+          <CryptoIntervals changeInterval={changeInterval}  timeInterval={interval}/>
           <CryptoChart market={market} interval={interval} />
         </div>
         <div className="types-crypto">

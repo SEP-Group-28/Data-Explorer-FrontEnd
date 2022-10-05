@@ -6,8 +6,8 @@ function Loader({position,top,left}) {
   return (
     <div className="Loader" style={{position:position,top:top,left:left} }>
       <Audio
-        height="60"
-        width="70"
+        height="70"
+        width="80"
         color="#286AEF"
         ariaLabel="audio-loading"
         wrapperStyle={{}}
