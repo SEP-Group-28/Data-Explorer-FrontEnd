@@ -1,5 +1,5 @@
 import React from 'react'
-import { Navigate } from 'react-router-dom';
+import {useNavigate, Navigate } from 'react-router-dom';
 import Bitcoin from "../../assets/bitcoin.png";
 import Etherium from "../../assets/etherium.png";
 
@@ -7,12 +7,12 @@ import Etherium from "../../assets/etherium.png";
 
 function CryptoSec() {
 
-
+  const navigate = useNavigate();
   return (
     
       <div
         onClick={() => {
-          <Navigate to="/crypto" state={{ market : "BTC"}} />;
+         navigate("/crypto");
         }}
         className="CryptoSec d-flex flex-column"
       >
