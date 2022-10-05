@@ -71,7 +71,23 @@ export default function Watchlist() {
           watcheventSource  = new EventSource( "http://127.0.0.1:5000/present/" + data[i].split('/')[0] + '/1m')
           watcheventSource.addEventListener(
             'message',
-            ()=>{handlePresentCrypto(i)}
+            function(e){
+              let parsedData = JSON.parse(e.data)
+              console.log(parsedData)
+              let object = {
+                id: i,
+                symbol: data[i],
+                price: parseFloat(parsedData[4]).toFixed(4),
+                high: parseFloat(parsedData[3]).toFixed(4),
+                low: parseFloat(parsedData[2]).toFixed(4),
+                volume: parseFloat(parsedData[5]).toFixed(4)
+              }
+              console.log("Object", object)
+              // setHighVal(parsedData.k.h)
+              records.set(data[i], object)
+              setRecords(records)
+              setformat()
+            }
           )
           eventSources.push(watcheventSource)
           setEventSources(eventSources)
@@ -92,28 +108,17 @@ export default function Watchlist() {
 
   },[data])
 
-  const handlePresentCrypto=(e,i) =>{
-    let parsedData = JSON.parse(e.data)
-    let object = {
-      id: i,
-      symbol: data[i],
-      price: parseFloat(parsedData.k.c).toFixed(4),
-      high: parseFloat(parsedData.k.h).toFixed(4),
-      low: parseFloat(parsedData.k.l).toFixed(4),
-      volume: parseFloat(parsedData.k.v).toFixed(4)
-    }
-    setHighVal(parsedData.k.h)
-    records.set(data[i], object)
-    setRecords(records)
-    setformat()
-  }
+  // const handlePresentCrypto=(e,i) =>
   // eth:{id,symbl,price,high,low,volume},bth
   const setformat=()=>{
+    console.log("function call")
     const rows=[]
-    for (i of records.keys()){
-      rows.push(records[i])
-
+    for (let [key, value] of records){
+      console.log("key value", key, value)
+      rows.push(value)
+      
     }
+    console.log("rows:", rows)
     setRows(rows)
     
   }
