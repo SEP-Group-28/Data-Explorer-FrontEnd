@@ -15,6 +15,10 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Loader from "../../components/loader/Loader";
 import jwtDecode from "jwt-decode";
 import Token from "../../services/Token";
+import {GoogleLogin} from 'react-google-login';
+import { dark } from "@mui/material/styles/createPalette";
+
+
 function Login() {
 
   const navigate = useNavigate();
@@ -26,6 +30,17 @@ function Login() {
     Password: "",
   };
 
+  // google login
+  const onSuccess = (res) => {
+    console.log("Login SUCCESS! Current user", res.profileObj);
+    console.log("Response, ", res)
+  }
+  const onFailure = (res) => {
+      console.log("Login FAILED! res:", res);
+  }
+  const client_id = "1061743313688-iokgsqk1gm07khha74tq9evt4k798ucf.apps.googleusercontent.com"
+
+  ////////////////////////////////////////
 
   const [state, setState] = useState(formValues);
   const [emailError, setEmailError] = useState("");
@@ -94,7 +109,7 @@ function Login() {
           style={{ backgroundColor: "rgb(17, 23, 38)" }}
         >
           <header>Welcome</header>
-          <Form className="register-form container col-xl-10 d-flex flex-column ">
+          <Form className=" container col-xl-10 d-flex flex-column ">
             <FormControl sx={{ m: 1 }} variant="outlined" className="register-form-control">
               <InputLabel sx={{fontSize:"13px",mt:"-7px"}} className="inputLabel" htmlFor="outlined-adornment-email">
                 Email
@@ -132,12 +147,22 @@ function Login() {
               </p>
             )}
 
-            <button data-testid='login-elem' type="submit"className="login-btn mb-10" id="login-btn" onClick={handleSubmit} >
+            <button data-testid='login-elem' type="submit" className="login-btn" id="login-btn" onClick={handleSubmit} >
               Login
             </button>
-
+            <div id="googleSignInButton" style={{position:'relative', display:'flex', justifyContent:'center', marginBottom:'25px', marginTop:'-10%'}}>
+              <GoogleLogin
+                  clientId={client_id}
+                  buttonText="Sign in with google"
+                  onSuccess={onSuccess}
+                  onFailure={onFailure}
+                  cookiePolicy={'single_host_origin'}
+                  isSignedIn={true}
+                  theme='dark'
+              />
+            </div>
             <div className=" col-7 align-self-center justify-content-between register-login-footer login-footer">
-              <p style={{ fontSize: "12px" }}>No account?</p>
+              <p style={{ fontSize: "12px", color:'grey' }}>No account?</p>
               <span style={{ fontSize: "12px" }}>{" "}
                 <Link style={{ textDecoration: "none", alignItems: "center" }} to="/register">
                   Signup now{" "}
