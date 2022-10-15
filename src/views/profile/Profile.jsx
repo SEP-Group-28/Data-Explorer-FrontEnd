@@ -38,7 +38,20 @@ import Token from "../../services/Token";
 import jwtDecode from "jwt-decode";
 import { ClassNames } from '@emotion/react';
 
+// const useStyles = makeStyles((theme) => ({
+//   root: {
+//     display: "flex",
+//   },
+//   menu: {
+//     "& .MuiPaper-root": {
+//       backgroundColor: "#292C31",
+//     },
+//   },
 
+//   formControl: {
+//     width: 120,
+//   },
+// }));
 const style_ = {
     // outLineInput:disabled {
     //     background: #dddddd,
@@ -291,7 +304,7 @@ const Profile = () => {
     } else {
 
         return (
-            <div>
+            <div style={{'display':'flex', 'flexDirection': 'column'}}>
                 {console.log('image',state['ImagePath'])}
                 <HeaderTwo  imagepath={state['ImagePath']}/>
                 <div className='form-container col-xl-5 mt-5 pt-5 mx-auto' style={ style_1}>
@@ -300,7 +313,7 @@ const Profile = () => {
 
             
                     <div onMouseEnter={()=>setIsShown(true)} onMouseLeave={()=>setIsShown(false)} className="profile-pic-div" style={{position: 'relative', left: '50%', marginTop:'-200px', maxWidth:'50%'}}>
-                      <img  src={state['ImagePath']? state['ImagePath']:''} id="photo" className='photo'/>
+                      <img  src={state['ImagePath']? state['ImagePath']:'src/assets/DefaultProfilePic/user.jpg'} id="photo" className='photo'/>
                       <input onChange={handleChangePhoto} type="file" id="file" className='file'/>
                      {isShown &&(<label    htmlFor="file" id="uploadBtn" className='uploadBtn'>Choose Photo</label>)}
                     </div>
@@ -396,9 +409,10 @@ const Profile = () => {
                         )
                     }
 
-
-                    <Button data-testid='register-elem' className="login-btn signup-btn" id="login-btn" size="lg" onClick={handleSubmit} style={{fontSize:'14px'}}>Save</Button>
-                    <Button data-testid='register-elem' className="login-btn signup-btn" id="login-btn" onClick={handleShow} style={{position:'relative', transform:'translate(0%, -180%)', fontSize:'14px'}}>Change Password</Button>
+                    <div className='container1'>
+                    <Button data-testid='register-elem' className="button" size="lg" onClick={handleSubmit} style={{fontSize:'14px'}}>Save</Button>
+                    <Button data-testid='register-elem' className="button" size='lg' onClick={handleShow} style={{fontSize:'14px'}}>Change Password</Button>
+                    </div>
                     {/* <Button className='btn btn-secondary button w-20 update-btn' size="lg" onClick={handleOpen} style={{fontSize:'14px'}}>Edit</Button> */}
             </Form>
 
