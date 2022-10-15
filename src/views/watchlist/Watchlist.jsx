@@ -43,16 +43,6 @@ export default function Watchlist() {
   const handleDelete = async(e, id, symbol) => {
     console.log("handle delete ", symbol)
     const response = await WatchlistServices.removeMarket(symbol)
-    // console.log("symbol", symbol)
-    // // console.log("filter", data.filter(elem=> elem.symbol !== symbol))
-    // const index = data.indexOf(symbol)
-    // console.log("index symbol",index, symbol)
-    // if(index >= 0 ){
-    //   data.splice(index, 1)
-    // }
-    // console.log("data", data)
-    // setData(data);
-    // console.log("data print line 47", data)
     console.log("response :", response)
     // setData(response.data.data)
     // setEventSources([])

@@ -35,6 +35,20 @@ const register = (data) => {
     token.setAccessToken(response.data.access_token);
     return response;
   }
+  const googleLogin = async(data)=>{
+
+    const response = await axios({
+      method : "post",
+      url: APIEndpoint + '/google-login',
+      data:{
+        email : data["Email"],
+        password : data["Password"],
+      },
+      withCredentials:true,
+    });
+    token.setAccessToken(response.data.access_token);
+    return response;
+  }
 
   const logout = async (data) => {
     return axios({
