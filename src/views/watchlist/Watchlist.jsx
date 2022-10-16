@@ -9,7 +9,7 @@ import '../../assets/css/watchlist.css'
 import { autocompleteClasses, Container } from '@mui/material';
 import Token from '../../services/Token';
 import WatchlistServices from '../../services/WatchlistServices';
-
+import Loader from '../../components/loader/Loader';
 
 // const styles = theme => ({
 //   activeSortIcon: {
@@ -35,7 +35,7 @@ import WatchlistServices from '../../services/WatchlistServices';
 // ]
 export default function Watchlist() {
   
-
+  const [loader, setLoader] = useState(true);
   const [data, setData] = useState([]);
   const [rows, setRows] = useState([]);
   const [eventSources, setEventSources] = useState([])
@@ -65,8 +65,9 @@ export default function Watchlist() {
   const [itemArr, setItemArr] = useState([])
   const userDecode = Token.getAuth()
   const user_id = userDecode['user_id']
-
   
+  
+
   useEffect(()=>{
     getWatchlist()
 
@@ -82,7 +83,6 @@ export default function Watchlist() {
   };
 
   useEffect(()=>{
-
     let watcheventSource = null
     if (data !== null) {
       for (let i in data) {
@@ -112,6 +112,7 @@ export default function Watchlist() {
           setEventSources(eventSources)
 
       }
+      
     }
 
     return () => {
@@ -141,6 +142,7 @@ export default function Watchlist() {
     // console.log("rows:", rows)
     setRows(rows)
     console.log("rows", rows)
+    setLoader(false)
   }
   const columns = [
     { field:'id', hide:true},
@@ -183,40 +185,45 @@ export default function Watchlist() {
   //   )
   // })
   return (
+    
     <div>
       <HeaderTwo/>
-    {data.length <= 0 
-    ? 
-    <div >
-    <h1 align='center' style={{ color:'white', left:'50%', size:'50px',marginTop:"20%"}}>No items to display in your watchlist</h1>
-    </div>
-    : 
-    <div >
-    <Container maxWidth="lg">
-    <div style={{ height: 400, width: '100%'}}>
-      <DataGrid
-        rows={
-         rows
-        }
-        columns={columns}
-        pageSize={5}
-        rowsPerPageOptions={[5]}
-        disableColumnFilter
-        disableColumnSelector
-        disableColumnMenu
-        sx={{
-          m:2,
-          boxShadow: 2,
-          border: 2,
-          borderColor: 'primary.light',
-          color: 'white',
-          backgroundColor: '#393C45'
-        }
-      }
-      />
+
+      { loader ? 
+        <Loader/>
+      :
+      data.length <= 0 
+      ? 
+      <div >
+      <h1 align='center' style={{ color:'white', left:'50%', size:'50px',marginTop:"20%"}}>No items to display in your watchlist</h1>
       </div>
-      </Container>
-    </div>}
+      : 
+      <div >
+        <Container maxWidth="lg">
+        <div style={{ height: 400, width: '100%'}}>
+          <DataGrid
+            rows={
+            rows
+            }
+            columns={columns}
+            pageSize={5}
+            rowsPerPageOptions={[5]}
+            disableColumnFilter
+            disableColumnSelector
+            disableColumnMenu
+            sx={{
+              m:2,
+              boxShadow: 2,
+              border: 2,
+              borderColor: 'primary.light',
+              color: 'white',
+              backgroundColor: '#393C45'
+            }
+          }
+        />
+        </div>
+        </Container>
+      </div>}
     </div>
   )
 }

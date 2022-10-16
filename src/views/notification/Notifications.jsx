@@ -9,8 +9,9 @@ import CheckIcon from '@mui/icons-material/Check';
 import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import NotificationServices from "../../services/NotificationServices";
 
-const rows = DummyData;
+// const rows = DummyData;
 
 export default function Notifications({increment}){
   // for no new notification alert
@@ -23,6 +24,15 @@ export default function Notifications({increment}){
       setOpen_(false);
       return
     };
+    const callHistoricNotifications = async() => {
+      const rows = await NotificationServices.getNotifications();
+      setData(rows?.data['last 5 days notifications'])
+      console.log("data  notifications:", rows)
+    };
+    useEffect(()=>{
+      callHistoricNotifications();
+    }, [])
+    
     const action = (
       <React.Fragment>
         <IconButton
@@ -36,17 +46,17 @@ export default function Notifications({increment}){
       </React.Fragment>
     );
 
-    const [data, setData] = useState(rows);
+    const [data, setData] = useState([]);
     const handleMark = (e, id) => {
         increment();
-        setData(data.filter(elem=> elem.id !== id));
+        setData(data?.filter(elem=> elem.id !== id));
     }
     const columns = [
         { field:'id', hide:true},
         { field: 'symbol', headerName: 'Symbol', width: 100, headerAlign:'center', align:'center', sortable:false },
-        { field: 'message', headerName: 'Message', width: 200, headerAlign:'center', align:'center', sortable:false },
+        { field: 'type', headerName: 'Message', width: 200, headerAlign:'center', align:'center', sortable:false },
         { field: 'open price', headerName: 'Open Price',type: 'number', width: 120, headerAlign:'center', align:'center', sortable:false },
-        { field: 'current peak', headerName: 'Current Peak',type: 'number', width: 120, headerAlign:'center', align:'center', sortable:false },
+        { field: 'current peak price', headerName: 'Current Peak',type: 'number', width: 120, headerAlign:'center', align:'center', sortable:false },
         {
           field: "Mark As Read",
           sortable: false,
@@ -80,7 +90,8 @@ export default function Notifications({increment}){
         }
     ];
     return (
-        data.length <= 0
+        
+        data && data?.length <= 0
         ? 
           <Snackbar
             sx={{position:'absolute'}}
@@ -97,7 +108,7 @@ export default function Notifications({increment}){
         <div style={{ height: 400, width: '100%'}}>
           
           <DataGrid
-            rows={data}
+            rows={data.map((row)=>row[1])}
             columns={columns}
             pageSize={5}
             rowsPerPageOptions={[5]}
