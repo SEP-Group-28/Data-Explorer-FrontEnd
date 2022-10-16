@@ -24,6 +24,7 @@
     "bootstrap": "^5.2.1",
     "cryptocurrency-icons": "^0.18.1",
     "dayjs": "^1.11.5",
+    "firebase": "^9.12.1",
     "font-awesome-icons": "^1.6.0",
     "gapi-script": "^1.2.0",
     "joi": "^17.6.0",
