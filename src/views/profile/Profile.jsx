@@ -304,7 +304,7 @@ const Profile = () => {
     } else {
 
         return (
-            <div style={{'display':'flex', 'flexDirection': 'column'}}>
+            <div className='container2' style={{'display':'flex', 'flexDirection': 'column'}}>
                 {console.log('image',state['ImagePath'])}
                 <HeaderTwo  imagepath={state['ImagePath']}/>
                 <div className='form-container col-xl-5 mt-5 pt-5 mx-auto' style={ style_1}>
@@ -320,7 +320,7 @@ const Profile = () => {
                     {/* <Helmet>
                     <script type='module' src="src/views/profile/photoUpload.jsx"/>
                     </Helmet> */}
-                    <Form className="register-form container col-xl-10 d-flex flex-column " style={style}>
+                    <Form className="form-group register-form container col-xl-10 d-flex flex-column " style={style}>
 
                     <FormControl sx={{ m: 1  }} variant="outlined" className="register-form-control">
                     <InputLabel sx={{fontSize:"13px",mt:"-7px"}} className="inputLabel" htmlFor="outlined-adornment-firstname">
