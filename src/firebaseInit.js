@@ -20,20 +20,21 @@ const messaging=getMessaging(firebaseApp)
 const publicKey =
 'BAzsYhF6mjX-DQCCb3J8a4d9xretgao7ejLxHbu4DpJXhMMWpiPC6-6QmWW9ElBIhPm56-89TWUZWhpzMKn-BfQ'
 
-export const fetchToken = async (setTokenFound, setFcmToken) => {
+
+export const fetchToken = async (setTokenFound) => {
   let currentToken = ''
 
   try {
-    currentToken = await getToken({ vapidKey: publicKey })
+    currentToken = await getToken(messaging,{ vapidKey: publicKey })
     if (currentToken) {
       setTokenFound(true)
       // dispatch(postFirebaseToken(currentToken))
-      setFcmToken(currentToken)
-      console.log('token', currentToken)
+      // setFcmToken(currentToken)
+      // console.log('token', currentToken)
     } else {
       console.log('No token found')
       setTokenFound(false)
-      setFcmToken('')
+      // setFcmToken('')
     }
     return currentToken
   } catch (error) {
@@ -42,6 +43,8 @@ export const fetchToken = async (setTokenFound, setFcmToken) => {
 
   
 }
+
+
 
 export const onMessageListener = () =>
   new Promise(resolve => {

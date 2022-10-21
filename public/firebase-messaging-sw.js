@@ -1,8 +1,8 @@
 // Scripts for firebase and firebase messaging
 // eslint-disable-next-line no-undef
-importScripts('https://www.gstatic.com/firebasejs/8.2.0/firebase-app.js')
+importScripts('https://www.gstatic.com/firebasejs/9.12.1/firebase-app-compat.js')
 // eslint-disable-next-line no-undef
-importScripts('https://www.gstatic.com/firebasejs/8.2.0/firebase-messaging.js')
+importScripts('https://www.gstatic.com/firebasejs/9.12.1/firebase-messaging-compat.js')
 
 // Initialize the Firebase app in the service worker by passing the generated config
 
@@ -21,6 +21,7 @@ firebase.initializeApp( {
 // Retrieve firebase messaging
 // eslint-disable-next-line no-undef
 const messaging = firebase.messaging()
+
 messaging.onBackgroundMessage(function (payload) {
   console.log('Received background message ', payload)
 
@@ -31,10 +32,10 @@ messaging.onBackgroundMessage(function (payload) {
   }
 
   // eslint-disable-next-line no-restricted-globals
-  self.ServiceWorkerRegistration.showNotification( notificationTitle,
-    notificationOptions)
-  // return self.registration.showNotification(
-  //   notificationTitle,
-  //   notificationOptions
-  // )
+  // self.ServiceWorkerRegistration.showNotification( notificationTitle,
+  //   notificationOptions)
+  return self.registration.showNotification(
+    notificationTitle,
+    notificationOptions
+  )
 })
