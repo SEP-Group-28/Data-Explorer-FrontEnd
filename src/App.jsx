@@ -7,6 +7,8 @@ import { onMessageListener } from "./firebaseInit";
 import ReactNotificationComponent from "./views/notification/ReactNotifications";
 import TokenRequest from "./views/notification/TokenRequest";
 // import { onMessageListener } from "./utils/firebaseInit";
+import {useEffect, useState} from 'react';
+import {onMessageListener} from "./firebaseInit"
 
 const client_id = "1061743313688-iokgsqk1gm07khha74tq9evt4k798ucf.apps.googleusercontent.com"
 
@@ -37,7 +39,7 @@ function App() {
     gapi.load('client:auth2', start)
 
     
-  },[])
+  })
 
   return (
     <div className="App">

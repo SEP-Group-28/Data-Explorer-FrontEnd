@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { useDispatch } from 'react-redux'
 // import { fetchToken } from '../../firebaseInit'
 import { fetchToken } from '../../firebaseInit';
 // import { fetchToken} from './../../utils/firebaseInit';

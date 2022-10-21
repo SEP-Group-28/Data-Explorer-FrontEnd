@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from "react";
 import HeaderTwo from '../../components/headers/HeaderTwo'
 import CryptoHeader from './CryptoHeader';
 import CryptoIntervals from './CryptoIntervals';
@@ -7,21 +7,34 @@ import { useLocation } from 'react-router-dom';
 import CryptoChart from './CryptoChart';
 
 
-
 function CryptoView() {
-  // const location = useLocation();
-  // try {
-  //   var defaultMarket = location.state.market;
-  // } catch (error) {
-  //   defaultMarket = "BTC";
-  // }
   const [market, setMarket] = useState("");
   const [interval, setInterval] = useState("");
-  const changeCryptoType=(marketType)=>{
+  const [internalIndicators, setInternalIndicators] = useState({
+    ma: false,
+    sma: false,
+    ema: false,
+    wma: false,
+    bbands: false,
+  });
+
+  useEffect(() => {
+    setInternalIndicators({
+      ma: false,
+      sma: false,
+      ema: false,
+      wma: false,
+      bbands: false,
+    });
+  }, [market]);
+  const changeCryptoType = (marketType) => {
     setMarket(marketType);
-  }
+  };
   const changeInterval = (interval) => {
     setInterval(interval);
+  };
+  const addInternalIndicators = (indicators) => {
+    setInternalIndicators(indicators);
   };
   return (
     <div className="CryptoView">
@@ -29,8 +42,16 @@ function CryptoView() {
       <div className="d-flex flex-row">
         <div className="crypto-charts d-flex flex-column">
           <CryptoHeader market={market} interval={interval} />
-          <CryptoIntervals changeInterval={changeInterval}  timeInterval={interval}/>
-          <CryptoChart market={market} interval={interval} />
+          <CryptoIntervals
+            changeInterval={changeInterval}
+            timeInterval={interval}
+            addInternalIndicators={addInternalIndicators}
+          />
+          <CryptoChart
+            market={market}
+            interval={interval}
+            internalIndicators={internalIndicators}
+          />
         </div>
         <div className="types-crypto">
           <CryptoTypes changeCryptoType={changeCryptoType} />
