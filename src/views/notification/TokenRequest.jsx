@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 // import { fetchToken } from '../../firebaseInit'
-import { fetchToken} from './../../utils/firebaseInit';
+import { fetchToken } from '../../firebaseInit';
+// import { fetchToken} from './../../utils/firebaseInit';
 
-const Notifications = props => {
+const TokenRequest = props => {
   const [isTokenFound, setTokenFound] = useState(false)
-  const [getFcmToken,setFcmToken]=useState("")
+  // const [getFcmToken,setFcmToken]=useState("")
   // const dispatch = useDispatch()
 
   console.log('Token found', isTokenFound)
@@ -15,19 +16,24 @@ const Notifications = props => {
     let data
 
     async function tokenFunc () {
-      data = await fetchToken(setTokenFound, setFcmToken)
+      data = await fetchToken(setTokenFound)
       if (data) {
         console.log('Token is', data)
       }
       return data
     }
-
-    tokenFunc()
+    Notification.requestPermission().then(function(permission){
+      console.log(permission)
+      if(permission=='granted'){
+        tokenFunc()
+      }
+  })
+    // tokenFunc()
   }, [setTokenFound])
 
   return <></>
 }
 
-Notifications.propTypes = {}
+TokenRequest.propTypes = {}
 
-export default Notifications
+export default TokenRequest
