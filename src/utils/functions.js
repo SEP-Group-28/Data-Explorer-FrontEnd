@@ -11,7 +11,6 @@ export const removeDuplicates = (arr) => {
     }
     return false
   })
-  console.log("returning non duplicate data list")
   return unique;
 
 }
