@@ -5,6 +5,7 @@ import { compare } from '../../utils/functions'
 import {useLocation} from "react-router-dom"
 import Loader from "../../components/loader/Loader";
 import config from "../../config.json"
+import { getMAChart } from "../../components/technicalIndicators/maChart";
 
 function CryptoChart({ market, interval,internalIndicators }) {
   const location = useLocation();
@@ -113,7 +114,7 @@ function CryptoChart({ market, interval,internalIndicators }) {
         chart.current.resize(1067, 380);
       })
       .catch();
-      console.log(config.DOMAIN_NAME);
+
     let eventSource = new EventSource(
       `${config.DOMAIN_NAME}/present/` +`${market || marketState}/${interval || intervalState}`
     );
@@ -138,6 +139,14 @@ function CryptoChart({ market, interval,internalIndicators }) {
         title: "MA",
         color:"blue",
       });
+      maData = getMAChart(
+        `${config.DOMAIN_NAME}/ma/` +
+          `${market || marketState}/${interval || intervalState}`
+      );
+      maLineSeries.setData(maData)
+      console.log(maData);
+      console.log(" ma ma ma ma ")
+      
     }
 
     return () => {
