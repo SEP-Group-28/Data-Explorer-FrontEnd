@@ -36,6 +36,7 @@ function CryptoChart({ market, interval,internalIndicators }) {
   const ref = useRef();
   const chart = useRef();
   const candleSeries = useRef();
+  const lineSeries = useRef();
 
   const [chartData, setChartData] = useState([]);
   const [timeLine, setTimeLine] = useState([]);
@@ -95,7 +96,7 @@ function CryptoChart({ market, interval,internalIndicators }) {
         let tempTimeLine = [];
         data.data.forEach((row) => {
           let object = {
-            time :row[0],
+            time: row[0],
             open: row[1],
             high: row[2],
             low: row[3],
@@ -104,13 +105,10 @@ function CryptoChart({ market, interval,internalIndicators }) {
           tempTimeLine.push(object.time);
           tempCandlesticks.push(object);
         });
-        let tempChartData = removeDuplicates(
-          tempCandlesticks
-        ).sort(compare);
+        let tempChartData = removeDuplicates(tempCandlesticks).sort(compare);
 
-        // console.log("temp", tempCandlesticks);
         candleSeries.current.setData(tempChartData);
-        setLoading(false);   
+        setLoading(false);
         chart.current.resize(1067, 380);
       })
       .catch();
@@ -134,18 +132,40 @@ function CryptoChart({ market, interval,internalIndicators }) {
     );
 
     if(ma){
-      const maLineSeries = chart.current.addLineSeries({
+      lineSeries.current = chart.current.addLineSeries({
         lineWidth: 1,
         title: "MA",
         color:"blue",
       });
-      maData = getMAChart(
-        `${config.DOMAIN_NAME}/ma/` +
-          `${market || marketState}/${interval || intervalState}`
+      getMAChart(
+        `${config.DOMAIN_NAME}/ma/crypto/` +
+          `${market || marketState}/${interval || intervalState}`,
+        lineSeries
       );
-      maLineSeries.setData(maData)
-      console.log(maData);
-      console.log(" ma ma ma ma ")
+      // // console.log(maData);
+      // fetch( `${config.DOMAIN_NAME}/ma/crypto/` +
+      //    `${market || marketState}/${interval || intervalState}`)
+      //   .then((res) => res.json())
+      //   .then((data) => {
+      //     if (!data.hasOwnProperty("error")) {
+      //       let tempLines = [];
+      //       for (let i in data) {
+      //         if (data.hasOwnProperty(i)) {
+                
+      //           let object = {
+      //             time:Number(i) ,
+      //             value: data[i],
+      //           };
+      //           tempLines.push(object);
+      //         }
+      //       }
+      //       console.log(tempLines);
+      //       let tempLineData = removeDuplicates(tempLines);
+      //       console.log(tempLineData);
+      //       lineSeries.current.setData(tempLineData);
+      //     }
+      //   })
+      //   .catch();
       
     }
 

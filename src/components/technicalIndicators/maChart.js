@@ -1,6 +1,7 @@
 import { removeDuplicates } from "../../utils/functions";
 
-export const getMAChart = (url) => {
+export const getMAChart = (url,lineSeries) => {
+    let tempLineData = [];
     fetch(url)
     .then(res => res.json())
     .then(data=>{
@@ -9,15 +10,19 @@ export const getMAChart = (url) => {
             for(let i in data){
                 if(data.hasOwnProperty(i)){
                     let object = {
-                      time: i / 1000,
-                      value: data[key],
+                      time: Number(i),
+                      value: data[i],
                     }
                     tempLines.push(object)
+                    
                 }
             }
+            let tempLineData = removeDuplicates(tempLines);
+            
+            lineSeries.current.setData(tempLineData)
+            
         }
-        let tempLineData = removeDuplicates(tempLines)
-        return tempLineData;
+        
     }).catch()
-    
+    return tempLineData;
 };

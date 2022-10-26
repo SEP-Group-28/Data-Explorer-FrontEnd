@@ -18,15 +18,16 @@ function CryptoView() {
     bbands: false,
   });
 
-  useEffect(() => {
-    setInternalIndicators({
-      ma: false,
-      sma: false,
-      ema: false,
-      wma: false,
-      bbands: false,
-    });
-  }, [market]);
+  // useEffect(() => {
+  //   console.log(market)
+  //   setInternalIndicators({
+  //     ma: false,
+  //     sma: false,
+  //     ema: false,
+  //     wma: false,
+  //     bbands: false,
+  //   });
+  // }, [market]);
   const changeCryptoType = (marketType) => {
     setMarket(marketType);
   };
