@@ -5,7 +5,7 @@ import { compare } from '../../utils/functions'
 import {useLocation} from "react-router-dom"
 import Loader from "../../components/loader/Loader";
 import config from "../../config.json"
-import { getMAChart } from "../../components/technicalIndicators/lineSeries";
+import { getLineChart } from "../../components/technicalIndicators/lineSeries";
 
 function CryptoChart({ market, interval,internalIndicators }) {
   const location = useLocation();
@@ -137,7 +137,7 @@ function CryptoChart({ market, interval,internalIndicators }) {
         title: "MA",
         color:"blue",
       });
-      getMAChart(
+      getLineChart(
         `${config.DOMAIN_NAME}/ma/crypto/` +
           `${market || marketState}/${interval || intervalState}`,
         maLineSeries
@@ -208,6 +208,17 @@ function CryptoChart({ market, interval,internalIndicators }) {
         wmalineSeries
       );
     }
+    if(bbands){
+       const bbandslineSeries = chart.current.addLineSeries({
+        lineWidth: 1,
+        title: "WMA",
+        color: "#C5EC03",
+      });
+      getLineChart(
+        `${config.DOMAIN_NAME}/bbands/crypto/` +
+          `${market || marketState}/${interval || intervalState}`,
+        bbandslineSeries
+      );}
 
     
 
