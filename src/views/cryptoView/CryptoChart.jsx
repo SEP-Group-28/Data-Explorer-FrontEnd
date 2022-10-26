@@ -6,6 +6,7 @@ import {useLocation} from "react-router-dom"
 import Loader from "../../components/loader/Loader";
 import config from "../../config.json"
 import { getLineChart } from "../../components/technicalIndicators/lineSeries";
+import { getBbandsChart } from "../../components/technicalIndicators/bbandsIndicator";
 
 function CryptoChart({ market, interval,internalIndicators }) {
   const location = useLocation();
@@ -81,8 +82,9 @@ function CryptoChart({ market, interval,internalIndicators }) {
         shiftVisibleRangeOnNewBar: true,
       },
       priceScale: {
-        autoScale: true,
+        // autoScale: true,
       },
+    
     });
 
     let newCrypto =
@@ -130,6 +132,11 @@ function CryptoChart({ market, interval,internalIndicators }) {
         candleSeries.current.update(object);
       }
     );
+
+      
+    //  chart.current.timeScale().setVisibleLogicalRange({ from: 100, to: 150 });
+    //  chart.current.timeScale().scrollToPosition(1, true);
+    //  chart.current.timeScale().setVisibleRange(from:);
 
     if(ma){
       const maLineSeries = chart.current.addLineSeries({
@@ -209,17 +216,44 @@ function CryptoChart({ market, interval,internalIndicators }) {
       );
     }
     if(bbands){
-       const bbandslineSeries = chart.current.addLineSeries({
-        lineWidth: 1,
-        title: "WMA",
-        color: "#C5EC03",
-      });
-      getLineChart(
-        `${config.DOMAIN_NAME}/bbands/crypto/` +
-          `${market || marketState}/${interval || intervalState}`,
-        bbandslineSeries
-      );}
+       const bbandUpperSeries = chart.current.addLineSeries({
+        lineWidth : 1,
+        title:"BBAND Upper",
+        color:"purple"
+       })
 
+       const bbandMiddleSeries = chart.current.addLineSeries({
+         lineWidth: 1,
+         title: "BBAND Middle",
+         color: "#C42EE9",
+       });
+
+       const bbandLowerSeries = chart.current.addLineSeries({
+         lineWidth: 1,
+         title: "BBAND Lower",
+         color: "purple",
+       });
+
+       getBbandsChart(
+         `${config.DOMAIN_NAME}/bbands/crypto/` +
+           `${market || marketState}/${interval || intervalState}`,
+         bbandUpperSeries,
+         bbandMiddleSeries,
+         bbandLowerSeries
+       );
+    }
+    console.log("Range", chart.current.timeScale().getVisibleRange());
+    function onVisibleLogicalRangeChanged(newVisibleLogicalRange) {
+      console.log(newVisibleLogicalRange);
+    }
+
+    chart.current
+      .timeScale()
+      .subscribeVisibleLogicalRangeChange(onVisibleLogicalRangeChanged);
+      // chart.current.timeScale().setVisibleLogicalRange({
+      //   from: -5,
+      //   to: 150,
+      // });
     
 
     return () => {

@@ -14,22 +14,22 @@ export const getBbandsChart = (url, upperSeries, middleSeries, lowerSeries) => {
             for (let key in upperBandObject){
                 if(upperBandObject.hasOwnProperty(key)){
                     let object = {
-                      time: key,
+                      time: Number(key),
                       value: upperBandObject[key],
                     };
                     upper.push(object);
                 }
                 if(lowerBandObject.hasOwnProperty(key)){
                     let object = {
-                        time : key,
-                        value: lowerBandObject[key]
-                    }
+                      time: Number(key),
+                      value: lowerBandObject[key],
+                    };
                     lower.push(object)
                 }
                 if (middleBandObject.hasOwnProperty(key)) {
                     let object = {
-                        time: key,
-                        value: middleBandObject[key],
+                      time: Number(key),
+                      value: middleBandObject[key],
                     };
                     middle.push(object);
                 }
