@@ -132,7 +132,7 @@ function CryptoChart({ market, interval,internalIndicators }) {
     );
 
     if(ma){
-      lineSeries.current = chart.current.addLineSeries({
+      const maLineSeries = chart.current.addLineSeries({
         lineWidth: 1,
         title: "MA",
         color:"blue",
@@ -140,8 +140,10 @@ function CryptoChart({ market, interval,internalIndicators }) {
       getMAChart(
         `${config.DOMAIN_NAME}/ma/crypto/` +
           `${market || marketState}/${interval || intervalState}`,
-        lineSeries
+        maLineSeries
       );
+
+      
       // // console.log(maData);
       // fetch( `${config.DOMAIN_NAME}/ma/crypto/` +
       //    `${market || marketState}/${interval || intervalState}`)
@@ -167,6 +169,18 @@ function CryptoChart({ market, interval,internalIndicators }) {
       //   })
       //   .catch();
       
+    }
+    if (sma) {
+      const smalineSeries = chart.current.addLineSeries({
+        lineWidth: 1,
+        title: "SMA",
+        color: "red",
+      });
+      getMAChart(
+        `${config.DOMAIN_NAME}/sma/crypto/` +
+          `${market || marketState}/${interval || intervalState}`,
+        smalineSeries
+      );
     }
 
     return () => {

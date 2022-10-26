@@ -17,9 +17,10 @@ export const getMAChart = (url,lineSeries) => {
                     
                 }
             }
+            console.log(tempLines)
             let tempLineData = removeDuplicates(tempLines);
             
-            lineSeries.current.setData(tempLineData)
+            lineSeries.setData(tempLineData)
             
         }
         
