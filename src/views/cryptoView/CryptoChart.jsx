@@ -196,6 +196,19 @@ function CryptoChart({ market, interval,internalIndicators }) {
       );
     }
 
+    if (wma) {
+      const wmalineSeries = chart.current.addLineSeries({
+        lineWidth: 1,
+        title: "WMA",
+        color: "#C5EC03",
+      });
+      getMAChart(
+        `${config.DOMAIN_NAME}/wma/crypto/` +
+          `${market || marketState}/${interval || intervalState}`,
+        wmalineSeries
+      );
+    }
+
     return () => {
       chart.current.remove();
       eventSource.close();
