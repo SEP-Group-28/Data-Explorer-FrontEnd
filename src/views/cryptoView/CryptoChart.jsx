@@ -5,7 +5,7 @@ import { compare } from '../../utils/functions'
 import {useLocation} from "react-router-dom"
 import Loader from "../../components/loader/Loader";
 import config from "../../config.json"
-import { getMAChart } from "../../components/technicalIndicators/maChart";
+import { getMAChart } from "../../components/technicalIndicators/lineSeries";
 
 function CryptoChart({ market, interval,internalIndicators }) {
   const location = useLocation();
@@ -176,7 +176,7 @@ function CryptoChart({ market, interval,internalIndicators }) {
         title: "SMA",
         color: "red",
       });
-      getMAChart(
+      getLineChart(
         `${config.DOMAIN_NAME}/sma/crypto/` +
           `${market || marketState}/${interval || intervalState}`,
         smalineSeries
@@ -189,7 +189,7 @@ function CryptoChart({ market, interval,internalIndicators }) {
         title: "EMA",
         color: "#0397EC",
       });
-      getMAChart(
+      getLineChart(
         `${config.DOMAIN_NAME}/ema/crypto/` +
           `${market || marketState}/${interval || intervalState}`,
         emalineSeries
@@ -202,12 +202,14 @@ function CryptoChart({ market, interval,internalIndicators }) {
         title: "WMA",
         color: "#C5EC03",
       });
-      getMAChart(
+      getLineChart(
         `${config.DOMAIN_NAME}/wma/crypto/` +
           `${market || marketState}/${interval || intervalState}`,
         wmalineSeries
       );
     }
+
+    
 
     return () => {
       chart.current.remove();
