@@ -15,6 +15,7 @@ import Watchlist from "../views/watchlist/Watchlist";
 import AllUsers from './../views/all_users/AllUsers';
 import Navigator from "./Navigator";
 import Logout from "../utils/Logout";
+import TokenRequest from './../views/notification/TokenRequest';
 
 function Router() {
 
@@ -42,6 +43,7 @@ function Router() {
         <Route path="/profile" element={<RequireAuth allowedRoles={[ROLES.User]}><Profile /></RequireAuth>} />
         <Route path="/updateProfile" element={<RequireAuth allowedRoles={[ROLES.User]}><UpdateProfile /></RequireAuth>} />
         <Route path="/watchlist" element={<RequireAuth allowedRoles={[ROLES.User]}><Watchlist /></RequireAuth>} />
+        {/* <Route path="/notification" element={<TokenRequest/>}></Route> */}
       </Routes>
     </BrowserRouter>
   );

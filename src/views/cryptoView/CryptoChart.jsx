@@ -5,8 +5,9 @@ import { compare } from '../../utils/functions'
 import {useLocation} from "react-router-dom"
 import Loader from "../../components/loader/Loader";
 import config from "../../config.json"
+import { getMAChart } from "../../components/technicalIndicators/maChart";
 
-function CryptoChart({ market, interval }) {
+function CryptoChart({ market, interval,internalIndicators }) {
   const location = useLocation();
   try {
     var marketState = location.state.market;
@@ -15,6 +16,22 @@ function CryptoChart({ market, interval }) {
   }
   var intervalState = location?.state?.interval || "1m";
 
+  const [internalIndicatorState,setInternalIndicatorState] =useState(internalIndicators);
+  
+  // useEffect(() => {
+  //   setInternalIndicatorState({
+  //     ma: false,
+  //     sma: false,
+  //     ema: false,
+  //     wma: false,
+  //     bbands: false,
+  //   });
+  // }, [market]);
+
+
+  const { ma, sma, ema, wma, bbands } = internalIndicators;
+  
+
   const [loading, setLoading] = useState(false);
   const ref = useRef();
   const chart = useRef();
@@ -22,6 +39,7 @@ function CryptoChart({ market, interval }) {
 
   const [chartData, setChartData] = useState([]);
   const [timeLine, setTimeLine] = useState([]);
+  
   useEffect(() => {
     setLoading(true)
     chart.current = createChart(ref.current, {
@@ -90,13 +108,13 @@ function CryptoChart({ market, interval }) {
           tempCandlesticks
         ).sort(compare);
 
-        console.log("temp", tempCandlesticks);
+        // console.log("temp", tempCandlesticks);
         candleSeries.current.setData(tempChartData);
         setLoading(false);   
         chart.current.resize(1067, 380);
       })
       .catch();
-      console.log(config.DOMAIN_NAME);
+
     let eventSource = new EventSource(
       `${config.DOMAIN_NAME}/present/` +`${market || marketState}/${interval || intervalState}`
     );
@@ -115,13 +133,29 @@ function CryptoChart({ market, interval }) {
       }
     );
 
+    if(ma){
+      const maLineSeries = chart.current.addLineSeries({
+        lineWidth: 1,
+        title: "MA",
+        color:"blue",
+      });
+      maData = getMAChart(
+        `${config.DOMAIN_NAME}/ma/` +
+          `${market || marketState}/${interval || intervalState}`
+      );
+      maLineSeries.setData(maData)
+      console.log(maData);
+      console.log(" ma ma ma ma ")
+      
+    }
+
     return () => {
       chart.current.remove();
       eventSource.close();
       setChartData([]);
       setTimeLine([]);
     };
-  }, [market, interval]);
+  }, [market, interval,internalIndicators]);
 
   function getWindowDimension() {
     const { innerWidth: width, innerHeight: height } = window;

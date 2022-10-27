@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useState } from "react";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -38,9 +38,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const IndicatorMenuOne = () => {
-  const [anchorEl, setAnchorEl] = React.useState();
-  const [indicators, setIndicators] = React.useState({
+const IndicatorMenuOne = ({ displayInternalIndicators }) => {
+  const [anchorEl, setAnchorEl] = useState();
+  const [indicators, setIndicators] = useState({
     ma: false,
     sma: false,
     ema: false,
@@ -48,35 +48,34 @@ const IndicatorMenuOne = () => {
     bbands: false,
   });
 
+  const { ma, sma, ema, wma, bbands } = indicators;
+
   const classes = useStyles();
 
   const handleChange = (event) => {
     setIndicators({ ...indicators, [event.target.name]: event.target.checked });
   };
 
-  const { ma, sma, ema, wma, bbands } = indicators;
-
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-   const handleClose = () => {
-    setAnchorEl(null)
-   }
+  const handleClose = () => {
+    setAnchorEl(null);
+    displayInternalIndicators(indicators);
+  };
+
+  
 
   return (
     <div data-testid="internalSelect" className="indicator-select-btn">
-      <button className="indicator-img-btn"
+      <button
+        className="indicator-img-btn"
         aria-controls="simple-menu"
         aria-haspopup="true"
         onClick={handleClick}
-        
       >
-        <img
-          
-          src={candleStick}
-          alt="candleStick"
-        />
+        <img src={candleStick} alt="candleStick" />
       </button>
       <Menu
         id="simple-menu"
@@ -89,13 +88,21 @@ const IndicatorMenuOne = () => {
         <MenuItem className={classes.menuItem}>
           <FormControl component="fieldset" className={classes.formControl}>
             <FormLabel
-              style={{transform: "scale(0.94)", marginBottom: 8, color: "#286AEF", fontWeight: "bold",marginLeft:-13,marginTop:-10 }}
+              style={{
+                transform: "scale(0.94)",
+                marginBottom: 8,
+                color: "#286AEF",
+                fontWeight: "bold",
+                marginLeft: -13,
+                marginTop: -10,
+              }}
               component="legend"
             >
               Select Indicators
             </FormLabel>
             <FormGroup>
-              <FormControlLabel className={classes.controlLabel}
+              <FormControlLabel
+                className={classes.controlLabel}
                 control={
                   <Checkbox
                     className={classes.checkbox}
@@ -107,10 +114,11 @@ const IndicatorMenuOne = () => {
                 }
                 label="MA"
               />
-              <FormControlLabel className={classes.controlLabel}
+              <FormControlLabel
+                className={classes.controlLabel}
                 control={
                   <Checkbox
-                  className={classes.checkbox}
+                    className={classes.checkbox}
                     style={{ color: "white" }}
                     checked={sma}
                     onChange={handleChange}
@@ -119,10 +127,11 @@ const IndicatorMenuOne = () => {
                 }
                 label="SMA"
               />
-              <FormControlLabel className={classes.controlLabel}
+              <FormControlLabel
+                className={classes.controlLabel}
                 control={
                   <Checkbox
-                  className={classes.checkbox}
+                    className={classes.checkbox}
                     style={{ color: "white" }}
                     checked={ema}
                     onChange={handleChange}
@@ -132,10 +141,11 @@ const IndicatorMenuOne = () => {
                 label="EMA"
               />
 
-              <FormControlLabel className={classes.controlLabel}
+              <FormControlLabel
+                className={classes.controlLabel}
                 control={
                   <Checkbox
-                  className={classes.checkbox}
+                    className={classes.checkbox}
                     style={{ color: "white" }}
                     checked={wma}
                     onChange={handleChange}
@@ -145,10 +155,11 @@ const IndicatorMenuOne = () => {
                 label="WMA"
               />
 
-              <FormControlLabel className={classes.controlLabel}
+              <FormControlLabel
+                className={classes.controlLabel}
                 control={
                   <Checkbox
-                  className={classes.checkbox}
+                    className={classes.checkbox}
                     style={{ color: "white" }}
                     checked={bbands}
                     onChange={handleChange}
