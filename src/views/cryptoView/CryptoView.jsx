@@ -5,7 +5,10 @@ import CryptoIntervals from './CryptoIntervals';
 import CryptoTypes from './CryptoTypes';
 import { useLocation } from 'react-router-dom';
 import CryptoChart from './CryptoChart';
-
+import AccessAlarmsIcon from '@mui/icons-material/AccessAlarms';
+import Badge from '@mui/material/Badge';
+import Alert from '../alert/Alert';
+import Box from "@mui/material/Box";
 
 function CryptoView() {
   const [market, setMarket] = useState("");
@@ -33,6 +36,19 @@ function CryptoView() {
   const changeInterval = (interval) => {
     setInterval(interval);
   };
+  // for alert
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  // getting user
+  try {
+    var user = jwtDecode(Token.getAccessToken());
+  } catch (err) {
+    user = null;
+  }
+  
+  user = true
   const addInternalIndicators = (indicators) => {
     setInternalIndicators(indicators);
   };
@@ -56,6 +72,19 @@ function CryptoView() {
         <div className="types-crypto">
           <CryptoTypes changeCryptoType={changeCryptoType} />
         </div>
+        {/* alert button */}
+        {/* TODO: 
+        fix css of the alert button */}
+        { user &&
+          <Box>
+            <AccessAlarmsIcon sx={{color:'white', transform:'scale(2)'}} onClick={handleOpen}
+            />
+            <Alert
+              open={open}
+              onClose={handleClose}
+            />
+          </Box>
+        }
       </div>
     </div>
   );
