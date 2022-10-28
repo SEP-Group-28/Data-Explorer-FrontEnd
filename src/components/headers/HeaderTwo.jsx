@@ -107,14 +107,14 @@ const HeaderTwo = ({imagepath}) => {
     e.target.style.background = "none";
    }
 
-  //  try{
-  //     var user=jwtDecode(Token.getAccessToken())
+   try{
+      var user=jwtDecode(Token.getAccessToken())
       
-  //    }
-  //    catch(err){
-  //      user=null
-  //    }
-    const user = false;
+     }
+     catch(err){
+       user=null
+     }
+    // const user = false;
    
   // for modal
   const [open, setOpen] = React.useState(false);
