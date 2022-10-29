@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React</title>
+    <title>Crypsto|x|plorer</title>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
   </head>
@@ -12,5 +12,17 @@
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
     <!-- <script type='module' src="/src/views/profile/photoUpload.jsx"></script> -->
+    <script>
+      if('serviceWorker' in navigator){
+        window.addEventListener('load',()=>{
+          
+          navigator.serviceWorker.register(`${process.env.PUBLIC_URL}/serviceWorker.js`).then((resp)=>{
+            console.log("Worker Registered",resp)
+          }).catch((err)=>{
+            console.log('Error in service worker',err)
+          })
+        })
+      }
+    </script>
   </body>
 </html>
