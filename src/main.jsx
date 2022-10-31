@@ -4,6 +4,7 @@ import App from "./App";
 import "./index.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap"
+import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 
 import "react-bootstrap/dist/react-bootstrap.min";
 import { BrowserRouter } from "react-router-dom";
@@ -13,3 +14,4 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <App />
   // </React.StrictMode>
 );
+serviceWorkerRegistration.register();
