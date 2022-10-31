@@ -586,6 +586,22 @@ margin-right:40px;
 /* .indicato-list-names{
   font-size: 15px;
 } */
+.alertForm{
+  background-color:#20232B;
+  color: #C2C1C1;
+}
+.Alerts{
+  /* box-shadow: 5px 4px 5px 1px rgba(0, 0, 0, 0.8); */
+  /* margin-top: 120px; */
+  height: 300px;
+  overflow-y: scroll;
+  width: 365px;
+}
+
+.Alerts Table{
+  width: 100px;
+  font-size: 15px;
+}
 
 .CryptoTypes{
   background-color: #393C45;
@@ -593,13 +609,10 @@ margin-right:40px;
   margin-top: 120px;
   height: 275px;
   overflow-y: scroll;
-
 }
 .CryptoTypes Table{
   width: 100px;
   font-size: 15px;
-
-  
 }
 .type-btn{
   width: 100%;

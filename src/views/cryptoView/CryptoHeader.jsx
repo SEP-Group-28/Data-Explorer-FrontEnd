@@ -64,7 +64,7 @@ function CryptoHeader({ market, interval }) {
                 open={open}
                 onClose={handleClose}
                 market={market || marketState}
-                interval={location?.state?.interval || "1m"}
+                // interval={location?.state?.interval || "1m"}
               />
             </AlertModal>
           </div>

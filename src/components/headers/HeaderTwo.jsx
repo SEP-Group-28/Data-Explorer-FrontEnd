@@ -26,6 +26,7 @@ import DummyData from "../../views/notification/notificationDummyData.json"
 import Snackbar from '@mui/material/Snackbar';
 import CloseIcon from '@mui/icons-material/Close';
 import { useEffect } from "react";
+import TokenRequest from "../../views/notification/TokenRequest";
 
 const style = {
   position: 'relative',
@@ -337,6 +338,7 @@ const HeaderTwo = ({imagepath}) => {
                 </Menu>
               </Box>
             )}
+            {/* {user && <TokenRequest/>} */}
           </div>
         </Toolbar>
       </Container>
