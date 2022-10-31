@@ -1,6 +1,7 @@
 import AuthServices from "../services/AuthServices";
 import { useEffect,useState } from "react";
 import Loader from "../components/loader/Loader";
+import AlertServices from "../services/AlertServices";
 
 function Logout() {
 
@@ -14,6 +15,7 @@ function Logout() {
     try {
       setLoader(true);
       // const response = await AuthServices.logout();
+      const response = await AlertServices.removeToken();
       localStorage.clear();
       window.location.href="/login";
 

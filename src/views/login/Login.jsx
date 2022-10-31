@@ -17,6 +17,9 @@ import jwtDecode from "jwt-decode";
 import Token from "../../services/Token";
 import {GoogleLogin} from 'react-google-login';
 import { dark } from "@mui/material/styles/createPalette";
+import { fetchToken } from '../../firebaseInit';
+import AlertServices from '../../services/AlertServices';
+// import TokenRequest from "../notification/TokenRequest";
 
 
 function Login() {
@@ -43,13 +46,14 @@ function Login() {
   ////////////////////////////////////////
 
   const [state, setState] = useState(formValues);
+  // const [bool, setBool] = useState(false)
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
-
+  const [token, setToken] = useState(null)
   const [showPassword, setShowPassword] = useState(false);
 
   const [loader, setLoader] = useState(false);
-
+  const [isTokenFound, setTokenFound] = useState(false)
   const togglePassword = () => {
     setShowPassword(!showPassword);
   };
@@ -76,10 +80,41 @@ function Login() {
       try {
         const response = await AuthServices.login(state);
         console.log(" response is", response);
+        // check for 200
+        if (response.status == 200){
+          
+          // const [getFcmToken,setFcmToken]=useState("")
+          // const dispatch = useDispatch()
+
+          console.log('Token found', isTokenFound)
+
+          // To load once
+            let data
+
+            async function tokenFunc () {
+              data = await fetchToken(setTokenFound)
+              if (data) {
+                console.log('Token is', data)
+                const response = await AlertServices.addToken(data)
+                console.log("token list is, ", response)
+              }
+              return data
+            }
+            Notification.requestPermission().then(function(permission){
+              console.log(permission)
+              if(permission=='granted'){
+                tokenFunc()
+              }
+          })
+
+        }
+        console.log("logging in...");
         try {
           console.log(jwtDecode(Token.getAccessToken()));
+          // <TokenRequest/>
+          // setBool(true)
         } catch (error) {
-          
+          console.log("error is ", error)
         }
         
 
