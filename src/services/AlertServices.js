@@ -50,7 +50,7 @@ const addToken = (token_) => {
 
 const removeToken = (token_) => {
     return axios({
-        method: 'post',
+        method: 'delete',
         url: APIEndpoint + `/alert/remove-token/${token_}`,
         headers: { Authorization: `Bearer ${token.getAccessToken()}` }
     });

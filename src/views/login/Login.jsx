@@ -19,6 +19,8 @@ import {GoogleLogin} from 'react-google-login';
 import { dark } from "@mui/material/styles/createPalette";
 import { fetchToken } from '../../firebaseInit';
 import AlertServices from '../../services/AlertServices';
+import { useDispatch, useSelector } from "react-redux";
+import { save } from "../../redux/alert";
 // import TokenRequest from "../notification/TokenRequest";
 
 
@@ -49,7 +51,6 @@ function Login() {
   // const [bool, setBool] = useState(false)
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
-  const [token, setToken] = useState(null)
   const [showPassword, setShowPassword] = useState(false);
 
   const [loader, setLoader] = useState(false);
@@ -57,6 +58,10 @@ function Login() {
   const togglePassword = () => {
     setShowPassword(!showPassword);
   };
+  // redux for token
+  let {token} = useSelector((state)=>state.alert)
+  const dispatch = useDispatch()
+
   const handleChange = (e) => {
     setState({
       ...state,
@@ -89,16 +94,17 @@ function Login() {
           console.log('Token found', isTokenFound)
 
           // To load once
-            let data
+            
 
             async function tokenFunc () {
-              data = await fetchToken(setTokenFound)
-              if (data) {
-                console.log('Token is', data)
-                const response = await AlertServices.addToken(data)
+              token = await fetchToken(setTokenFound)
+              if (token) {
+                console.log('Token is', token)
+                const response = await AlertServices.addToken(token)
                 console.log("token list is, ", response)
               }
-              return data
+              dispatch(save(token))
+              return token
             }
             Notification.requestPermission().then(function(permission){
               console.log(permission)
