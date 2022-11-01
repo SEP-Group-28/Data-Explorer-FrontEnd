@@ -257,7 +257,7 @@ const Profile = () => {
                             const response =await UserServices.updatePhoto(id,formData);
                             if(response.status===200){
                                 console.log('success')
-                                console.log(response[imagepath])
+                                console.log(response)
                                 // dispatch(save(formData[]))
                             }
                             // imageref.current.getElementById('hi').setAttribute('src',reader.result)
