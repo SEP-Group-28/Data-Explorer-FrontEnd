@@ -27,6 +27,7 @@ import Snackbar from '@mui/material/Snackbar';
 import CloseIcon from '@mui/icons-material/Close';
 import { useEffect } from "react";
 import TokenRequest from "../../views/notification/TokenRequest";
+import { useSelector } from "react-redux";
 
 const style = {
   position: 'relative',
@@ -58,20 +59,22 @@ const useStyles = makeStyles((theme) => ({
 const userPages = ["Home", "Stock", "Crypto"];
 const pages = [...userPages, "Login","Sign up"];
 const settings = ["Profile", "Watchlist", "Logout"];
-const HeaderTwo = ({imagepath}) => {
+const HeaderTwo = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   
   var [count, setCount] = React.useState(0);
 
-  const[image,setImage]=React.useState(imagepath)
+  const {link} = useSelector((state)=>state.profile)
+  console.log("link", link)
+  // const[image,setImage]=React.useState(imagepath)
   const classes = useStyles();
   // console.log('allloooo')
   // console.log('IMAGE PATH',imagepath)
-  useEffect(()=>{
-    // console.log('aaaaaaaweeeeeee')
-    setImage(imagepath)
-  },[imagepath])
+  // useEffect(()=>{
+  //   // console.log('aaaaaaaweeeeeee')
+  //   setImage(imagepath)
+  // },[imagepath])
 
   const increment = () =>{
     count = count+1
@@ -304,7 +307,7 @@ const HeaderTwo = ({imagepath}) => {
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                     {/* {console.log('kkkkk')} */}
-                    <Avatar key={image} alt="Remy Sharp" src={image}/>
+                    <Avatar key={link} alt="Remy Sharp" src={link}/>
                   </IconButton>
                 </Tooltip>
                 <Menu
