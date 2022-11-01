@@ -18,7 +18,7 @@ import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
 import Form from 'react-bootstrap/Form';
 
-export default function Alert({market, interval}) {
+export default function Alert({market}) {
     // popover
     const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -35,8 +35,10 @@ export default function Alert({market, interval}) {
     const id = open ? 'simple-popover' : undefined;
 
     // handling removing alerts
-    const handleRemove = () => {
-      const response = AlertServices.removeAlert();
+    const handleRemove = async(event, data) => {
+      console.log("removing data :", data)
+      const response = await AlertServices.removeAlert(data);
+      console.log("remove response, ", response)
     };
     // const handleAddAlert = () => {
     //   console.log("market received ", market);
@@ -45,26 +47,48 @@ export default function Alert({market, interval}) {
     // };
 
     // handeling adding of alerts
-    const handleSetAlert = () => {
-      console.log("alert set called ", state)
+    // [count, setCount] = useState(0)
+    const handleSetAlert = async() => {
+      console.log("going to add an alert now")
+      console.log("alert set called ", state.value[0])
+      const value = state.value[0]
       console.log("data : ", data)
-      dummy.map(obj => {
-        if (obj.market = market && obj.value == state.value){
-          console.log("passing...");
-          return
+      var flag = false
+      // data.map(obj => {
+      //   if (obj.crypto_name = market+'/USDT' && obj.crypto_price == value){
+      //     console.log("passing...");
+      //   }
+      // })
+      for (let obj of data){
+        // let obj = data[i]
+        if (obj.crypto_name = market+'/USDT' && obj.crypto_price == value){
+          flag = true
+          console.log("found duplicate")
+          break
         }
-      })
-      const newAlert = {symbol: market,
-                        value: value}
-      data_ = data                
-      data_.push(newAlert)
-      setData(data_)
-      const response = AlertServices.addAlert(newAlert);
+      
+      }
+      if(!flag){
+      const newAlert = {crypto_name: market,
+                        crypto_price: value
+                      }
+      // const data_ = data                
+      // data_.push(newAlert)
+      // setData(data_)
+      const response = await AlertServices.addAlert(newAlert);
+      
+      getAlerts()
+      console.log("alert response :", response)
+      }
     }
-
+       
     const getAlerts = async() => {
-      const rows = await AlertServices.getAlerts();
+      const response = await AlertServices.getAllAlerts();
+      console.log("alerts, ",response.data)
+      const rows = response.data
+      console.log("data, ", rows)
       setData(rows)
+      console.log('fectching alerts', data);
     }
 
     console.log("loaded alerts")
@@ -80,25 +104,25 @@ export default function Alert({market, interval}) {
         [e.target.name] : [parseFloat(e.target.value)]
       })
     } 
-    console.log("interval, ", interval)
+    // console.log("interval, ", interval)
 
-    const dummy = 
-    [
-        {
-            symbol:"BTC",
-            value :"19219",
-        },
-        {
-            symbol:"SOL",
-            value :"2832",
-        },
-        {
-            symbol:"ETH",
-            value :"2324",
-        },
-    ];
-    const [data, setData] = useState();
-
+    // const dummy = 
+    // [
+    //     {
+    //         crypto_name:"BTC",
+    //         crypto_price :"19219",
+    //     },
+    //     {
+    //         symbol:"SOL",
+    //         value :"2832",
+    //     },
+    //     {
+    //         symbol:"ETH",
+    //         value :"2324",
+    //     },
+    // ];
+    const [data, setData] = useState([]);
+    console.log("the data", data)
     useEffect( () => {
       getAlerts();
     }, [])
@@ -110,24 +134,44 @@ export default function Alert({market, interval}) {
           <tr>
             <th>Alerts</th>
             <th>
-              <AlarmAddOutlinedIcon onClick={handleClick}/>
+              <AlarmAddOutlinedIcon onClick={(event)=>handleClick(event)}/>
             </th>
+          </tr>
+          <tr>
+            <th>Cryptocurrency</th>
+            <th></th>
+            <th>Price</th>
+            <th>Remove</th>
           </tr>
         </thead>
         {console.log("table")}
+        {console.log("the set data , ", data)}
         <tbody>
-          {dummy.map((data) => {
+          {data?.map((data) => {
             {console.log(data, " data")}
             return (
-              <tr key={data.symbol}>
-                <td className="d-flex flex-row">
-                  {data.symbol}  
+              <tr key={data.crypto_price}>
+                <td className="d-flex flex-row" align='center'>
+                  {data.crypto_name}  
                 </td>
                 <td>
-                    crossing {data.value}
+                  crossing
                 </td>
                 <td>
-                    <RemoveCircleOutlineIcon onClick={handleRemove}/>
+                  {data.crypto_price}
+                </td>
+                <td>
+                <Button 
+                startIcon={<DeleteIcon style={{position:'relative', left:'40%'}}/>}
+                color="primary"
+                sx= {{pr:3, pl:3, w:'auto', maxHeight:'5px'}}
+                onClick={(event) =>{
+                  //console.log("cell values", cellValues)
+                  handleRemove(event, data);
+                }}
+                
+                >
+                </Button>
                 </td>
                 {/* <td>
                 <p>{data.value}</p>
@@ -146,8 +190,9 @@ export default function Alert({market, interval}) {
           vertical: 'bottom',
           horizontal: 'left',
         }}
+        // style={{color:"blue"}}
       >
-          <Form>
+          <Form className='alertForm'>
             <Form.Group className="mb-3" controlId="formBasicMarket">
               <Form.Label>Cryptocurrency</Form.Label>
               <Form.Control type="text" placeholder={market} disabled={true}/>
@@ -157,7 +202,7 @@ export default function Alert({market, interval}) {
               <Form.Label>Value</Form.Label>
               <Form.Control name='value' type='number' step="0.01" min='0' placeholder="Enter Value" onChange={handleChange}/>
             </Form.Group>
-            <Button variant="primary" onClick={handleSetAlert}>
+            <Button className="login-btn signup-btn" id="alert-btn" onClick={handleSetAlert}>
               Set Alert
             </Button>
         </Form>
