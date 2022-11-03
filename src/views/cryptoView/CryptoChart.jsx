@@ -154,7 +154,7 @@ function CryptoChart({ market, interval,internalIndicators }) {
       getLineChart(
         `${config.DOMAIN_NAME}/ma/crypto/` +
           `${market || marketState}/${interval || intervalState}`,
-        maLineSeries
+        maLineSeries,"crypto"
       );
       
     }
@@ -167,7 +167,7 @@ function CryptoChart({ market, interval,internalIndicators }) {
       getLineChart(
         `${config.DOMAIN_NAME}/sma/crypto/` +
           `${market || marketState}/${interval || intervalState}`,
-        smalineSeries
+        smalineSeries,"crypto"
       );
     }
 
@@ -180,7 +180,7 @@ function CryptoChart({ market, interval,internalIndicators }) {
       getLineChart(
         `${config.DOMAIN_NAME}/ema/crypto/` +
           `${market || marketState}/${interval || intervalState}`,
-        emalineSeries
+        emalineSeries,"crypto"
       );
     }
 
@@ -193,7 +193,7 @@ function CryptoChart({ market, interval,internalIndicators }) {
       getLineChart(
         `${config.DOMAIN_NAME}/wma/crypto/` +
           `${market || marketState}/${interval || intervalState}`,
-        wmalineSeries
+        wmalineSeries,"crypto"
       );
     }
     if(bbands){
