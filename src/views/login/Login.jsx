@@ -21,6 +21,8 @@ import { fetchToken } from '../../firebaseInit';
 import AlertServices from '../../services/AlertServices';
 import { useDispatch, useSelector } from "react-redux";
 import { save } from "../../redux/alert";
+import UserServices from "../../services/API/UserServices";
+import { saveImage } from "../../redux/profile";
 // import TokenRequest from "../notification/TokenRequest";
 
 
@@ -61,6 +63,7 @@ function Login() {
   // redux for token
   let {token} = useSelector((state)=>state.alert)
   const dispatch = useDispatch()
+  let {link} = useSelector((state)=>state.profile)
 
   const handleChange = (e) => {
     setState({
@@ -89,7 +92,8 @@ function Login() {
         if (response.status == 200){
           
           // const [getFcmToken,setFcmToken]=useState("")
-          // const dispatch = useDispatch()
+          console.log("response of loggin in....", response)
+          // dispatch(save(response.data))
 
           console.log('Token found', isTokenFound)
 
@@ -116,7 +120,13 @@ function Login() {
         }
         console.log("logging in...");
         try {
-          console.log(jwtDecode(Token.getAccessToken()));
+          const id = jwtDecode(Token.getAccessToken())['user_id'];
+          console.log("id is", id);
+          const response = await UserServices.getUser(id);
+          const getuser=response.data.data
+          console.log('response',getuser['imagepath'])
+          dispatch(saveImage(getuser['imagepath']))
+
           // <TokenRequest/>
           // setBool(true)
         } catch (error) {

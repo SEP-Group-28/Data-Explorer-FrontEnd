@@ -38,7 +38,7 @@ import Token from "../../services/Token";
 import jwtDecode from "jwt-decode";
 import { ClassNames } from '@emotion/react';
 import { useDispatch, useSelector } from 'react-redux';
-import { save } from '../../redux/profile';
+import { saveImage } from '../../redux/profile';
 
 // const useStyles = makeStyles((theme) => ({
 //   root: {
@@ -180,8 +180,10 @@ const Profile = () => {
         try {
             const response = await UserServices.getUser(id);
             const getuser=response.data.data
-            console.log('response',getuser)
-            dispatch(save(getUser['imagepath']))
+            console.log('response',getuser['imagepath'])
+            // const l_ = 
+            // console.log('l_',l_)
+            dispatch(saveImage(getuser['imagepath']))
             // console.log("user",getuser.data.data)
             // setUserID(getuser.data.data.user_id);
 
@@ -257,8 +259,8 @@ const Profile = () => {
                             const response =await UserServices.updatePhoto(id,formData);
                             if(response.status===200){
                                 console.log('success')
-                                console.log(response)
-                                // dispatch(save(formData[]))
+                                console.log("====")
+                                dispatch(saveImage(response['data']['data']['imagepath']))
                             }
                             // imageref.current.getElementById('hi').setAttribute('src',reader.result)
                             console.log("imageref ", imageref.current)
