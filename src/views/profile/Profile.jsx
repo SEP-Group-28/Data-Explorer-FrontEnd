@@ -37,6 +37,8 @@ import { Box } from '@mui/system';
 import Token from "../../services/Token";
 import jwtDecode from "jwt-decode";
 import { ClassNames } from '@emotion/react';
+import { useDispatch, useSelector } from 'react-redux';
+import { saveImage } from '../../redux/profile';
 
 // const useStyles = makeStyles((theme) => ({
 //   root: {
@@ -116,6 +118,9 @@ const Profile = () => {
     const [show, setShow] = React.useState(false);
     const handleShow = () => setShow(true);
     const handleClose = () => setShow(false);
+
+    const {link} = useSelector((state)=>state.profile)
+    const dispatch = useDispatch()
     
     const userDecode = Token.getAuth()
     const id = userDecode['user_id']
@@ -175,7 +180,10 @@ const Profile = () => {
         try {
             const response = await UserServices.getUser(id);
             const getuser=response.data.data
-            console.log('response',getuser)
+            console.log('response',getuser['imagepath'])
+            // const l_ = 
+            // console.log('l_',l_)
+            dispatch(saveImage(getuser['imagepath']))
             // console.log("user",getuser.data.data)
             // setUserID(getuser.data.data.user_id);
 
@@ -251,9 +259,11 @@ const Profile = () => {
                             const response =await UserServices.updatePhoto(id,formData);
                             if(response.status===200){
                                 console.log('success')
+                                console.log("====")
+                                dispatch(saveImage(response['data']['data']['imagepath']))
                             }
                             // imageref.current.getElementById('hi').setAttribute('src',reader.result)
-                            console.log(imageref.current)
+                            console.log("imageref ", imageref.current)
                             
                         } catch (error) {
                             console.log(error)

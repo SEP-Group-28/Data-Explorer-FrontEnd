@@ -26,6 +26,8 @@ import DummyData from "../../views/notification/notificationDummyData.json"
 import Snackbar from '@mui/material/Snackbar';
 import CloseIcon from '@mui/icons-material/Close';
 import { useEffect } from "react";
+import TokenRequest from "../../views/notification/TokenRequest";
+import { useSelector } from "react-redux";
 
 const style = {
   position: 'relative',
@@ -57,20 +59,22 @@ const useStyles = makeStyles((theme) => ({
 const userPages = ["Home", "Stock", "Crypto"];
 const pages = [...userPages, "Login","Sign up"];
 const settings = ["Profile", "Watchlist", "Logout"];
-const HeaderTwo = ({imagepath}) => {
+const HeaderTwo = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   
   var [count, setCount] = React.useState(0);
 
-  const[image,setImage]=React.useState(imagepath)
+  const {link} = useSelector((state)=>state.profile)
+  console.log("link", link)
+  // const[image,setImage]=React.useState(imagepath)
   const classes = useStyles();
   // console.log('allloooo')
   // console.log('IMAGE PATH',imagepath)
-  useEffect(()=>{
-    // console.log('aaaaaaaweeeeeee')
-    setImage(imagepath)
-  },[imagepath])
+  // useEffect(()=>{
+  //   // console.log('aaaaaaaweeeeeee')
+  //   setImage(imagepath)
+  // },[imagepath])
 
   const increment = () =>{
     count = count+1
@@ -107,19 +111,111 @@ const HeaderTwo = ({imagepath}) => {
     e.target.style.background = "none";
    }
 
-  //  try{
-  //     var user=jwtDecode(Token.getAccessToken())
+   try{
+      var user=jwtDecode(Token.getAccessToken())
       
-  //    }
-  //    catch(err){
-  //      user=null
-  //    }
-    const user = false;
+     }
+     catch(err){
+       user=null
+     }
+    // const user = false;
    
   // for modal
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+    window.onload=function(){
+      let deferredPrompt;
+    var div =document.getElementById('add-to');
+    var button =document.getElementById('add-to-btn')
+    // if (div){
+    //   console.log('dffsdff')
+    div.style.display='none';
+    
+    console.log('heloooooooooo')
+  
+    window.addEventListener('beforeinstallprompt', (event) => {
+    // Prevent the mini-infobar from appearing on mobile.
+      event.preventDefault();
+      console.log('beforeinstallprompt', event);
+      // Stash the event so it can be triggered later.
+      deferredPrompt = event;
+      div.style.display='block';
+
+      // window.deferredPrompt = event;
+      // Remove the 'hidden' class from the install button container.
+      // divInstall.classList.toggle('hidden', false);
+    });
+
+      button.addEventListener('click', () => {
+      div.style.display='none';
+
+      console.log('butInstall-clicked');
+      // const promptEvent = window.deferredPrompt;
+      deferredPrompt.prompt()
+      // if (!promptEvent) {
+      //   // The deferred prompt isn't available.
+      //   return;
+      // }
+      // Show the install prompt.
+      // promptEvent.prompt();
+      // Log the result
+      const result =  deferredPrompt.userChoice.then(
+        choice=>{
+          if (choice.outcome === 'accepted') {
+            console.log('User accepted');
+        } else {
+            console.log('User dismissed');
+        }
+        }
+      )
+      // console.log('👍', 'userChoice', result);
+      // Reset the deferred prompt variable, since
+      // prompt() can only be called once.
+      window.deferredPrompt = null;
+      // Hide the install button.
+      // divInstall.classList.toggle('hidden', true);
+
+      
+});
+
+ 
+
+    }
+    window.addEventListener('appinstalled', () => {
+      // Hide the app-provided install promotion
+      div.style.display='none';
+      // Clear the deferredPrompt so it can be garbage collected
+      deferredPrompt = null;
+      // Optionally, send analytics event to indicate successful install
+      console.log('PWA was installed');
+    });
+
+    // function getPWADisplayMode() {
+    //   const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
+    //   if (document.referrer.startsWith('android-app://')) {
+    //     return 'twa';
+    //   } else if (navigator.standalone || isStandalone) {
+    //     return 'standalone';
+    //   }
+    //   return 'browser';
+    // }
+
+    // window.matchMedia('(display-mode: standalone)').addEventListener('change', (evt) => {
+    //   let displayMode = 'browser';
+    //   if (evt.matches) {
+    //     displayMode = 'standalone';
+    //   }
+    //   // Log display mode change to analytics
+    //   console.log('DISPLAY_MODE_CHANGED', displayMode);
+    // });
+        
+    
+  
+
+
+
 
   
   
@@ -298,12 +394,16 @@ const HeaderTwo = ({imagepath}) => {
                 </NotificationModal>
                 </div>
               }
+              <div id="add-to">
+              <Button id="add-to-btn">Install</Button>
+              </div>
+             
             {user && (
               <Box sx={{ flexGrow: 0, marginRight:'5px' }}>
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                     {/* {console.log('kkkkk')} */}
-                    <Avatar key={image} alt="Remy Sharp" src={image}/>
+                    <Avatar key={link} alt="Remy Sharp" src={link}/>
                   </IconButton>
                 </Tooltip>
                 <Menu
@@ -323,6 +423,7 @@ const HeaderTwo = ({imagepath}) => {
                   open={Boolean(anchorElUser)}
                   onClose={handleCloseUserMenu}
                 >
+               
                   {settings.map((setting) => (
                     <MenuItem key={setting} onClick={handleCloseUserMenu}>
                       <Link className="menu-names" to= {"/"+setting.toLowerCase()} 
@@ -332,11 +433,14 @@ const HeaderTwo = ({imagepath}) => {
                       >
                         {setting}
                       </Link>
+                      
                     </MenuItem>
                   ))}
                 </Menu>
               </Box>
+              
             )}
+            {/* {user && <TokenRequest/>} */}
           </div>
         </Toolbar>
       </Container>

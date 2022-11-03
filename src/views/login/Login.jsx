@@ -17,6 +17,13 @@ import jwtDecode from "jwt-decode";
 import Token from "../../services/Token";
 import {GoogleLogin} from 'react-google-login';
 import { dark } from "@mui/material/styles/createPalette";
+import { fetchToken } from '../../firebaseInit';
+import AlertServices from '../../services/AlertServices';
+import { useDispatch, useSelector } from "react-redux";
+import { save } from "../../redux/alert";
+import UserServices from "../../services/API/UserServices";
+import { saveImage } from "../../redux/profile";
+// import TokenRequest from "../notification/TokenRequest";
 
 
 function Login() {
@@ -43,16 +50,21 @@ function Login() {
   ////////////////////////////////////////
 
   const [state, setState] = useState(formValues);
+  // const [bool, setBool] = useState(false)
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
-
   const [showPassword, setShowPassword] = useState(false);
 
   const [loader, setLoader] = useState(false);
-
+  const [isTokenFound, setTokenFound] = useState(false)
   const togglePassword = () => {
     setShowPassword(!showPassword);
   };
+  // redux for token
+  let {token} = useSelector((state)=>state.alert)
+  const dispatch = useDispatch()
+  let {link} = useSelector((state)=>state.profile)
+
   const handleChange = (e) => {
     setState({
       ...state,
@@ -76,10 +88,49 @@ function Login() {
       try {
         const response = await AuthServices.login(state);
         console.log(" response is", response);
-        try {
-          console.log(jwtDecode(Token.getAccessToken()));
-        } catch (error) {
+        // check for 200
+        if (response.status == 200){
           
+          // const [getFcmToken,setFcmToken]=useState("")
+          console.log("response of loggin in....", response)
+          // dispatch(save(response.data))
+
+          console.log('Token found', isTokenFound)
+
+          // To load once
+            
+
+            async function tokenFunc () {
+              token = await fetchToken(setTokenFound)
+              if (token) {
+                console.log('Token is', token)
+                const response = await AlertServices.addToken(token)
+                console.log("token list is, ", response)
+              }
+              dispatch(save(token))
+              return token
+            }
+            Notification.requestPermission().then(function(permission){
+              console.log(permission)
+              if(permission=='granted'){
+                tokenFunc()
+              }
+          })
+
+        }
+        console.log("logging in...");
+        try {
+          const id = jwtDecode(Token.getAccessToken())['user_id'];
+          console.log("id is", id);
+          const response = await UserServices.getUser(id);
+          const getuser=response.data.data
+          console.log('response',getuser['imagepath'])
+          dispatch(saveImage(getuser['imagepath']))
+
+          // <TokenRequest/>
+          // setBool(true)
+        } catch (error) {
+          console.log("error is ", error)
         }
         
 
