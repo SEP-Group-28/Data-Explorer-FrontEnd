@@ -50,8 +50,8 @@ function MACDChart({ market, interval}) {
     });
 
     macdSeries.current = chart.current.addLineSeries({
-      lineWidth: 1.5,
-      color: "#22568E",
+      lineWidth: 1.2,
+      color: "blue",
     });
     macdSignalSeries.current = chart.current.addLineSeries({
       lineWidth: 1.5,
@@ -105,9 +105,9 @@ function MACDChart({ market, interval}) {
             if (dataMacdHist.hasOwnProperty(key)) {
               let color
               if (dataMacdHist[key] > 0) {
-                color = '#00733E'
+                color = "rgba(0,133,48,1)";
               } else {
-                color = '#BB2E2D'
+                color = "rgba(162,0,0,1)";
               }
               let object = {
                 time: Number(key),
