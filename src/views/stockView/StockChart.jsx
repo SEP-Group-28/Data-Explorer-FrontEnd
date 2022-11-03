@@ -150,6 +150,33 @@ function StockChart({ market, interval, internalIndicators }) {
         "stock"
       );
     }
+    if (bbands) {
+      const bbandUpperSeries = chart.current.addLineSeries({
+        lineWidth: 1,
+        title: "BBAND Upper",
+        color: "purple",
+      });
+
+      const bbandMiddleSeries = chart.current.addLineSeries({
+        lineWidth: 1,
+        title: "BBAND Middle",
+        color: "#C42EE9",
+      });
+
+      const bbandLowerSeries = chart.current.addLineSeries({
+        lineWidth: 1,
+        title: "BBAND Lower",
+        color: "purple",
+      });
+
+      getBbandsChart(
+        `${config.DOMAIN_NAME}/bbands/stock/` +
+          `${market || marketState}/${interval || intervalState}`,
+        bbandUpperSeries,
+        bbandMiddleSeries,
+        bbandLowerSeries
+      );
+    }
 
     return () => {
       chart.current.remove();
