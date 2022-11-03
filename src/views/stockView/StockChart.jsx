@@ -4,6 +4,9 @@ import Loader from "../../components/loader/Loader";
 import { useLocation } from "react-router";
 import { compare } from "../../utils/functions";
 import { removeDuplicates } from "../../utils/functions";
+import { getLineChart } from "../../components/technicalIndicators/lineSeries";
+import { getBbandsChart } from "../../components/technicalIndicators/bbandsIndicator";
+import config from "../../config.json";
 
 function StockChart({ market, interval, internalIndicators }) {
   const location = useLocation();
@@ -96,7 +99,16 @@ function StockChart({ market, interval, internalIndicators }) {
       .catch();
 
     if (ma) {
-      console.log("Ma true");
+      const maLineSeries = chart.current.addLineSeries({
+        lineWidth: 1,
+        title: "MA",
+        color: "blue",
+      });
+      getLineChart(
+        `${config.DOMAIN_NAME}/ma/stock/` +
+          `${market || marketState}/${interval || intervalState}`,
+        maLineSeries,"stock"
+      );
     }
 
     return () => {
