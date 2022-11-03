@@ -9,7 +9,7 @@ import AccessAlarmsIcon from '@mui/icons-material/AccessAlarms';
 import Badge from '@mui/material/Badge';
 import Alert from '../alert/Alert';
 import LineChart from "../../components/technicalIndicators/lineChart";
-
+import MACDChart from "../../components/technicalIndicators/macdChart";
 
 function CryptoView() {
   const [market, setMarket] = useState("");
@@ -74,6 +74,7 @@ function CryptoView() {
           {rsi && <LineChart market={market} interval={interval} type="rsi" />}
           {obv && <LineChart market={market} interval={interval} type="obv" />}
           {roc && <LineChart market={market} interval={interval} type="roc" />}
+          {macd && <MACDChart market={market} interval={interval} />}
         </div>
         <div className="types-crypto">
           <CryptoTypes changeCryptoType={changeCryptoType} />
