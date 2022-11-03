@@ -18,7 +18,10 @@ function CryptoChart({ market, interval,internalIndicators }) {
   var intervalState = location?.state?.interval || "1m";
 
   const [internalIndicatorState,setInternalIndicatorState] =useState(internalIndicators);
-  
+  function getWindowDimension() {
+    const { innerWidth: width, innerHeight: height } = window;
+    return { width, height };
+  }
   // useEffect(() => {
   //   setInternalIndicatorState({
   //     ma: false,
@@ -110,8 +113,12 @@ function CryptoChart({ market, interval,internalIndicators }) {
         let tempChartData = removeDuplicates(tempCandlesticks).sort(compare);
 
         candleSeries.current.setData(tempChartData);
+
+
         setLoading(false);
-        chart.current.resize(1067, 380);
+  
+       
+        
       })
       .catch();
 
@@ -149,32 +156,6 @@ function CryptoChart({ market, interval,internalIndicators }) {
           `${market || marketState}/${interval || intervalState}`,
         maLineSeries
       );
-
-      
-      // // console.log(maData);
-      // fetch( `${config.DOMAIN_NAME}/ma/crypto/` +
-      //    `${market || marketState}/${interval || intervalState}`)
-      //   .then((res) => res.json())
-      //   .then((data) => {
-      //     if (!data.hasOwnProperty("error")) {
-      //       let tempLines = [];
-      //       for (let i in data) {
-      //         if (data.hasOwnProperty(i)) {
-                
-      //           let object = {
-      //             time:Number(i) ,
-      //             value: data[i],
-      //           };
-      //           tempLines.push(object);
-      //         }
-      //       }
-      //       console.log(tempLines);
-      //       let tempLineData = removeDuplicates(tempLines);
-      //       console.log(tempLineData);
-      //       lineSeries.current.setData(tempLineData);
-      //     }
-      //   })
-      //   .catch();
       
     }
     if (sma) {
@@ -242,14 +223,14 @@ function CryptoChart({ market, interval,internalIndicators }) {
          bbandLowerSeries
        );
     }
-    console.log("Range", chart.current.timeScale().getVisibleRange());
-    function onVisibleLogicalRangeChanged(newVisibleLogicalRange) {
-      console.log(newVisibleLogicalRange);
-    }
+    // console.log("Range", chart.current.timeScale().getVisibleRange());
+    // function onVisibleLogicalRangeChanged(newVisibleLogicalRange) {
+    //   console.log(newVisibleLogicalRange);
+    // }
 
-    chart.current
-      .timeScale()
-      .subscribeVisibleLogicalRangeChange(onVisibleLogicalRangeChanged);
+    // chart.current
+    //   .timeScale()
+    //   .subscribeVisibleLogicalRangeChange(onVisibleLogicalRangeChanged);
       // chart.current.timeScale().setVisibleLogicalRange({
       //   from: -5,
       //   to: 150,
@@ -264,26 +245,48 @@ function CryptoChart({ market, interval,internalIndicators }) {
     };
   }, [market, interval,internalIndicators]);
 
-  function getWindowDimension() {
-    const { innerWidth: width, innerHeight: height } = window;
-    return { width, height };
-  }
+  
 
   const [windowDimensions, setWindowDimensions] = useState(
     getWindowDimension()
   );
 
-  // useEffect(() => {
-  //   function handleResize() {
-  //     setWindowDimensions(getWindowDimension());
-  //   }
+  useEffect(() => {
+    function handleResize() {
+      setWindowDimensions(getWindowDimension());
+    }
 
-  //   window.addEventListener("resize", handleResize);
-  //   return () => {
-  //     window.removeEventListener("resize", handleResize);
-  //     chart.current.resize(windowDimensions["width"] * 0.85, 380);
-  //   };
-  // });
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      // chart.current.resize(windowDimensions["width"] * 0.85, 380);
+      const width = windowDimensions["width"]
+       if (width >= 1220) {
+         chart.current.resize(1067, 380);
+       }
+       if (width >= 1070 && width < 1220) {
+         chart.current.resize(930, 380);
+       } 
+      if(width >=900 && width <1070){
+        chart.current.resize(800,380)
+      }
+      if(width >=800 && width <900){
+        chart.current.resize(670,380)
+      }
+      if(width>=650 && width <800){
+        chart.current.resize(540,380)
+      }
+      if(width >=550 && width <650)
+        chart.current.resize(430,340)
+      if(width >=478 && width <550){
+        chart.current.resize(380,320)
+      }
+      if(width>350 && width <478)
+        chart.current.resize(320,280)
+      
+
+    };
+  });
 
   return (
     <>

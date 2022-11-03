@@ -22,6 +22,10 @@ function CryptoIntervals({ changeInterval,timeInterval, addInternalIndicators })
   const displayInternalIndicators = (indicators) => {
     addInternalIndicators(indicators);
   };
+
+  // const displayGraphicalIndicators = (indicators)=>{
+  //   addGraphicalIndicators
+  // }
   
   return (
     <div className="CryptoIntervals crypto-bar">
