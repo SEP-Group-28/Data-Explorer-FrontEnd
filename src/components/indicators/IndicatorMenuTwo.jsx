@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
   formControl: {},
 }));
 
-const IndicatorMenuTwo = () => {
+const IndicatorMenuTwo = ({ displayExternalIndicators }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [indicators, setIndicators] = React.useState({
     rsi: false,
@@ -61,6 +61,7 @@ const IndicatorMenuTwo = () => {
 
   const handleClose = () => {
     setAnchorEl(null);
+    displayExternalIndicators(indicators);
   };
 
   return (
@@ -71,10 +72,7 @@ const IndicatorMenuTwo = () => {
         onClick={handleClick}
         className="indicator-img-btn"
       >
-        <img 
-          src={Indicator}
-          alt="indicators"
-        />
+        <img src={Indicator} alt="indicators" />
       </button>
       <Menu
         id="simple-menu"

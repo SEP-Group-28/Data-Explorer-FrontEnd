@@ -8,6 +8,7 @@ import CryptoChart from './CryptoChart';
 import AccessAlarmsIcon from '@mui/icons-material/AccessAlarms';
 import Badge from '@mui/material/Badge';
 import Alert from '../alert/Alert';
+import LineChart from "../../components/technicalIndicators/lineChart";
 
 
 function CryptoView() {
@@ -21,23 +22,27 @@ function CryptoView() {
     bbands: false,
   });
 
-  // useEffect(() => {
-  //   console.log(market)
-  //   setInternalIndicators({
-  //     ma: false,
-  //     sma: false,
-  //     ema: false,
-  //     wma: false,
-  //     bbands: false,
-  //   });
-  // }, [market]);
+  const [externalIndicators, setExternlIndicators] = useState({
+    macd: false,
+    obv: false,
+    roc: false,
+    rsi: false,
+    stoch: false,
+})
+
   const changeCryptoType = (marketType) => {
     setMarket(marketType);
   };
   const changeInterval = (interval) => {
     setInterval(interval);
   };
-  
+    const addInternalIndicators = (indicators) => {
+      setInternalIndicators(indicators);
+    };
+    const addExternalIndicators = (indicators) => {
+      setExternlIndicators(indicators);
+      console.log("display rsi")
+    };
 
   // getting user
   try {
@@ -47,9 +52,8 @@ function CryptoView() {
   }
   
   user = true
-  const addInternalIndicators = (indicators) => {
-    setInternalIndicators(indicators);
-  };
+
+  const { macd, obv, roc, rsi, stoch } = externalIndicators;
   return (
     <div className="CryptoView">
       <HeaderTwo />
@@ -60,12 +64,16 @@ function CryptoView() {
             changeInterval={changeInterval}
             timeInterval={interval}
             addInternalIndicators={addInternalIndicators}
+            addExternalIndicators={addExternalIndicators}
           />
           <CryptoChart
             market={market}
             interval={interval}
             internalIndicators={internalIndicators}
           />
+          {rsi && <LineChart market={market} interval={interval} type="rsi" />}
+          {obv && <LineChart market={market} interval={interval} type="obv" />}
+          {roc && <LineChart market={market} interval={interval} type="roc" />}
         </div>
         <div className="types-crypto">
           <CryptoTypes changeCryptoType={changeCryptoType} />

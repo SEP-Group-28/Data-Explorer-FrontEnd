@@ -198,21 +198,21 @@ function CryptoChart({ market, interval,internalIndicators }) {
     }
     if(bbands){
        const bbandUpperSeries = chart.current.addLineSeries({
-        lineWidth : 1,
-        title:"BBAND Upper",
-        color:"purple"
-       })
+         lineWidth: 1,
+         title: "BBAND Upper",
+         color: "#022875",
+       });
 
        const bbandMiddleSeries = chart.current.addLineSeries({
          lineWidth: 1,
          title: "BBAND Middle",
-         color: "#C42EE9",
+         color: "#0B3894",
        });
 
        const bbandLowerSeries = chart.current.addLineSeries({
          lineWidth: 1,
          title: "BBAND Lower",
-         color: "purple",
+         color: "#022875",
        });
 
        getBbandsChart(
@@ -262,19 +262,19 @@ function CryptoChart({ market, interval,internalIndicators }) {
       // chart.current.resize(windowDimensions["width"] * 0.85, 380);
       const width = windowDimensions["width"]
        if (width >= 1220) {
-         chart.current.resize(1067, 380);
+         chart.current.resize(1067, 370);
        }
        if (width >= 1070 && width < 1220) {
-         chart.current.resize(930, 380);
+         chart.current.resize(930, 370);
        } 
       if(width >=900 && width <1070){
-        chart.current.resize(800,380)
+        chart.current.resize(800, 370);
       }
       if(width >=800 && width <900){
-        chart.current.resize(670,380)
+        chart.current.resize(670, 370);
       }
       if(width>=650 && width <800){
-        chart.current.resize(540,380)
+        chart.current.resize(540, 370);
       }
       if(width >=550 && width <650)
         chart.current.resize(430,340)
