@@ -4,6 +4,9 @@ import Loader from "../../components/loader/Loader";
 import { useLocation } from "react-router";
 import { compare } from "../../utils/functions";
 import { removeDuplicates } from "../../utils/functions";
+import { getLineChart } from "../../components/technicalIndicators/lineSeries";
+import { getBbandsChart } from "../../components/technicalIndicators/bbandsIndicator";
+import config from "../../config.json";
 
 function StockChart({ market, interval, internalIndicators }) {
   const location = useLocation();
@@ -96,7 +99,83 @@ function StockChart({ market, interval, internalIndicators }) {
       .catch();
 
     if (ma) {
-      console.log("Ma true");
+      const maLineSeries = chart.current.addLineSeries({
+        lineWidth: 1,
+        title: "MA",
+        color: "blue",
+      });
+      getLineChart(
+        `${config.DOMAIN_NAME}/ma/stock/` +
+          `${market || marketState}/${interval || intervalState}`,
+        maLineSeries,"stock"
+      );
+    }
+    if (sma) {
+      const smalineSeries = chart.current.addLineSeries({
+        lineWidth: 1,
+        title: "SMA",
+        color: "red",
+      });
+      getLineChart(
+        `${config.DOMAIN_NAME}/sma/crypto/` +
+          `${market || marketState}/${interval || intervalState}`,
+        smalineSeries,
+        "stock"
+      );
+    }
+    
+    if (ema) {
+      const emalineSeries = chart.current.addLineSeries({
+        lineWidth: 1,
+        title: "EMA",
+        color: "#0397EC",
+      });
+      getLineChart(
+        `${config.DOMAIN_NAME}/ema/crypto/` +
+          `${market || marketState}/${interval || intervalState}`,
+        emalineSeries,
+        "stock"
+      );
+    }
+    if (wma) {
+      const wmalineSeries = chart.current.addLineSeries({
+        lineWidth: 1,
+        title: "WMA",
+        color: "#C5EC03",
+      });
+      getLineChart(
+        `${config.DOMAIN_NAME}/wma/crypto/` +
+          `${market || marketState}/${interval || intervalState}`,
+        wmalineSeries,
+        "stock"
+      );
+    }
+    if (bbands) {
+      const bbandUpperSeries = chart.current.addLineSeries({
+        lineWidth: 1,
+        title: "BBAND Upper",
+        color: "purple",
+      });
+
+      const bbandMiddleSeries = chart.current.addLineSeries({
+        lineWidth: 1,
+        title: "BBAND Middle",
+        color: "#C42EE9",
+      });
+
+      const bbandLowerSeries = chart.current.addLineSeries({
+        lineWidth: 1,
+        title: "BBAND Lower",
+        color: "purple",
+      });
+
+      getBbandsChart(
+        `${config.DOMAIN_NAME}/bbands/stock/` +
+          `${market || marketState}/${interval || intervalState}`,
+        bbandUpperSeries,
+        bbandMiddleSeries,
+        bbandLowerSeries
+      );
     }
 
     return () => {
