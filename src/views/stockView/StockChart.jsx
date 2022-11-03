@@ -123,6 +123,20 @@ function StockChart({ market, interval, internalIndicators }) {
         "stock"
       );
     }
+    
+    if (ema) {
+      const emalineSeries = chart.current.addLineSeries({
+        lineWidth: 1,
+        title: "EMA",
+        color: "#0397EC",
+      });
+      getLineChart(
+        `${config.DOMAIN_NAME}/ema/crypto/` +
+          `${market || marketState}/${interval || intervalState}`,
+        emalineSeries,
+        "stock"
+      );
+    }
 
     return () => {
       chart.current.remove();
