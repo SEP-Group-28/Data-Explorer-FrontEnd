@@ -3,15 +3,18 @@ import { createSlice } from "@reduxjs/toolkit";
 export const profileSlice = createSlice({
     name: "profile",
     initialState: {
-        link : "src/assets/DefaultProfilePic/user.jpg"
+        link: ""
+        // link : "src/assets/DefaultProfilePic/user.jpg"
     },
     reducers: {
-        save: (state, action) => {
+        saveImage: (state, action) => {
+            console.log("calling redux ", action)
             state.link = action.payload
-            console.log("payload,", action)
+            console.log("calling redux link ", state.link)
+            // console.log("payload,", action)
         }
     },
 });
 
-export const {save} = profileSlice.actions;
+export const {saveImage} = profileSlice.actions;
 export default profileSlice.reducer;
