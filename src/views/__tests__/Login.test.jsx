@@ -3,6 +3,7 @@ import { render, screen } from "@testing-library/react";
 import Login from "../login/Login";
 import { BrowserRouter } from 'react-router-dom';
 import userEvent from "@testing-library/user-event";
+import "@testing-library/jest-dom"
 
 
 describe("Test Login component", () =>{
