@@ -110,6 +110,19 @@ function StockChart({ market, interval, internalIndicators }) {
         maLineSeries,"stock"
       );
     }
+    if (sma) {
+      const smalineSeries = chart.current.addLineSeries({
+        lineWidth: 1,
+        title: "SMA",
+        color: "red",
+      });
+      getLineChart(
+        `${config.DOMAIN_NAME}/sma/crypto/` +
+          `${market || marketState}/${interval || intervalState}`,
+        smalineSeries,
+        "stock"
+      );
+    }
 
     return () => {
       chart.current.remove();
