@@ -2,7 +2,7 @@ import React from 'react'
 import IndicatorMenuOne from "../../components/indicators/IndicatorMenuOne"
 import IndicatorMenuTwo from "../../components/indicators/IndicatorMenuTwo"
 
-function StockIntervals({ changeInterval, addInternalIndicators }) {
+function StockIntervals({ changeInterval, addInternalIndicators, addExternalIndicators }) {
   const intervals = ["5m", "1h", "1d"];
 
   const handleClick = (interval) => {
@@ -12,11 +12,16 @@ function StockIntervals({ changeInterval, addInternalIndicators }) {
   const displayInternalIndicators = (indicators) => {
     addInternalIndicators(indicators);
   };
+
+  const displayExternalIndicators = (indicators) => {
+    addExternalIndicators(indicators);
+  };
+
   return (
     <div className="CryptoIntervals crypto-bar">
       <div className="d-flex flex-row justify-content-evenly">
         <IndicatorMenuOne displayInternalIndicators={displayInternalIndicators}/>
-        <IndicatorMenuTwo />
+        <IndicatorMenuTwo displayExternalIndicators={displayExternalIndicators}/>
       </div>
       <div className="d-flex flex-row justify content-center">
         <header>Time interval</header>
