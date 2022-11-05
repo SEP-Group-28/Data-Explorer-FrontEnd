@@ -43,6 +43,7 @@ function Router() {
         <Route path="/profile" element={<RequireAuth allowedRoles={[ROLES.User]}><Profile /></RequireAuth>} />
         <Route path="/updateProfile" element={<RequireAuth allowedRoles={[ROLES.User]}><UpdateProfile /></RequireAuth>} />
         <Route path="/watchlist" element={<RequireAuth allowedRoles={[ROLES.User]}><Watchlist /></RequireAuth>} />
+        <Route path="/adminDashboard" element={<RequireAuth allowedRoles={[ROLES.User]}><AllUsers/></RequireAuth>} />
         {/* <Route path="/notification" element={<TokenRequest/>}></Route> */}
       </Routes>
     </BrowserRouter>
