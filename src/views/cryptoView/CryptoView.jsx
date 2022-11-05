@@ -45,13 +45,13 @@ function CryptoView() {
     };
 
   // getting user
-  try {
-    var user = jwtDecode(Token.getAccessToken());
-  } catch (err) {
-    user = null;
-  }
+  // try {
+  //   var user = jwtDecode(Token.getAccessToken());
+  // } catch (err) {
+  //   user = null;
+  // }
   
-  user = true
+  // user = true
 
   const { macd, obv, roc, rsi, stoch } = externalIndicators;
   return (
@@ -62,7 +62,6 @@ function CryptoView() {
           <CryptoHeader market={market} interval={interval} />
           <CryptoIntervals
             changeInterval={changeInterval}
-            timeInterval={interval}
             addInternalIndicators={addInternalIndicators}
             addExternalIndicators={addExternalIndicators}
           />
@@ -71,10 +70,10 @@ function CryptoView() {
             interval={interval}
             internalIndicators={internalIndicators}
           />
-          {rsi && <LineChart market={market} interval={interval} type="rsi" />}
-          {obv && <LineChart market={market} interval={interval} type="obv" />}
-          {roc && <LineChart market={market} interval={interval} type="roc" />}
-          {macd && <MACDChart market={market} interval={interval} />}
+          {rsi && <LineChart marketType="crypto" market={market} interval={interval} type="rsi" />}
+          {obv && <LineChart marketType="crypto" market={market} interval={interval} type="obv" />}
+          {roc && <LineChart marketType="crypto" market={market} interval={interval} type="roc" />}
+          {macd && <MACDChart marketType="crypto" market={market} interval={interval} />}
         </div>
         <div className="types-crypto">
           <CryptoTypes changeCryptoType={changeCryptoType} />

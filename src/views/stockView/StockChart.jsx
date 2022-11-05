@@ -117,7 +117,7 @@ function StockChart({ market, interval, internalIndicators }) {
         color: "red",
       });
       getLineChart(
-        `${config.DOMAIN_NAME}/sma/crypto/` +
+        `${config.DOMAIN_NAME}/sma/stock/` +
           `${market || marketState}/${interval || intervalState}`,
         smalineSeries,
         "stock"
@@ -131,7 +131,7 @@ function StockChart({ market, interval, internalIndicators }) {
         color: "#0397EC",
       });
       getLineChart(
-        `${config.DOMAIN_NAME}/ema/crypto/` +
+        `${config.DOMAIN_NAME}/ema/stock/` +
           `${market || marketState}/${interval || intervalState}`,
         emalineSeries,
         "stock"
@@ -144,7 +144,7 @@ function StockChart({ market, interval, internalIndicators }) {
         color: "#C5EC03",
       });
       getLineChart(
-        `${config.DOMAIN_NAME}/wma/crypto/` +
+        `${config.DOMAIN_NAME}/wma/stock/` +
           `${market || marketState}/${interval || intervalState}`,
         wmalineSeries,
         "stock"
@@ -154,19 +154,19 @@ function StockChart({ market, interval, internalIndicators }) {
       const bbandUpperSeries = chart.current.addLineSeries({
         lineWidth: 1,
         title: "BBAND Upper",
-        color: "purple",
+        color: "#022875",
       });
 
       const bbandMiddleSeries = chart.current.addLineSeries({
         lineWidth: 1,
         title: "BBAND Middle",
-        color: "#C42EE9",
+        color: "#0B3894",
       });
 
       const bbandLowerSeries = chart.current.addLineSeries({
         lineWidth: 1,
         title: "BBAND Lower",
-        color: "purple",
+        color: "#022875",
       });
 
       getBbandsChart(
@@ -174,7 +174,7 @@ function StockChart({ market, interval, internalIndicators }) {
           `${market || marketState}/${interval || intervalState}`,
         bbandUpperSeries,
         bbandMiddleSeries,
-        bbandLowerSeries
+        bbandLowerSeries,"stock"
       );
     }
 

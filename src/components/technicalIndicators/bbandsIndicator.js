@@ -1,4 +1,4 @@
-export const getBbandsChart = (url, upperSeries, middleSeries, lowerSeries) => {
+export const getBbandsChart = (url, upperSeries, middleSeries, lowerSeries,type) => {
   fetch(url)
     .then((res) => res.json())
     .then(data =>{
@@ -14,21 +14,21 @@ export const getBbandsChart = (url, upperSeries, middleSeries, lowerSeries) => {
             for (let key in upperBandObject){
                 if(upperBandObject.hasOwnProperty(key)){
                     let object = {
-                      time: Number(key),
+                      time: type == "crypto" ? Number(key) : Number(key) / 1000,
                       value: upperBandObject[key],
                     };
                     upper.push(object);
                 }
                 if(lowerBandObject.hasOwnProperty(key)){
                     let object = {
-                      time: Number(key),
+                      time: type == "crypto" ? Number(key) : Number(key) / 1000,
                       value: lowerBandObject[key],
                     };
                     lower.push(object)
                 }
                 if (middleBandObject.hasOwnProperty(key)) {
                     let object = {
-                      time: Number(key),
+                      time: type == "crypto" ? Number(key) : Number(key) / 1000,
                       value: middleBandObject[key],
                     };
                     middle.push(object);

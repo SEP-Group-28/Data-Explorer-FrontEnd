@@ -1,13 +1,10 @@
 import React from 'react'
 import IndicatorMenuOne from '../../components/indicators/IndicatorMenuOne';
 import IndicatorMenuTwo from '../../components/indicators/IndicatorMenuTwo';
-import { useLocation } from "react-router-dom";
 
-function CryptoIntervals({ changeInterval,timeInterval, addInternalIndicators,addExternalIndicators }) {
+function CryptoIntervals({ changeInterval, addInternalIndicators,addExternalIndicators }) {
   const intervals = ["1m", "5m", "30m", "1h", "1d"];
-  var intervalState = location?.state?.interval || "1m";
-
-
+ 
   const handleClick = (interval) => {
     changeInterval(interval);
   };
@@ -35,9 +32,7 @@ function CryptoIntervals({ changeInterval,timeInterval, addInternalIndicators,ad
               <button
                 type="button"
                 className={
-                  " interval-btn " + interval == (timeInterval || intervalState)
-                    ? " active-interval"
-                    : ""
+                  " interval-btn " 
                 }
                 onClick={() => {
                   handleClick(interval);

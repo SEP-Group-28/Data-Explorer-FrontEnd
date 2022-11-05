@@ -4,6 +4,8 @@ import StockHeader from './StockHeader';
 import StockIntervals from './StockIntervals';
 import StockChart from './StockChart';
 import StockTypes from './StockTypes';
+import LineChart from "../../components/technicalIndicators/lineChart";
+import MACDChart from "../../components/technicalIndicators/macdChart";
 
 function StockView() {
 
@@ -16,6 +18,13 @@ function StockView() {
     wma: false,
     bbands: false,
   });
+  const [externalIndicators, setExternlIndicators] = useState({
+    macd: false,
+    obv: false,
+    roc: false,
+    rsi: false,
+    stoch: false,
+  });
 
   const changeStockType = (marketType) => {
     setMarket(marketType);
@@ -26,6 +35,11 @@ function StockView() {
   const addInternalIndicators = (indicators) => {
     setInternalIndicators(indicators);
   };
+  const addExternalIndicators = (indicators) => {
+    setExternlIndicators(indicators);
+  };
+
+  const { macd, obv, roc, rsi, stoch } = externalIndicators;
 
   return (
     <div className="CryptoView">
@@ -33,8 +47,14 @@ function StockView() {
       <div className="d-flex flex-row">
         <div className="crypto-charts d-flex flex-column">
           <StockHeader market={market} interval={interval} />
-          <StockIntervals changeInterval={changeInterval} addInternalIndicators={addInternalIndicators}/>
-          <StockChart market={market} interval={interval} internalIndicators={internalIndicators}/>
+          <StockIntervals changeInterval={changeInterval} addInternalIndicators={addInternalIndicators} addExternalIndicators={addExternalIndicators}/>
+          <StockChart market={market} interval={interval} internalIndicators={internalIndicators} />
+
+          {rsi && <LineChart marketType="stock" market={market} interval={interval} type="rsi" />}
+          {obv && <LineChart marketType="stock" market={market} interval={interval} type="obv" />}
+          {roc && <LineChart marketType="stock" market={market} interval={interval} type="roc" />}
+          {macd && <MACDChart marketType="stock" market={market} interval={interval} />}
+
         </div>
         <div className="types-crypto">
           <StockTypes changeStockType={changeStockType} />

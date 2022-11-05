@@ -6,7 +6,7 @@ import { Typography } from "@mui/material";
 import config from "../../config.json";
 import Loader from "../../components/loader/Loader";
 
-function MACDChart({ market, interval}) {
+function MACDChart({marketType, market, interval}) {
    const location = useLocation();
    try {
      var marketState = location.state.market;
