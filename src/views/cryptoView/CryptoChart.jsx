@@ -220,7 +220,7 @@ function CryptoChart({ market, interval,internalIndicators }) {
            `${market || marketState}/${interval || intervalState}`,
          bbandUpperSeries,
          bbandMiddleSeries,
-         bbandLowerSeries
+         bbandLowerSeries,"crypto"
        );
     }
     // console.log("Range", chart.current.timeScale().getVisibleRange());

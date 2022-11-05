@@ -49,7 +49,7 @@ function LineChart({marketType, market, interval, type }) {
     });
 
     lineSeries.current = chart.current.addLineSeries({
-      color: type == "rsi" ? "blue" : type == "obv" ? "#03138F" : "#06179C",
+      color: type == "rsi" ? "blue" : type == "obv" ? "#0C88D8" : "#06179C",
       lineWidth: 1.5,
 
       // lineType: 1
