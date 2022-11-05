@@ -45,13 +45,13 @@ function CryptoView() {
     };
 
   // getting user
-  try {
-    var user = jwtDecode(Token.getAccessToken());
-  } catch (err) {
-    user = null;
-  }
+  // try {
+  //   var user = jwtDecode(Token.getAccessToken());
+  // } catch (err) {
+  //   user = null;
+  // }
   
-  user = true
+  // user = true
 
   const { macd, obv, roc, rsi, stoch } = externalIndicators;
   return (
@@ -62,7 +62,6 @@ function CryptoView() {
           <CryptoHeader market={market} interval={interval} />
           <CryptoIntervals
             changeInterval={changeInterval}
-            timeInterval={interval}
             addInternalIndicators={addInternalIndicators}
             addExternalIndicators={addExternalIndicators}
           />
