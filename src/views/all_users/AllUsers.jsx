@@ -14,6 +14,7 @@ import { Link } from "react-router-dom";
 // import 'font-awesome/css/font-awesome.css';
 
 import Token from "../../services/Token";
+import HeaderTwo from "../../components/headers/HeaderTwo";
 
 const AllUsers = () => {
 
@@ -90,7 +91,8 @@ const AllUsers = () => {
   // Search term
   const [search, setSearch] = useState("");
   const searchUser = () => {
-    getUsers(usertype, 0, take, search);
+    console.log("search by", search);
+    getUsers(0, -1, search);
   }
 
   const [users, setUsers] = useState([]);
@@ -106,7 +108,7 @@ const AllUsers = () => {
       // if (usertype === "doctor") {
       response = await AdminServices.getUsers(skip_value, take, search);
       // setusertype('doctor');
-      console.log(response)
+      console.log("response of users get all", response)
       // }
       // else if (usertype === "examiner") {
       //   response = await AdminServices.getExaminers(skip_value, take, search);
@@ -141,7 +143,7 @@ const AllUsers = () => {
   // } else {
     return (
       <div className="all_users">
-        {/* <HeaderTwo /> */}
+        <HeaderTwo/>
 
         <h1 className="alluser_header">All Users</h1>
 
@@ -207,7 +209,7 @@ const AllUsers = () => {
                 <thead>
                   <tr>
                     <th></th>
-                    <th>User ID</th>
+                    {/* <th>User ID</th> */}
                     <th>First Name</th>
                     <th>Last Name</th>
                     {/* <th>Contact No</th> */}
@@ -220,21 +222,21 @@ const AllUsers = () => {
                   {/* sample database result object to html convert with search enabled */}
                   {users.map((value, key) => {
                     // Tables should come here
-
+                    {console.log(value, key)}
                     return (
                       <tr key={key}>
                         <td>
                           {parseInt(value.active) ? <i className="fa fa-check-square" aria-hidden="true" style={{color: "green"}}/> : <i className="fa fa-power-off" aria-hidden="true" style={{margin: "5px", color: "crimson"}}/>}
                           <i className=""></i>
                         </td>
-                        <td>{value['_id']}</td>
+                        {/* <td>{value['_id']}</td> */}
                         <td>{value.firstname}</td>
                         <td>{value.lastname}</td>
                         {/* <td>{value.nic}</td> */}
                         {/* <td>{value['Contact No']}</td> */}
                         <td>{value['email']}</td>
-                        <td>{value['DOB'] && value['DOB'].slice(0, 10)}</td>
-                        <td>{value['Country']}</td>
+                        <td>{value['dob'] && value['dob'].slice(0, 10)}</td>
+                        <td>{value['country']}</td>
                         <td>
                           {/* <Link to={"/update-user"} state={{ user_id: value['_id'] }}>
                             <Button
@@ -247,6 +249,7 @@ const AllUsers = () => {
                           </Link> */}
                         </td>
                         <td>
+                          {console.log("reading active details")}
                           {console.log(value['active'])}
                           {console.log(parseInt(value.active))}
                           {parseInt(value.active) ? (

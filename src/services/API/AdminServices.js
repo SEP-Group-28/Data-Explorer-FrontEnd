@@ -23,6 +23,6 @@ const getUsers = (skip,take,search)=> {
   }
   
 export default {
-getUsers
+    getUsers
 }
   

@@ -47,7 +47,8 @@
     "react-router": "^6.4.0",
     "react-router-dom": "^6.4.0",
     "react-script-tag": "^1.1.2",
-    "react-toastify": "^9.0.8"
+    "react-toastify": "^9.0.8",
+    "sweetalert2": "^11.6.5"
   },
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.18.6",
