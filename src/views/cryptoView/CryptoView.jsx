@@ -71,10 +71,10 @@ function CryptoView() {
             interval={interval}
             internalIndicators={internalIndicators}
           />
-          {rsi && <LineChart market={market} interval={interval} type="rsi" />}
-          {obv && <LineChart market={market} interval={interval} type="obv" />}
-          {roc && <LineChart market={market} interval={interval} type="roc" />}
-          {macd && <MACDChart market={market} interval={interval} />}
+          {rsi && <LineChart marketType="crypto" market={market} interval={interval} type="rsi" />}
+          {obv && <LineChart marketType="crypto" market={market} interval={interval} type="obv" />}
+          {roc && <LineChart marketType="crypto" market={market} interval={interval} type="roc" />}
+          {macd && <MACDChart marketType="crypto" market={market} interval={interval} />}
         </div>
         <div className="types-crypto">
           <CryptoTypes changeCryptoType={changeCryptoType} />

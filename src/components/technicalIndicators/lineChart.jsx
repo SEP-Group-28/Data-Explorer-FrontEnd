@@ -6,7 +6,7 @@ import { Typography } from "@mui/material";
 import config from "../../config.json";
 import Loader from "../../components/loader/Loader";
 
-function LineChart({ market, interval, type }) {
+function LineChart({marketType, market, interval, type }) {
   const location = useLocation();
   try {
     var marketState = location.state.market;
@@ -64,7 +64,7 @@ function LineChart({ market, interval, type }) {
     });
 
     const url =
-      `${config.DOMAIN_NAME}/${type}/crypto/` +
+      `${config.DOMAIN_NAME}/${type}/${marketType}/` +
       `${market || marketState}/${interval || intervalState}`;
     console.log(url);
 
@@ -139,26 +139,29 @@ function LineChart({ market, interval, type }) {
   return (
     <>
       {/* {loading ? <Loader position="relative" left="46.5%" top="9%" /> : null} */}
-      <div>
-        <Typography
-          style={{
-            margin: "0 auto",
-            marginTop: "1rem",
-            marginBottom:"-10px",
-            color: "white",
-            width: "fit-content",
-          }}
-          variant="h6"
-        >
-          {type.toUpperCase()}
-        </Typography>
+      <div className="d-flex flex-row">
+        <div
+          className="CryptoChart"
+          ref={ref}
+          // onMouseUpCapture={handleDrag}
+          style={{ marginBottom: "-10px",marginLeft:"15px", marginRight:"20px" }}
+        />
+        <div>
+          <Typography
+            style={{
+              margin: "0 auto",
+              marginTop: "1rem",
+              marginBottom: "-10px",
+              color: "white",
+              width: "fit-content",
+            }}
+            variant="h6"
+          >
+            {type.toUpperCase()}
+          </Typography>
+        </div>
+        
       </div>
-      <div
-        className="CryptoChart"
-        ref={ref}
-        // onMouseUpCapture={handleDrag}
-        style={{ marginBottom: "-10px" }}
-      />
       ;
     </>
   );
