@@ -13,7 +13,7 @@ function LineChart({marketType, market, interval, type }) {
   } catch (error) {
     marketState = "BTC";
   }
-  var intervalState = location?.state?.interval || "1m";
+  var intervalState = location?.state?.interval || marketType=="crypto"?"1m":"5m";
 
   function getWindowDimension() {
     const { innerWidth: width, innerHeight: height } = window;
