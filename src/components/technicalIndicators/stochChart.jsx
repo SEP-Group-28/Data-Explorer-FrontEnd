@@ -80,7 +80,7 @@ function StochChart({ marketType, market, interval }) {
         const tempTimeLine = [];
 
         const dataSlowk = data["slowk"];
-        const dataSlowd = data["macdsignal"];
+        const dataSlowd = data["slowd"];
 
         for (let key in dataSlowk) {
           if (dataSlowk.hasOwnProperty(key)) {
@@ -104,8 +104,8 @@ function StochChart({ marketType, market, interval }) {
         let tempSlowkData = removeDuplicates(tempSlowk);
         let tempSlowdData = removeDuplicates(tempSlowd);
 
-        slowkSeries.current.setData(tempMacdData);
-        slowdSeries.current.setData(tempMacdSignalData);
+        slowkSeries.current.setData(tempSlowkData);
+        slowdSeries.current.setData(tempSlowdData);
 
         setLoading(false);
       })
