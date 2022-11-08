@@ -28,6 +28,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useEffect } from "react";
 import TokenRequest from "../../views/notification/TokenRequest";
 import { useSelector } from "react-redux";
+import { useState } from "react";
 
 const style = {
   position: 'relative',
@@ -60,14 +61,13 @@ const userPages = ["Home", "Stock", "Crypto"];
 const pages = [...userPages, "Login","Sign up"];
 const settings = ["Profile", "Watchlist", "Logout"];
 const HeaderTwo = () => {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
   
-  var [count, setCount] = React.useState(0);
+  var [count, setCount] = useState(0);
 
   const {link} = useSelector((state)=>state.profile)
   console.log("link", link)
-  // const[image,setImage]=React.useState(imagepath)
   const classes = useStyles();
   // console.log('allloooo')
   // console.log('IMAGE PATH',imagepath)
@@ -121,7 +121,7 @@ const HeaderTwo = () => {
     // const user = false;
    
   // for modal
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 

@@ -114,8 +114,8 @@ const Profile = () => {
     const imageref=useRef()
 
     const [loader, setLoader] = useState(false);
-    const [open, setOpen] = React.useState(false);
-    const [show, setShow] = React.useState(false);
+    const [open, setOpen] = useState(false);
+    const [show, setShow] = useState(false);
     const handleShow = () => setShow(true);
     const handleClose = () => setShow(false);
 
@@ -167,7 +167,7 @@ const Profile = () => {
     //     })
     //     // console.log(moment(state['Birthday']).format("MM-DD-YYYY"))
     // }
-    // const [value, setValue] = React.useState(dayjs('01/01/2004'));
+    // const [value, setValue] = useState(dayjs('01/01/2004'));
 
     const errors = {};
 

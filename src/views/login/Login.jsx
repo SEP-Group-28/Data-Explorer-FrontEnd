@@ -23,7 +23,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { save } from "../../redux/alert";
 import UserServices from "../../services/API/UserServices";
 import { saveImage } from "../../redux/profile";
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
+
 // import TokenRequest from "../notification/TokenRequest";
 
 
