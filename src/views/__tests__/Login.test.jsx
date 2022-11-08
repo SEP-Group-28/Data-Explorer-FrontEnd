@@ -6,7 +6,8 @@ import userEvent from "@testing-library/user-event";
 import { store } from '../../redux/store';
 import { Provider } from 'react-redux';
 
-jest.mock("../../firebaseInit", () => jest.fn());
+// mock FirebaseInit
+jest.mock("../../firebaseInit");
 
 describe("Test Login component", () =>{
     const createInstance=() => {

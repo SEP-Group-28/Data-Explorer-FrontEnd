@@ -209,6 +209,7 @@ const Profile = () => {
         setTimeout(() => {
             setLoader(false);
         }, 200);
+        setLoader(false);
     }
 
     // var imgDiv=refprofilepicdiv.current
@@ -323,7 +324,7 @@ const Profile = () => {
 
             
                     <div onMouseEnter={()=>setIsShown(true)} onMouseLeave={()=>setIsShown(false)} className="profile-pic-div" style={{position: 'relative', left: '50%', marginTop:'-200px', maxWidth:'50%'}}>
-                      <img  src={state['ImagePath']? state['ImagePath']:'src/assets/DefaultProfilePic/user.jpg'} id="photo" className='photo'/>
+                      <img  data-testid='profile-pic' src={state['ImagePath']? state['ImagePath']:'src/assets/DefaultProfilePic/user.jpg'} id="photo" className='photo'/>
                       <input onChange={handleChangePhoto} type="file" id="file" className='file'/>
                      {isShown &&(<label    htmlFor="file" id="uploadBtn" className='uploadBtn'>Choose Photo</label>)}
                     </div>
@@ -419,9 +420,9 @@ const Profile = () => {
                         )
                     }
 
-                    <div className='container1'>
-                    <Button data-testid='register-elem' className="button" size="lg" onClick={handleSubmit} style={{fontSize:'14px'}}>Save</Button>
-                    <Button data-testid='register-elem' className="button" size='lg' onClick={handleShow} style={{fontSize:'14px'}}>Change Password</Button>
+                    <div data-testid='profile-elem' className='container1'>
+                    <Button className="button" size="lg" onClick={handleSubmit} style={{fontSize:'14px'}}>Save</Button>
+                    <Button className="button" size='lg' onClick={handleShow} style={{fontSize:'14px'}}>Change Password</Button>
                     </div>
                     {/* <Button className='btn btn-secondary button w-20 update-btn' size="lg" onClick={handleOpen} style={{fontSize:'14px'}}>Edit</Button> */}
             </Form>
