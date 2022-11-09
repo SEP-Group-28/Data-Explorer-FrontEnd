@@ -10,7 +10,7 @@ import Validations from '../../Validations';
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import Loader from '../../components/loader/Loader';
-import UpdateProfile from './UpdateProfile';
+// import UpdateProfile from './UpdateProfile';
 import Avatar from '@mui/material/Avatar';
 import '../../assets/css/Profile.css';
 // import moment from 'moment';
