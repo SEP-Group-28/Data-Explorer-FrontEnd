@@ -6,6 +6,7 @@ import StockChart from './StockChart';
 import StockTypes from './StockTypes';
 import LineChart from "../../components/technicalIndicators/lineChart";
 import MACDChart from "../../components/technicalIndicators/macdChart";
+import StochChart from "../../components/technicalIndicators/stochChart";
 
 function StockView() {
 
@@ -54,6 +55,7 @@ function StockView() {
           {obv && <LineChart marketType="stock" market={market} interval={interval} type="obv" />}
           {roc && <LineChart marketType="stock" market={market} interval={interval} type="roc" />}
           {macd && <MACDChart marketType="stock" market={market} interval={interval} />}
+          {stoch && <StochChart marketType="stock" market={market} interval={interval}/>}
 
         </div>
         <div className="types-crypto">

@@ -4,26 +4,26 @@ import { removeDuplicates } from "../../utils/functions";
 import { useLocation } from "react-router-dom";
 import { Typography } from "@mui/material";
 import config from "../../config.json";
-import Loader from "../../components/loader/Loader";
 
-function MACDChart({ marketType, market, interval }) {
+function StochChart({ marketType, market, interval }) {
   const location = useLocation();
   try {
     var marketState = location.state.market;
   } catch (error) {
     marketState = "BTC";
   }
-  var intervalState = location?.state?.interval || marketType=="crypto"?"1m":"5m";
+  var intervalState = location?.state?.interval || marketType == "crypto" ? "1m" : "5m";
 
   function getWindowDimension() {
     const { innerWidth: width, innerHeight: height } = window;
     return { width, height };
   }
-  const ref = React.useRef();
+
+  const ref = useRef();
   const chart = useRef();
-  const macdSeries = useRef();
-  const macdSignalSeries = useRef();
-  const macdHistSeries = useRef();
+  const slowkSeries = useRef();
+  const slowdSeries = useRef();
+
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -49,17 +49,15 @@ function MACDChart({ marketType, market, interval }) {
       },
     });
 
-    macdSeries.current = chart.current.addLineSeries({
+    slowkSeries.current = chart.current.addLineSeries({
       lineWidth: 1.2,
-      color: "blue",
+      color: "#8E0072",
     });
-    macdSignalSeries.current = chart.current.addLineSeries({
+    slowdSeries.current = chart.current.addLineSeries({
       lineWidth: 1.5,
-      color: "#973A80",
+      color: "#00733E",
     });
-    macdHistSeries.current = chart.current.addHistogramSeries({
-      base: 0,
-    });
+
 
     chart.current.applyOptions({
       timeScale: {
@@ -70,60 +68,44 @@ function MACDChart({ marketType, market, interval }) {
     });
 
     const url =
-      `${config.DOMAIN_NAME}/macd/${marketType}/` +
+      `${config.DOMAIN_NAME}/stoch/${marketType}/` +
       `${market || marketState}/${interval || intervalState}`;
     console.log(url);
 
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
-        const tempMacd = [];
-        const tempMacdSignal = [];
-        const tempMacdHist = [];
+        const tempSlowk = [];
+        const tempSlowd = [];
         const tempTimeLine = [];
 
-        const dataMacd = data["macd"];
-        const dataMacdSignal = data["macdsignal"];
-        const dataMacdHist = data["macdhist"];
+        const dataSlowk = data["slowk"];
+        const dataSlowd = data["slowd"];
 
-        for (let key in dataMacd) {
-          if (dataMacd.hasOwnProperty(key)) {
+        for (let key in dataSlowk) {
+          if (dataSlowk.hasOwnProperty(key)) {
             let object = {
               time: Number(key),
-              value: dataMacd[key],
+              value: dataSlowk[key],
             };
-            tempMacd.push(object);
+            tempSlowk.push(object);
             tempTimeLine.push(object.time);
           }
-          if (dataMacdSignal.hasOwnProperty(key)) {
+          if (dataSlowd.hasOwnProperty(key)) {
             let object = {
               time: Number(key),
-              value: dataMacdSignal[key],
+              value: dataSlowd[key],
             };
-            tempMacdSignal.push(object);
+            tempSlowd.push(object);
           }
-          if (dataMacdHist.hasOwnProperty(key)) {
-            let color;
-            if (dataMacdHist[key] > 0) {
-              color = "rgba(0,133,48,1)";
-            } else {
-              color = "rgba(162,0,0,1)";
-            }
-            let object = {
-              time: Number(key),
-              value: dataMacdHist[key],
-              color,
-            };
-            tempMacdHist.push(object);
-          }
+
         }
 
-        let tempMacdData = removeDuplicates(tempMacd);
-        let tempMacdSignalData = removeDuplicates(tempMacdSignal);
-        let tempMacdHistData = removeDuplicates(tempMacdHist);
-        macdSeries.current.setData(tempMacdData);
-        macdSignalSeries.current.setData(tempMacdSignalData);
-        macdHistSeries.current.setData(tempMacdHistData);
+        let tempSlowkData = removeDuplicates(tempSlowk);
+        let tempSlowdData = removeDuplicates(tempSlowd);
+
+        slowkSeries.current.setData(tempSlowkData);
+        slowdSeries.current.setData(tempSlowdData);
 
         setLoading(false);
       })
@@ -185,7 +167,7 @@ function MACDChart({ marketType, market, interval }) {
           }}
           variant="h6"
         >
-          MACD
+          STOCH
         </Typography>
       </div>
       <div
@@ -197,6 +179,7 @@ function MACDChart({ marketType, market, interval }) {
       ;
     </>
   );
+
 }
 
-export default MACDChart;
+export default StochChart;
