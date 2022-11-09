@@ -124,10 +124,10 @@ const Profile = () => {
     
     const userDecode = Token.getAuth()
     const id = userDecode['user_id']
-    console.log("id:", id)
+    // console.log("id:", id)
     const handleSubmit = async() => {
         
-        console.log(state)
+        // console.log(state)
         try {
             
             const response=await UserServices.updateprofile(state,id)
@@ -180,7 +180,7 @@ const Profile = () => {
         try {
             const response = await UserServices.getUser(id);
             const getuser=response.data.data
-            console.log('response',getuser['imagepath'])
+            // console.log('response',getuser['imagepath'])
             // const l_ = 
             // console.log('l_',l_)
             dispatch(saveImage(getuser['imagepath']))
@@ -232,10 +232,10 @@ const Profile = () => {
     // if(file){
         
        const handleChangePhoto= function(e){
-            console.log(e.target.files)
+            // console.log(e.target.files)
             const choosedFile = e.target.files[0];
-            console.log('name',choosedFile)
-            console.log('namedfsdf',choosedFile.name)
+            // console.log('name',choosedFile)
+            // console.log('namedfsdf',choosedFile.name)
     
             if (choosedFile) {
     
@@ -248,7 +248,7 @@ const Profile = () => {
     
                 reader.readAsDataURL(choosedFile);
                 try{
-                    console.log(choosedFile)
+                    // console.log(choosedFile)
                     const formData=new FormData();
                     formData.append('Image',choosedFile)
                     // formData.append('ImageName',choosedFile.name)
@@ -259,12 +259,12 @@ const Profile = () => {
                         try { 
                             const response =await UserServices.updatePhoto(id,formData);
                             if(response.status===200){
-                                console.log('success')
-                                console.log("====")
+                                // console.log('success')
+                                // console.log("====")
                                 dispatch(saveImage(response['data']['data']['imagepath']))
                             }
                             // imageref.current.getElementById('hi').setAttribute('src',reader.result)
-                            console.log("imageref ", imageref.current)
+                            // console.log("imageref ", imageref.current)
                             
                         } catch (error) {
                             console.log(error)
@@ -301,8 +301,8 @@ const Profile = () => {
 
     const handleChange = event => {
       // 👇️ toggle shown state
-      console.log(event)
-      console.log(event.target.value)
+    //   console.log(event)
+    //   console.log(event.target.value)
       setState({...state,[event.target.name]:event.target.value})
         
       // 👇️ or simply set it to true
@@ -316,7 +316,7 @@ const Profile = () => {
 
         return (
             <div className='container2' style={{'display':'flex', 'flexDirection': 'column'}}>
-                {console.log('image',state['ImagePath'])}
+                {/* {console.log('image',state['ImagePath'])} */}
                 <HeaderTwo  imagepath={state['ImagePath']}/>
                 <div className='form-container col-xl-5 mt-5 pt-5 mx-auto' style={ style_1}>
                     
@@ -337,7 +337,7 @@ const Profile = () => {
                     <InputLabel sx={{fontSize:"13px",mt:"-7px"}} className="inputLabel" htmlFor="outlined-adornment-firstname">
                     First Name
                     </InputLabel>
-                    <OutlinedInput value={state['First Name']} className="outLineInput" id="outlined-adornment-firstname" type={"text"}
+                    <OutlinedInput data-testid='first-name' value={state['First Name']} className="outLineInput" id="outlined-adornment-firstname" type={"text"}
                         style={{ color: "rgb(194, 193, 193)", fontSize: "13px" }}
                         name="First Name" onChange={handleChange} error={fNameError != ""} label="First Name"/>
                     </FormControl>
@@ -361,7 +361,7 @@ const Profile = () => {
                         {lNameError}
                         </p>
                     )}
-                    {console.log(state['Email'])}
+                    {/* {console.log(state['Email'])} */}
                         <FormControl sx={{ m: 1 }} variant="outlined" className="register-form-control">
                 
                         <LocalizationProvider dateAdapter={AdapterDayjs} style={{backgroundColor:'white'}} >

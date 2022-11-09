@@ -6,6 +6,7 @@ import Profile from '../profile/Profile';
 import { Provider } from 'react-redux';
 import { store } from '../../redux/store';
 import UserServices from '../../services/API/UserServices';
+import ChangePassword from '../profile/ChangePassword';
 
 // mock
 jest.mock("../../firebaseInit");
@@ -24,6 +25,7 @@ describe("Test Profile component", () =>{
         </BrowserRouter>
         </Provider>);
     }  
+
     it("render profile form with two buttons", () => {
         createInstance();
         const btnList = screen.getByTestId('profile-elem');
@@ -34,5 +36,21 @@ describe("Test Profile component", () =>{
         createInstance();
         const profilePic = screen.getByTestId('profile-pic');
         expect(profilePic).not.toBeNull();
+    });
+
+    it("Change password form loads with a save button", async() =>{
+        render(<BrowserRouter><ChangePassword/></BrowserRouter>);
+        const btnList = screen.getByTestId('chng-pwd-elem');
+        expect(btnList).not.toBeNull();
+    });
+
+    it("Change password form contains current, new, confirm password fields", async() =>{
+        render(<BrowserRouter><ChangePassword/></BrowserRouter>);
+        const currentPwd = screen.getByTestId('current-password');
+        const newPwd = screen.getByTestId('new-password');
+        const confirmPwd = screen.getByTestId('confirm-password');
+        expect(currentPwd).not.toBeNull();
+        expect(newPwd).not.toBeNull();
+        expect(confirmPwd).not.toBeNull();
     });
 })
