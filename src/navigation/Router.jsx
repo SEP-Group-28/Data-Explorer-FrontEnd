@@ -9,7 +9,6 @@ import NotFound from "../views/invalid_prohibited/NotFound";
 import Unauthorized from "../views/invalid_prohibited/Unauthorized";
 import CryptoView from "../views/cryptoView/CryptoView";
 import Profile from "../views/profile/Profile";
-import UpdateProfile from "../views/profile/UpdateProfile";
 import StockView from "../views/stockView/StockView";
 import Watchlist from "../views/watchlist/Watchlist";
 import AllUsers from './../views/all_users/AllUsers';
@@ -41,7 +40,7 @@ function Router() {
         <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="/users" element={<AllUsers/>}/>
         <Route path="/profile" element={<RequireAuth allowedRoles={[ROLES.User]}><Profile /></RequireAuth>} />
-        <Route path="/updateProfile" element={<RequireAuth allowedRoles={[ROLES.User]}><UpdateProfile /></RequireAuth>} />
+        {/* <Route path="/updateProfile" element={<RequireAuth allowedRoles={[ROLES.User]}><UpdateProfile /></RequireAuth>} /> */}
         <Route path="/watchlist" element={<RequireAuth allowedRoles={[ROLES.User]}><Watchlist /></RequireAuth>} />
         <Route path="/adminDashboard" element={<RequireAuth allowedRoles={[ROLES.User]}><AllUsers/></RequireAuth>} />
         {/* <Route path="/notification" element={<TokenRequest/>}></Route> */}
