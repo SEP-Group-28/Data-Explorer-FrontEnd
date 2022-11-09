@@ -10,6 +10,7 @@ import Badge from '@mui/material/Badge';
 import Alert from '../alert/Alert';
 import LineChart from "../../components/technicalIndicators/lineChart";
 import MACDChart from "../../components/technicalIndicators/macdChart";
+import StochChart from "../../components/technicalIndicators/stochChart";
 
 function CryptoView() {
   const [market, setMarket] = useState("");
@@ -41,7 +42,6 @@ function CryptoView() {
     };
     const addExternalIndicators = (indicators) => {
       setExternlIndicators(indicators);
-      console.log("display rsi")
     };
 
   // getting user
@@ -74,6 +74,7 @@ function CryptoView() {
           {obv && <LineChart marketType="crypto" market={market} interval={interval} type="obv" />}
           {roc && <LineChart marketType="crypto" market={market} interval={interval} type="roc" />}
           {macd && <MACDChart marketType="crypto" market={market} interval={interval} />}
+          {stoch && <StochChart marketType="crypto" market={market} interval={interval}/>}
         </div>
         <div className="types-crypto">
           <CryptoTypes changeCryptoType={changeCryptoType} />

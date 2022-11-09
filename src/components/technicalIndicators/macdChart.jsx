@@ -6,19 +6,19 @@ import { Typography } from "@mui/material";
 import config from "../../config.json";
 import Loader from "../../components/loader/Loader";
 
-function MACDChart({marketType, market, interval}) {
-   const location = useLocation();
-   try {
-     var marketState = location.state.market;
-   } catch (error) {
-     marketState = "BTC";
-   }
-   var intervalState = location?.state?.interval || "1m";
+function MACDChart({ marketType, market, interval }) {
+  const location = useLocation();
+  try {
+    var marketState = location.state.market;
+  } catch (error) {
+    marketState = "BTC";
+  }
+  var intervalState = location?.state?.interval || marketType=="crypto"?"1m":"5m";
 
-   function getWindowDimension() {
-     const { innerWidth: width, innerHeight: height } = window;
-     return { width, height };
-   }
+  function getWindowDimension() {
+    const { innerWidth: width, innerHeight: height } = window;
+    return { width, height };
+  }
   const ref = React.useRef();
   const chart = useRef();
   const macdSeries = useRef();
@@ -27,7 +27,7 @@ function MACDChart({marketType, market, interval}) {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
     chart.current = createChart(ref.current, {
       width: 0,
       height: 0,
@@ -70,13 +70,13 @@ function MACDChart({marketType, market, interval}) {
     });
 
     const url =
-      `${config.DOMAIN_NAME}/macd/crypto/` +
+      `${config.DOMAIN_NAME}/macd/${marketType}/` +
       `${market || marketState}/${interval || intervalState}`;
     console.log(url);
 
     fetch(url)
-      .then(res=>res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         const tempMacd = [];
         const tempMacdSignal = [];
         const tempMacdHist = [];
@@ -86,8 +86,8 @@ function MACDChart({marketType, market, interval}) {
         const dataMacdSignal = data["macdsignal"];
         const dataMacdHist = data["macdhist"];
 
-        for (let key in dataMacd){
-          if (dataMacd.hasOwnProperty(key)){
+        for (let key in dataMacd) {
+          if (dataMacd.hasOwnProperty(key)) {
             let object = {
               time: Number(key),
               value: dataMacd[key],
@@ -96,45 +96,43 @@ function MACDChart({marketType, market, interval}) {
             tempTimeLine.push(object.time);
           }
           if (dataMacdSignal.hasOwnProperty(key)) {
-              let object = {
-                time: Number(key),
-                value: dataMacdSignal[key],
-              };
-              tempMacdSignal.push(object)
+            let object = {
+              time: Number(key),
+              value: dataMacdSignal[key],
+            };
+            tempMacdSignal.push(object);
+          }
+          if (dataMacdHist.hasOwnProperty(key)) {
+            let color;
+            if (dataMacdHist[key] > 0) {
+              color = "rgba(0,133,48,1)";
+            } else {
+              color = "rgba(162,0,0,1)";
             }
-            if (dataMacdHist.hasOwnProperty(key)) {
-              let color
-              if (dataMacdHist[key] > 0) {
-                color = "rgba(0,133,48,1)";
-              } else {
-                color = "rgba(162,0,0,1)";
-              }
-              let object = {
-                time: Number(key),
-                value: dataMacdHist[key],
-                color,
-              };
-              tempMacdHist.push(object)
+            let object = {
+              time: Number(key),
+              value: dataMacdHist[key],
+              color,
+            };
+            tempMacdHist.push(object);
+          }
         }
-      }
 
-      let tempMacdData = removeDuplicates(tempMacd);
-      let tempMacdSignalData = removeDuplicates(tempMacdSignal)
-      let tempMacdHistData = removeDuplicates(tempMacdHist)
-       macdSeries.current.setData(tempMacdData);
-       macdSignalSeries.current.setData(tempMacdSignalData);
-       macdHistSeries.current.setData(tempMacdHistData);
+        let tempMacdData = removeDuplicates(tempMacd);
+        let tempMacdSignalData = removeDuplicates(tempMacdSignal);
+        let tempMacdHistData = removeDuplicates(tempMacdHist);
+        macdSeries.current.setData(tempMacdData);
+        macdSignalSeries.current.setData(tempMacdSignalData);
+        macdHistSeries.current.setData(tempMacdHistData);
 
-       setLoading(false);
-
-    }).catch()
+        setLoading(false);
+      })
+      .catch();
 
     return () => {
       chart.current.remove();
     };
-
   }, [market, interval]);
-
 
   const [windowDimensions, setWindowDimensions] = useState(
     getWindowDimension()
@@ -173,32 +171,32 @@ function MACDChart({marketType, market, interval}) {
     };
   });
 
-   return (
-     <>
-       {/* {loading ? <Loader position="relative" left="46.5%" top="9%" /> : null} */}
-       <div>
-         <Typography
-           style={{
-             margin: "0 auto",
-             marginTop: "1rem",
-             marginBottom: "-10px",
-             color: "white",
-             width: "fit-content",
-           }}
-           variant="h6"
-         >
-           MACD
-         </Typography>
-       </div>
-       <div
-         className="CryptoChart"
-         ref={ref}
-         // onMouseUpCapture={handleDrag}
-         style={{ marginBottom: "-10px" }}
-       />
-       ;
-     </>
-   );
+  return (
+    <>
+      {/* {loading ? <Loader position="relative" left="46.5%" top="9%" /> : null} */}
+      <div>
+        <Typography
+          style={{
+            margin: "0 auto",
+            marginTop: "1rem",
+            marginBottom: "-10px",
+            color: "white",
+            width: "fit-content",
+          }}
+          variant="h6"
+        >
+          MACD
+        </Typography>
+      </div>
+      <div
+        className="CryptoChart"
+        ref={ref}
+        // onMouseUpCapture={handleDrag}
+        style={{ marginBottom: "-10px" }}
+      />
+      ;
+    </>
+  );
 }
 
 export default MACDChart;

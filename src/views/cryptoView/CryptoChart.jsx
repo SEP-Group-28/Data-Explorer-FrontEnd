@@ -17,20 +17,10 @@ function CryptoChart({ market, interval,internalIndicators }) {
   }
   var intervalState = location?.state?.interval || "1m";
 
-  const [internalIndicatorState,setInternalIndicatorState] =useState(internalIndicators);
   function getWindowDimension() {
     const { innerWidth: width, innerHeight: height } = window;
     return { width, height };
   }
-  // useEffect(() => {
-  //   setInternalIndicatorState({
-  //     ma: false,
-  //     sma: false,
-  //     ema: false,
-  //     wma: false,
-  //     bbands: false,
-  //   });
-  // }, [market]);
 
 
   const { ma, sma, ema, wma, bbands } = internalIndicators;
@@ -44,6 +34,9 @@ function CryptoChart({ market, interval,internalIndicators }) {
 
   const [chartData, setChartData] = useState([]);
   const [timeLine, setTimeLine] = useState([]);
+
+  const [visibleRange, setVisibleRange] = useState({});
+  const [timeStamp,setTimeStamp] =useState(0)
   
   useEffect(() => {
     setLoading(true)
@@ -113,8 +106,11 @@ function CryptoChart({ market, interval,internalIndicators }) {
         let tempChartData = removeDuplicates(tempCandlesticks).sort(compare);
 
         candleSeries.current.setData(tempChartData);
-
-
+        
+        let tempTimeLineData = tempTimeLine.filter((c, index) => {
+          return tempTimeLine.indexOf(c) === index;
+        });
+        setTimeLine(tempTimeLineData);
         setLoading(false);
   
        
@@ -140,10 +136,6 @@ function CryptoChart({ market, interval,internalIndicators }) {
       }
     );
 
-      
-    //  chart.current.timeScale().setVisibleLogicalRange({ from: 100, to: 150 });
-    //  chart.current.timeScale().scrollToPosition(1, true);
-    //  chart.current.timeScale().setVisibleRange(from:);
 
     if(ma){
       const maLineSeries = chart.current.addLineSeries({
@@ -224,19 +216,27 @@ function CryptoChart({ market, interval,internalIndicators }) {
        );
     }
     // console.log("Range", chart.current.timeScale().getVisibleRange());
-    // function onVisibleLogicalRangeChanged(newVisibleLogicalRange) {
-    //   console.log(newVisibleLogicalRange);
-    // }
+    function onVisibleTimeRangeChanged(newVisibleTimeRange) {
+      setVisibleRange(newVisibleTimeRange);
+      console.log(newVisibleTimeRange)
+    }
+    
 
-    // chart.current
-    //   .timeScale()
-    //   .subscribeVisibleLogicalRangeChange(onVisibleLogicalRangeChanged);
+    chart.current
+      .timeScale()
+      .subscribeVisibleTimeRangeChange(onVisibleTimeRangeChanged);
       // chart.current.timeScale().setVisibleLogicalRange({
       //   from: -5,
       //   to: 150,
       // });
     
+    function onVisibleLogicalRangeChanged(newVisibleLogicalRange) {
+      console.log(newVisibleLogicalRange);
+    }
 
+    chart.current
+      .timeScale()
+      .subscribeVisibleLogicalRangeChange(onVisibleLogicalRangeChanged);
     return () => {
       chart.current.remove();
       eventSource.close();
