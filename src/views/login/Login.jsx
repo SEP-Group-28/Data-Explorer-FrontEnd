@@ -23,6 +23,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { save } from "../../redux/alert";
 import UserServices from "../../services/API/UserServices";
 import { saveImage } from "../../redux/profile";
+import Swal from 'sweetalert2';
+
 // import TokenRequest from "../notification/TokenRequest";
 
 
@@ -97,6 +99,23 @@ function Login() {
 
           console.log('Token found', isTokenFound)
 
+          console.log("logging in...");
+        const id = jwtDecode(Token.getAccessToken())['user_id'];
+        console.log("id is", id);
+        const response_ = await UserServices.getUser(id);
+        const getuser=response_.data.data
+        if (getuser['active'] == '0'){
+          Swal.fire(
+            'Your account has been deactivated',
+            'Please contact admin',
+            'question'
+          )
+          throw new Error("Your account is not active. Please contact admin.")
+        }
+        console.log('response',getuser['imagepath'])
+        dispatch(saveImage(getuser['imagepath']))
+        
+
           // To load once
             
 
@@ -118,25 +137,12 @@ function Login() {
           })
 
         }
-        console.log("logging in...");
-        try {
-          const id = jwtDecode(Token.getAccessToken())['user_id'];
-          console.log("id is", id);
-          const response = await UserServices.getUser(id);
-          const getuser=response.data.data
-          console.log('response',getuser['imagepath'])
-          dispatch(saveImage(getuser['imagepath']))
-
-          // <TokenRequest/>
-          // setBool(true)
-        } catch (error) {
-          console.log("error is ", error)
-        }
         
 
         navigate(from, { replace: true });
 
-      } catch (error) {
+      }
+      catch (error) {
         console.log(error)
         console.log("error",error?.response?.data?.message);
         console.log("Login failed");

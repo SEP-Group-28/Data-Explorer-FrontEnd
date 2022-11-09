@@ -9,6 +9,7 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Indicator from "../../assets/indicator.svg";
+import { useState } from "react";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -38,8 +39,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const IndicatorMenuTwo = ({ displayExternalIndicators }) => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [indicators, setIndicators] = React.useState({
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [indicators, setIndicators] = useState({
     rsi: false,
     obv: false,
     roc: false,

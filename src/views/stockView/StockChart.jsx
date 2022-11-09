@@ -18,7 +18,7 @@ function StockChart({ market, interval, internalIndicators }) {
   }
   var intervalState = location?.state?.interval || "5m";
 
-  const ref = React.useRef();
+  const ref = useRef();
   const [loading, setLoading] = useState(false);
 
   const [chartData, setChartData] = useState([]);

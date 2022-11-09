@@ -15,7 +15,7 @@ function CryptoHeader({ market, interval }) {
   const [volume,setVolume] = useState(19000)
 
   // for alert
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 

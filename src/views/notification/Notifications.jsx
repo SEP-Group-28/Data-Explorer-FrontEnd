@@ -10,12 +10,13 @@ import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import NotificationServices from "../../services/NotificationServices";
+import { Fragment } from "react";
 
 // const rows = DummyData;
 
 export default function Notifications({increment}){
   // for no new notification alert
-    const [open_, setOpen_] = React.useState(true);
+    const [open_, setOpen_] = useState(true);
     const handleOpen_ = () => setOpen_(true);
     const handleClose_ = (event, reason) => {
       if (reason == 'clickaway'){
@@ -34,7 +35,7 @@ export default function Notifications({increment}){
     }, [])
     
     const action = (
-      <React.Fragment>
+      <Fragment>
         <IconButton
           size="small"
           aria-label="close"
@@ -43,7 +44,7 @@ export default function Notifications({increment}){
         >
           <CloseIcon fontSize="small" />
         </IconButton>
-      </React.Fragment>
+      </Fragment>
     );
 
     const [data, setData] = useState([]);

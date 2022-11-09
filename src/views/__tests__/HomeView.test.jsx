@@ -6,6 +6,7 @@ import HomeSubOne from '../homeView/HomeSubOne';
 import StockSec from '../homeView/StockSec';
 import Footer from '../homeView/Footer';
 import HomeSubTwo from '../homeView/HomeSubTwo';
+import { BrowserRouter } from 'react-router-dom';
 
 describe("Test HomeView component", () =>{
     it("render alert details", () => {
@@ -14,7 +15,7 @@ describe("Test HomeView component", () =>{
         expect(txt).toBeInTheDocument();
     });
     it("render Cypto section", () => {
-        render(<CryptoSec/>);
+        render(<BrowserRouter><CryptoSec/></BrowserRouter>);
         const txt = screen.getByTestId('cryptoDesc');
         expect(txt).toBeInTheDocument();
     });
@@ -29,8 +30,8 @@ describe("Test HomeView component", () =>{
         expect(txt).toBeInTheDocument();
     });
     it("render Stock section", () => {
-        render(<StockSec/>);
-        const txt = screen.getByTestId('stockDesc');
+        render(<BrowserRouter><StockSec/></BrowserRouter>);
+        const txt = screen.getByTestId('stockDes');
         expect(txt).toBeInTheDocument();
     });
     it("render the footer", () => {

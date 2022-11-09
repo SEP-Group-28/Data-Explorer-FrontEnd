@@ -4,7 +4,7 @@ import Form from 'react-bootstrap/Form';
 import "../../assets/css/UpdateProfile.css";
 import '../../assets/font-awesome/css/font-awesome.css';
 import { Row, Col } from 'react-bootstrap';
-import HeaderTwo from "../../components/headers/HeaderTwo";
+// import HeaderTwo from "../../components/headers/HeaderTwo";
 import UserServices from '../../services/API/UserServices';
 import Validations from '../../Validations';
 import { useState, useEffect } from 'react';
@@ -108,14 +108,14 @@ const ChangePassword = () => {
     }
     const handleSubmit= async(e)=>{
         e.preventDefault()
-        console.log("handle submit called")
+        // console.log("handle submit called")
         const password = state["New Password"]
         const re_password = state["Confirm Password"]
         const old_password = state["Current Password"]
-        console.log(password, re_password, "he hee")
+        // console.log(password, re_password, "he hee")
         try {
             var userDecode = jwtDecode(Token.getAccessToken())
-            console.log("user ", userDecode)
+            // console.log("user ", userDecode)
         } catch (error) {
             userDecode= null   
             console.log(error) 
@@ -125,11 +125,11 @@ const ChangePassword = () => {
 
         // setPwdErr('');
         const { value, error } = Validations.userUpdatePwd({ password, re_password });
-        console.log("handle submit, user id", user_id)
+        // console.log("handle submit, user id", user_id)
         if (error) {
             console.log(error);
             const errors = {};
-            console.log(error.details)
+            // console.log(error.details)
             error.details.map(item => {
                 errors[item.path[0]] = item.message;
             });
@@ -147,7 +147,7 @@ const ChangePassword = () => {
                 // const user_id = params.user_id;
                 // const user_id = '6338626c4ecd3c07364102b8';
                 const response = await UserServices.updatePasswordByUser({ password, old_password, user_id });
-                console.log("Password Update....", response)
+                // console.log("Password Update....", response)
                 if (response.status === 200) {            
                     // Messages.SuccessMessage("Password Updated Successfully");
                     setTimeout(navigate('/logout'), 3000);
@@ -192,7 +192,7 @@ const ChangePassword = () => {
         return (
             <div style={{ margin:'auto', backgroundColor:'#20232B', marginTop:'15%'}}>
 
-                <div className='form-container mt-5 pt-5' style={{ background: 'none'}}>
+                <div className='form-container mt-5 pt-5'>
 
                     <h1 className='fs-1 text-primary'>Change Password</h1>
 
@@ -205,7 +205,7 @@ const ChangePassword = () => {
                                     <InputLabel sx={{fontSize:"13px",mt:"-7px"}} className="inputLabel"htmlFor="outlined-adornment-password">
                                     Current Password
                                     </InputLabel>
-                                    <OutlinedInput className="outLineInput" id="outlined-adornment-password" type={showPassword ? "text" : "password"}
+                                    <OutlinedInput data-testid='current-password' className="outLineInput" id="outlined-adornment-password" type={showPassword ? "text" : "password"}
                                     style={{ color: "rgb(194, 193, 193)", fontSize: "13px" }}
                                     name="Current Password" placeholder='password' onChange={handleChange}
                                     endAdornment={
@@ -228,7 +228,7 @@ const ChangePassword = () => {
                                 <InputLabel sx={{fontSize:"13px",mt:"-7px"}} className="inputLabel"htmlFor="outlined-adornment-password">
                                 New Password
                                 </InputLabel>
-                                <OutlinedInput className="outLineInput" id="outlined-adornment-password" type={showNewPassword ? "text" : "password"}
+                                <OutlinedInput data-testid='new-password' className="outLineInput" id="outlined-adornment-password" type={showNewPassword ? "text" : "password"}
                                 style={{ color: "rgb(194, 193, 193)", fontSize: "13px" }}
                                 name="New Password" placeholder='password' onChange={handleChange} error={newPasswordError != ""}
                                 endAdornment={
@@ -251,7 +251,7 @@ const ChangePassword = () => {
                         <InputLabel sx={{fontSize:"13px",mt:"-7px"}} className="inputLabel"htmlFor="outlined-adornment-confirmPassword">
                         Confirm Password
                         </InputLabel>
-                        <OutlinedInput className="outLineInput" id="outlined-adornment-confirmPassword" type={showConfirmPassword ? "text" : "password"}
+                        <OutlinedInput data-testid='confirm-password' className="outLineInput" id="outlined-adornment-confirmPassword" type={showConfirmPassword ? "text" : "password"}
                         style={{ color: "rgb(194, 193, 193)", fontSize: "13px" }}
                         name="Confirm Password" onChange={handleChange} error={confirmPassError != ""}
                         endAdornment={
@@ -269,8 +269,8 @@ const ChangePassword = () => {
                             {confirmPassError}
                             </p>
                         )}
-                        {console.log("aiyooo")}
-                        <button data-testid='register-elem' type='submit'  className="login-btn signup-btn" id="login-btn" onClick={handleSubmit}>Save</button>
+                        {/* {console.log("aiyooo")} */}
+                        <button data-testid='chng-pwd-elem' type='submit'  className="login-btn signup-btn" id="login-btn" onClick={handleSubmit}>Save</button>
 
                     </Form>
         </div>

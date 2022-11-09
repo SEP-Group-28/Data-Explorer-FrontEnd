@@ -6,10 +6,17 @@ import token from "../Token";
 import axios from 'axios';
 const APIEndpoint = config.DOMAIN_NAME + "/admin";
 
-const getUsers = (skip,take,search)=> {
+const getUsers = (skip,take,search, filter)=> {
     let query = `/users?skip=${skip}&take=${take}`;
-    if (search)
+    if (search){
         query += `&search_by=${search}`;
+    }
+    if (filter==""){
+      query += `&filter_by=firstname`;
+    }
+    else{
+      query += `&filter_by=${filter}`;
+    }
     return axios({
       method: "get",
       url: APIEndpoint +query,
@@ -23,6 +30,6 @@ const getUsers = (skip,take,search)=> {
   }
   
 export default {
-getUsers
+    getUsers
 }
   
