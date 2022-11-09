@@ -196,7 +196,7 @@ const AllUsers = () => {
             /> */}
           </div>
             <div></div>
-          <div className="filter">
+          <div data-testid='filter-btn' className="filter">
             <DropdownButton id="dropdown-basic-button" title="Filter By">
                 <Dropdown.Item onClick={()=>filterFunc('firstName')}>First Name</Dropdown.Item>
                 <Dropdown.Item onClick={()=>filterFunc('lastName')}>Last Name</Dropdown.Item>
@@ -205,7 +205,7 @@ const AllUsers = () => {
             </DropdownButton>
           </div>
           <div className="search display-fixed">
-            <Button variant="outline-primary" onClick={() => searchUser(filterBy)} style={{ borderRadius: "20px", float: "right" }}>Go</Button>
+            <Button data-testid='search-btn' variant="outline-primary" onClick={() => searchUser(filterBy)} style={{ borderRadius: "20px", float: "right" }}>Go</Button>
             {filterBy===""?setFilterBy("firstName"):null}
             {/* <Button variant="outline-primary" onClick={() => searchUser()} style={{ borderRadius: "20px", float: "right" }}>Filter</Button> */}
             <input
@@ -233,7 +233,7 @@ const AllUsers = () => {
                 </div>
               </div>}
             {users.length !== 0 &&
-              <Table style={{ color: "#1376BD", width: "100%" }}>
+              <Table data-testid='test-table' style={{ color: "#1376BD", width: "100%" }}>
                 <thead>
                   <tr>
                     <th></th>

@@ -19,7 +19,7 @@ function MACDChart({marketType, market, interval}) {
      const { innerWidth: width, innerHeight: height } = window;
      return { width, height };
    }
-  const ref = React.useRef();
+  const ref = useRef();
   const chart = useRef();
   const macdSeries = useRef();
   const macdSignalSeries = useRef();

@@ -3,7 +3,6 @@ import { render, screen } from "@testing-library/react";
 import Register from "../register/Register";
 import { BrowserRouter } from 'react-router-dom';
 import userEvent from "@testing-library/user-event";
-import "@testing-library/jest-dom";
 
 describe("Test Register component", () =>{
     const createInstance=() => {

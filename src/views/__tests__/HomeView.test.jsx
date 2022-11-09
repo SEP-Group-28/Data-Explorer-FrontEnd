@@ -6,7 +6,6 @@ import HomeSubOne from '../homeView/HomeSubOne';
 import StockSec from '../homeView/StockSec';
 import Footer from '../homeView/Footer';
 import HomeSubTwo from '../homeView/HomeSubTwo';
-import "@testing-library/jest-dom";
 import { BrowserRouter } from 'react-router-dom';
 
 describe("Test HomeView component", () =>{
