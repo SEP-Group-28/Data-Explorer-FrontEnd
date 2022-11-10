@@ -25,6 +25,7 @@ function StockChart({ market, interval, internalIndicators }) {
 
   const chart = useRef();
   const candleSeries = useRef();
+  const volumeSeries = useRef();
 
   const { ma, sma, ema, wma, bbands } = internalIndicators;
 
@@ -56,11 +57,23 @@ function StockChart({ market, interval, internalIndicators }) {
     });
     candleSeries.current = chart.current.addCandlestickSeries({
       upColor: "rgba(0,133,48,1)",
-      downColor: "rgba(162,0,0,1)",
-      borderDownColor: "rgba(162,0,0,1)",
+      downColor: "#851D1A",
+      borderDownColor: "#851D1A",
       borderUpColor: "rgba(0,133,48,1)",
-      wickDownColor: "rgba(162,0,0,1)",
+      wickDownColor: "#851D1A",
       wickUpColor: "rgba(0,133,48,1)",
+    });
+
+    volumeSeries.current = chart.current.addHistogramSeries({
+      color: "#26a69a",
+      priceFormat: {
+        type: "volume",
+      },
+      priceScaleId: "",
+      scaleMargins: {
+        top: 0.95,
+        bottom: 0,
+      },
     });
 
     chart.current.applyOptions({
@@ -79,6 +92,7 @@ function StockChart({ market, interval, internalIndicators }) {
       .then((data) => {
         let fetchedData = [];
         // let tempTimeLine = [];
+        let tempVolume = [];
         data.forEach((row) => {
           let object = {
             time: row[0] / 1000,
@@ -87,11 +101,19 @@ function StockChart({ market, interval, internalIndicators }) {
             low: row[3],
             close: row[4],
           };
+          let volume = {
+            time: row[0]/1000,
+            value: row[5],
+            color: row[1] > row[4] ? "#834C4B" : "#318B52",
+          };
           fetchedData.push(object);
+          tempVolume.push(volume);
         });
         let tempChartData = removeDuplicates(fetchedData).sort(compare);
+        let tempVolumeData = removeDuplicates(tempVolume).sort(compare);
 
         candleSeries.current.setData(fetchedData);
+        volumeSeries.current.setData(tempVolumeData);
         setChartData(tempChartData);
         setLoading(false);
         chart.current.resize(1000, 380);
@@ -198,7 +220,7 @@ function StockChart({ market, interval, internalIndicators }) {
       // chart.current.resize(windowDimensions["width"] * 0.85, 380);
       const width = windowDimensions["width"];
       if (width >= 1220) {
-        chart.current.resize(1067, 380);
+        chart.current.resize(1067, 395);
       }
       if (width >= 1070 && width < 1220) {
         chart.current.resize(930, 380);

@@ -89,7 +89,7 @@ function MACDChart({ marketType, market, interval }) {
         for (let key in dataMacd) {
           if (dataMacd.hasOwnProperty(key)) {
             let object = {
-              time: Number(key),
+              time: marketType == "crypto" ? Number(key) : Number(key) / 1000,
               value: dataMacd[key],
             };
             tempMacd.push(object);
@@ -97,7 +97,7 @@ function MACDChart({ marketType, market, interval }) {
           }
           if (dataMacdSignal.hasOwnProperty(key)) {
             let object = {
-              time: Number(key),
+              time: marketType == "crypto" ? Number(key) : Number(key) / 1000,
               value: dataMacdSignal[key],
             };
             tempMacdSignal.push(object);
@@ -110,7 +110,7 @@ function MACDChart({ marketType, market, interval }) {
               color = "rgba(162,0,0,1)";
             }
             let object = {
-              time: Number(key),
+              time: marketType == "crypto" ? Number(key) : Number(key) / 1000,
               value: dataMacdHist[key],
               color,
             };
@@ -174,26 +174,32 @@ function MACDChart({ marketType, market, interval }) {
   return (
     <>
       {/* {loading ? <Loader position="relative" left="46.5%" top="9%" /> : null} */}
-      <div>
-        <Typography
+      <div className="d-flex flex-row">
+        <div
+          className="CryptoChart"
+          ref={ref}
+          // onMouseUpCapture={handleDrag}
           style={{
-            margin: "0 auto",
-            marginTop: "1rem",
             marginBottom: "-10px",
-            color: "white",
-            width: "fit-content",
+            marginLeft: "15px",
+            marginRight: "20px",
           }}
-          variant="h6"
-        >
-          MACD
-        </Typography>
+        />
+        <div>
+          <Typography
+            style={{
+              margin: "0 auto",
+              marginTop: "1rem",
+              marginBottom: "-10px",
+              color: "white",
+              width: "fit-content",
+            }}
+            variant="h6"
+          >
+            MACD
+          </Typography>
+        </div>
       </div>
-      <div
-        className="CryptoChart"
-        ref={ref}
-        // onMouseUpCapture={handleDrag}
-        style={{ marginBottom: "-10px" }}
-      />
       ;
     </>
   );
