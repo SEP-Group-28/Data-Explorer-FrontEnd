@@ -89,7 +89,7 @@ function MACDChart({ marketType, market, interval }) {
         for (let key in dataMacd) {
           if (dataMacd.hasOwnProperty(key)) {
             let object = {
-              time: Number(key),
+              time: marketType == "crypto" ? Number(key) : Number(key) / 1000,
               value: dataMacd[key],
             };
             tempMacd.push(object);
@@ -97,7 +97,7 @@ function MACDChart({ marketType, market, interval }) {
           }
           if (dataMacdSignal.hasOwnProperty(key)) {
             let object = {
-              time: Number(key),
+              time: marketType == "crypto" ? Number(key) : Number(key) / 1000,
               value: dataMacdSignal[key],
             };
             tempMacdSignal.push(object);
@@ -110,7 +110,7 @@ function MACDChart({ marketType, market, interval }) {
               color = "rgba(162,0,0,1)";
             }
             let object = {
-              time: Number(key),
+              time: marketType == "crypto" ? Number(key) : Number(key) / 1000,
               value: dataMacdHist[key],
               color,
             };

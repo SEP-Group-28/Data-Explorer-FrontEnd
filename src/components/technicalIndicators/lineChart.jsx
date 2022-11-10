@@ -78,7 +78,7 @@ function LineChart({marketType, market, interval, type }) {
         for (let key in data) {
           if (data.hasOwnProperty(key)) {
             let object = {
-              time: Number(key),
+              time: marketType == "crypto" ? Number(key) : Number(key) / 1000,
               value: data[key],
             };
             tempLines.push(object);

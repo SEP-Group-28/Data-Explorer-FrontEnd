@@ -85,7 +85,7 @@ function StochChart({ marketType, market, interval }) {
         for (let key in dataSlowk) {
           if (dataSlowk.hasOwnProperty(key)) {
             let object = {
-              time: Number(key),
+              time: marketType == "crypto" ? Number(key) : Number(key) / 1000,
               value: dataSlowk[key],
             };
             tempSlowk.push(object);
@@ -93,7 +93,7 @@ function StochChart({ marketType, market, interval }) {
           }
           if (dataSlowd.hasOwnProperty(key)) {
             let object = {
-              time: Number(key),
+              time: marketType == "crypto" ? Number(key) : Number(key) / 1000,
               value: dataSlowd[key],
             };
             tempSlowd.push(object);
