@@ -156,26 +156,32 @@ function StochChart({ marketType, market, interval }) {
   return (
     <>
       {/* {loading ? <Loader position="relative" left="46.5%" top="9%" /> : null} */}
-      <div>
-        <Typography
+      <div className="d-flex flex-row">
+        <div
+          className="CryptoChart"
+          ref={ref}
+          // onMouseUpCapture={handleDrag}
           style={{
-            margin: "0 auto",
-            marginTop: "1rem",
             marginBottom: "-10px",
-            color: "white",
-            width: "fit-content",
+            marginLeft: "15px",
+            marginRight: "20px",
           }}
-          variant="h6"
-        >
-          STOCH
-        </Typography>
+        />
+        <div>
+          <Typography
+            style={{
+              margin: "0 auto",
+              marginTop: "1rem",
+              marginBottom: "-10px",
+              color: "white",
+              width: "fit-content",
+            }}
+            variant="h6"
+          >
+            STOCH
+          </Typography>
+        </div>
       </div>
-      <div
-        className="CryptoChart"
-        ref={ref}
-        // onMouseUpCapture={handleDrag}
-        style={{ marginBottom: "-10px" }}
-      />
       ;
     </>
   );
