@@ -31,6 +31,7 @@ function CryptoChart({ market, interval,internalIndicators }) {
   const chart = useRef();
   const candleSeries = useRef();
   const lineSeries = useRef();
+  const volumeSeries = useRef();
 
   const [chartData, setChartData] = useState([]);
   const [timeLine, setTimeLine] = useState([]);
@@ -62,11 +63,23 @@ function CryptoChart({ market, interval,internalIndicators }) {
 
     candleSeries.current = chart.current.addCandlestickSeries({
       upColor: "rgba(0,133,48,1)",
-      downColor: "rgba(162,0,0,1)",
-      borderDownColor: "rgba(162,0,0,1)",
+      downColor: "#851D1A",
+      borderDownColor: "#851D1A",
       borderUpColor: "rgba(0,133,48,1)",
-      wickDownColor: "rgba(162,0,0,1)",
+      wickDownColor: "#851D1A",
       wickUpColor: "rgba(0,133,48,1)",
+    });
+    
+    volumeSeries.current = chart.current.addHistogramSeries({
+      color: "#26a69a",
+      priceFormat: {
+        type: "volume",
+      },
+      priceScaleId: "",
+      scaleMargins: {
+        top: 0.67,
+        bottom: 0,
+      },
     });
 
     chart.current.applyOptions({
@@ -78,7 +91,7 @@ function CryptoChart({ market, interval,internalIndicators }) {
         shiftVisibleRangeOnNewBar: true,
       },
       priceScale: {
-        // autoScale: true,
+         autoScale: true,
       },
     
     });
@@ -92,6 +105,7 @@ function CryptoChart({ market, interval,internalIndicators }) {
       .then((data) => {
         let tempCandlesticks = [];
         let tempTimeLine = [];
+        let tempVolume = [];
         data.data.forEach((row) => {
           let object = {
             time: row[0],
@@ -100,12 +114,20 @@ function CryptoChart({ market, interval,internalIndicators }) {
             low: row[3],
             close: row[4],
           };
+          let volume = {
+            time: row[0],
+            value: row[5],
+            color: row[1] > row[4] ? "#834C4B" : "#318B52",
+          };
           tempTimeLine.push(object.time);
           tempCandlesticks.push(object);
+          tempVolume.push(volume);
         });
         let tempChartData = removeDuplicates(tempCandlesticks).sort(compare);
+        let tempVolumeData = removeDuplicates(tempVolume).sort(compare);
 
         candleSeries.current.setData(tempChartData);
+        volumeSeries.current.setData(tempVolumeData)
         
         let tempTimeLineData = tempTimeLine.filter((c, index) => {
           return tempTimeLine.indexOf(c) === index;
@@ -262,7 +284,7 @@ function CryptoChart({ market, interval,internalIndicators }) {
       // chart.current.resize(windowDimensions["width"] * 0.85, 380);
       const width = windowDimensions["width"]
        if (width >= 1220) {
-         chart.current.resize(1067, 370);
+         chart.current.resize(1067, 395);
        }
        if (width >= 1070 && width < 1220) {
          chart.current.resize(930, 370);
