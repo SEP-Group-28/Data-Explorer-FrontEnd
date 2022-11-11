@@ -10,6 +10,21 @@ import AccessAlarmsIcon from '@mui/icons-material/AccessAlarms';
 import Badge from '@mui/material/Badge';
 import Alert from '../alert/Alert';
 import AlertModal from '@mui/material/Modal';
+import Swal from 'sweetalert2';
+
+const Toast = Swal.mixin({
+  toast: true,
+  position: 'top',
+  background:'#111726',
+  color:'white',
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+  didOpen: (toast) => {
+    toast.addEventListener('mouseenter', Swal.stopTimer)
+    toast.addEventListener('mouseleave', Swal.resumeTimer)
+  }
+});
 
 function CryptoHeader({ market, interval }) {
   const [volume,setVolume] = useState(19000)
@@ -21,8 +36,30 @@ function CryptoHeader({ market, interval }) {
 
   const handleClick = async() => {
     const response = await WatchlistServices.addMarket({crypto:(market=="") ? marketState+"/USDT" : market+"/USDT"})
-    console.log(response)
-  };
+    if (response.status == 200) {
+        if(response.data.message == "Crypto type already added"){
+          Toast.fire({
+            icon: 'warning',
+            title: `${market+'/USDT'}`,
+            text:'Already added to watchlist',
+          })
+        }
+        else{
+          Toast.fire({
+            icon: 'success',
+            title: `${market+'/USDT'}`,
+            text:'Successfully added to watchlist',
+          })
+        }
+      console.log(response)
+    }
+    else{
+      Toast.fire({
+        icon: 'error',
+        title: `Error occured`,
+      })
+    }
+  }
   const location = useLocation();
   const marketState = "BTC";
   var intervalState = location?.state?.interval || "1m";
@@ -87,4 +124,4 @@ function CryptoHeader({ market, interval }) {
   );
 }
 
-export default CryptoHeader
+export default CryptoHeader;

@@ -10,7 +10,7 @@ import { autocompleteClasses, Container } from '@mui/material';
 import Token from '../../services/Token';
 import WatchlistServices from '../../services/WatchlistServices';
 import Loader from '../../components/loader/Loader';
-
+import Swal from 'sweetalert2';
 // const styles = theme => ({
 //   activeSortIcon: {
 //     opacity: 1,
@@ -60,14 +60,36 @@ export default function Watchlist() {
     record_.delete(symbol)
     console.log("table records", record_)
     setRecords(record_)
+    if (response.status === 200) {
+      Swal.fire({
+        title: `${symbol}`,
+        text: 'Removed from watchlist successfully',
+        icon: 'success',
+        background:'#111726',
+        showConfirmButton: false,
+        color:'white',
+      })
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500);
+      
+    }
+    else{
+      Swal.fire({
+        title: `Error removing ${symbol} from watchlist`,
+        text: response.data.message,
+        icon: 'error',
+        confirmButtonText: 'Ok',
+        background:'#111726',
+        color:'white',
+      })
+    }
   }
   
   const [itemArr, setItemArr] = useState([])
   const userDecode = Token.getAuth()
   const user_id = userDecode['user_id']
   
-  
-
   useEffect(()=>{
     getWatchlist()
 
@@ -163,7 +185,22 @@ export default function Watchlist() {
           sx= {{pr:3, pl:3, w:'auto'}}
           onClick={(event) =>{
             console.log("cell values", cellValues)
-            handleDelete(event, cellValues.row.id, cellValues.row.symbol);
+            
+            Swal.fire({
+              title: 'Are you sure?',
+              text: `Remove ${cellValues.row.symbol} from watchlist`,
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Yes, remove it!',
+              background:'#111726',
+              color:'white',
+            }).then((result) => {
+              if (result.isConfirmed) {
+                handleDelete(event, cellValues.row.id, cellValues.row.symbol);
+              }
+            })
           }}
           
           >
@@ -189,14 +226,14 @@ export default function Watchlist() {
     <div>
       <HeaderTwo/>
 
-      { loader ? 
-        <Loader/>
-      :
-      data.length <= 0 
+      { data?.length <= 0 
       ? 
       <div >
       <h1 align='center' style={{ color:'white', left:'50%', size:'50px',marginTop:"20%"}}>No items to display in your watchlist</h1>
       </div>
+      :
+      loader ? 
+        <Loader/>
       : 
       <div >
         <Container maxWidth="lg">
