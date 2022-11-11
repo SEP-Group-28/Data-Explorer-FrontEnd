@@ -105,13 +105,35 @@ function Login() {
         const response_ = await UserServices.getUser(id);
         const getuser=response_.data.data
         if (getuser['active'] == '0'){
-          Swal.fire(
-            'Your account has been deactivated',
-            'Please contact admin',
-            'question'
-          )
+            Swal.fire({
+              title:'Your account has been deactivated',
+              text:'Please contact admin',
+              icon:'question',
+              confirmButtonText:'OK',
+              background:'#111726',
+              color:'white'
+            }
+          ) 
           throw new Error("Your account is not active. Please contact admin.")
         }
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top',
+          background:'#111726',
+          color:'white',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        })
+        
+        Toast.fire({
+          icon: 'success',
+          title: 'Login Successful'
+        })
         console.log('response',getuser['imagepath'])
         dispatch(saveImage(getuser['imagepath']))
         
