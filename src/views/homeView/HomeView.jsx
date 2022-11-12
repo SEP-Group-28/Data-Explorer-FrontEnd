@@ -7,9 +7,14 @@ import HomeSubTwo from "./HomeSubTwo";
 import StockSec from "./StockSec";
 import Slide from "react-reveal/Slide";
 import Footer from "./Footer";
+import PreLoader from "../../components/loader/PageLoader";
 
 function HomeView() {
+
   return (
+    
+      // <PreLoader/>
+  
     <div className="homeView ">
       <HeaderTwo />
       <div
