@@ -99,6 +99,7 @@ function CryptoChart({ market, interval,internalIndicators }) {
     let newCrypto =
       config.DOMAIN_NAME+"/history/" +
       `${market || marketState}/${interval || intervalState}`;
+      //<interval><166660222.33>
 
     fetch(newCrypto)
       .then((res) => res.json())
