@@ -1,10 +1,10 @@
 .colorchange {
-    background-color: black;
+    background-color: #20232b;
     color: #000;
     margin: 0;
     padding: 0;
     font-family: montserrat;
-    background: black;
+    background: #20232b;
     color: white
 }
 
@@ -53,18 +53,18 @@
 }
 
 span.loading{
-    color : #737373;
+    color : rgb(69, 6, 245);
     font-size : 20px;
     text-transform : uppercase;
     letter-spacing: 1px;
     line-height: 200px;
-    animation: text 2s ease-in-out infinite;
+    animation: text 3s ease-in-out infinite;
     font-weight: bold;
 }
 
 @keyframes text {
     50%{
-        color: black
+        color: #20232b
     }
     
 }
