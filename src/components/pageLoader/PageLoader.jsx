@@ -1,6 +1,5 @@
 import React, {Fragment} from 'react';
-import "../../assets/css/pageloader.css";
-
+import "../../assets/css/pageLoader.css";
 const PreLoader = () => {
 	return(
 		<Fragment> 
