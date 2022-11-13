@@ -4,7 +4,6 @@ import HeaderOne from "../../components/headers/HeaderOne";
 import { Form } from "react-bootstrap";
 import GoogleButton from "react-google-button";
 import { useEffect } from "react";
-import { CLIENT_ID } from "../../config";
 import Validation from "../../Validations";
 import AuthServices from "../../services/AuthServices"
 import Loader from "../../components/loader/Loader";
