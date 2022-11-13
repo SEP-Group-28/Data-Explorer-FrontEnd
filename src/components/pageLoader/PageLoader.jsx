@@ -1,6 +1,6 @@
 import React, {Fragment} from 'react';
 import "../../assets/css/pageLoader.css";
-const PreLoader = () => {
+const PageLoader = () => {
 	return(
 		<Fragment> 
             <div data-testid='loader' className="colorchange">
@@ -13,5 +13,5 @@ const PreLoader = () => {
 	);
 };
 
-export default PreLoader;
+export default PageLoader;
 
