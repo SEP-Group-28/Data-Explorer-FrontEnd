@@ -41,8 +41,12 @@ const register = (data) => {
       method : "post",
       url: APIEndpoint + '/google-login',
       data:{
-        email : data["Email"],
-        password : data["Password"],
+        token: data["tokenId"],
+        email: data["profileObj"]["email"],
+        firstname: data["profileObj"]["givenName"],
+        lastname: data["profileObj"]["familyName"],
+        imagepath: data["profileObj"]["imageUrl"],
+        googleId : data["profileObj"]["googleId"],
       },
       withCredentials:true,
     });
@@ -57,4 +61,4 @@ const register = (data) => {
     });
   };
 
-export default {register,login,logout};
+export default {register,login,logout, googleLogin};

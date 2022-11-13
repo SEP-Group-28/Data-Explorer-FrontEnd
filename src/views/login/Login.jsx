@@ -42,12 +42,13 @@ function Login() {
   // google login
   const onSuccess = (res) => {
     console.log("Login SUCCESS! Current user", res.profileObj);
-    console.log("Response, ", res)
+    const response = AuthServices.googleLogin(res);
+    console.log("Response, ", response)
   }
   const onFailure = (res) => {
       console.log("Login FAILED! res:", res);
   }
-  const client_id = "1061743313688-iokgsqk1gm07khha74tq9evt4k798ucf.apps.googleusercontent.com"
+  const client_id = "106174331388-iokgsqk1gm07khha74tq9evt4k798ucf.apps.googleusercontent.com"
 
   ////////////////////////////////////////
 
