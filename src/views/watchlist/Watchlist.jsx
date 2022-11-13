@@ -11,6 +11,7 @@ import Token from '../../services/Token';
 import WatchlistServices from '../../services/WatchlistServices';
 import Loader from '../../components/loader/Loader';
 import Swal from 'sweetalert2';
+import PageLoader from '../../components/pageLoader/PageLoader';
 // const styles = theme => ({
 //   activeSortIcon: {
 //     opacity: 1,
@@ -56,8 +57,8 @@ export default function Watchlist() {
     //   setRows(rows)
     // }
     // console.log("after delete",rows)
-    let record_ = records
-    record_.delete(symbol)
+      let record_ = records
+      record_.delete(symbol)
     console.log("table records", record_)
     setRecords(record_)
     if (response.status === 200) {
@@ -68,9 +69,11 @@ export default function Watchlist() {
         background:'#111726',
         showConfirmButton: false,
         color:'white',
+        timer: 1500,
       })
       setTimeout(() => {
-        window.location.reload();
+        // window.location.reload()
+        setLoader(false)
       }, 1500);
       
     }
@@ -89,7 +92,9 @@ export default function Watchlist() {
   const [itemArr, setItemArr] = useState([])
   const userDecode = Token.getAuth()
   const user_id = userDecode['user_id']
-  
+  const [loading, setLoading] = React.useState(true);
+  const [removed, setRemoved] = React.useState(false);
+
   useEffect(()=>{
     getWatchlist()
 
