@@ -8,7 +8,9 @@ import CryptoChart from './CryptoChart';
 import AccessAlarmsIcon from '@mui/icons-material/AccessAlarms';
 import Badge from '@mui/material/Badge';
 import Alert from '../alert/Alert';
-
+import LineChart from "../../components/technicalIndicators/lineChart";
+import MACDChart from "../../components/technicalIndicators/macdChart";
+import StochChart from "../../components/technicalIndicators/stochChart";
 
 function CryptoView() {
   const [market, setMarket] = useState("");
@@ -21,34 +23,37 @@ function CryptoView() {
     bbands: false,
   });
 
-  useEffect(() => {
-    setInternalIndicators({
-      ma: false,
-      sma: false,
-      ema: false,
-      wma: false,
-      bbands: false,
-    });
-  }, [market]);
+  const [externalIndicators, setExternlIndicators] = useState({
+    macd: false,
+    obv: false,
+    roc: false,
+    rsi: false,
+    stoch: false,
+})
+
   const changeCryptoType = (marketType) => {
     setMarket(marketType);
   };
   const changeInterval = (interval) => {
     setInterval(interval);
   };
-  
+    const addInternalIndicators = (indicators) => {
+      setInternalIndicators(indicators);
+    };
+    const addExternalIndicators = (indicators) => {
+      setExternlIndicators(indicators);
+    };
 
   // getting user
-  try {
-    var user = jwtDecode(Token.getAccessToken());
-  } catch (err) {
-    user = null;
-  }
+  // try {
+  //   var user = jwtDecode(Token.getAccessToken());
+  // } catch (err) {
+  //   user = null;
+  // }
   
-  user = true
-  const addInternalIndicators = (indicators) => {
-    setInternalIndicators(indicators);
-  };
+  // user = true
+
+  const { macd, obv, roc, rsi, stoch } = externalIndicators;
   return (
     <div className="CryptoView">
       <HeaderTwo />
@@ -57,14 +62,19 @@ function CryptoView() {
           <CryptoHeader market={market} interval={interval} />
           <CryptoIntervals
             changeInterval={changeInterval}
-            timeInterval={interval}
             addInternalIndicators={addInternalIndicators}
+            addExternalIndicators={addExternalIndicators}
           />
           <CryptoChart
             market={market}
             interval={interval}
             internalIndicators={internalIndicators}
           />
+          {rsi && <LineChart marketType="crypto" market={market} interval={interval} type="rsi" />}
+          {obv && <LineChart marketType="crypto" market={market} interval={interval} type="obv" />}
+          {roc && <LineChart marketType="crypto" market={market} interval={interval} type="roc" />}
+          {macd && <MACDChart marketType="crypto" market={market} interval={interval} />}
+          {stoch && <StochChart marketType="crypto" market={market} interval={interval}/>}
         </div>
         <div className="types-crypto">
           <CryptoTypes changeCryptoType={changeCryptoType} />

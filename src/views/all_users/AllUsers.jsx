@@ -14,6 +14,8 @@ import { Link } from "react-router-dom";
 // import 'font-awesome/css/font-awesome.css';
 
 import Token from "../../services/Token";
+import HeaderTwo from "../../components/headers/HeaderTwo";
+import FilterListIcon from '@mui/icons-material/FilterList';
 
 const AllUsers = () => {
 
@@ -27,7 +29,14 @@ const AllUsers = () => {
   const changePage = async (skip_value) => {
     // console.log(skip_value);
     // setSkip(skip_value);
-    getUsers(skip_value, take, '');
+    if (filterBy === "") {
+      // console.log("searching null..............................")
+      // console.log("filterBy", filterBy);
+        getUsers(skip_value, take, search, filterBy);
+    } else {
+        // console.log("searching..............................")
+        getUsers(skip_value, -1, search, filterBy);
+    }
   }
 
   // const [usertype, setusertype] = useState('doctor');
@@ -56,11 +65,11 @@ const AllUsers = () => {
     // console.log("Inside activate changing");
     try {
       const response = await UserServices.changeActivation( {user_id} );
-      console.log(response);
+      // console.log(response);
       if (response.status === 200) {
         // Messages.SuccessMessage("Changed activation successfully");
         
-        getUsers(skip, take, search);
+        getUsers(skip, take, search, filterBy);
         
       }
     } catch (error) {
@@ -89,31 +98,38 @@ const AllUsers = () => {
 
   // Search term
   const [search, setSearch] = useState("");
-  const searchUser = () => {
-    getUsers(usertype, 0, take, search);
+  const [filterBy, setFilterBy] = useState("");
+  const searchUser = (filter) => {
+    // console.log("filter search", filter);
+    // console.log("search by", search);
+    getUsers(0, -1, search, filter);
   }
 
   const [users, setUsers] = useState([]);
   
   useEffect(() => {
-    getUsers( skip, take, search);
+    getUsers( skip, take, search, "");
   }, []);
 
-  const getUsers = async ( skip_value, take, search) => {
+  const getUsers = async ( skip_value, take, search, filter) => {
     setLoader(true);
     try {
       let response = null;
       // if (usertype === "doctor") {
-      response = await AdminServices.getUsers(skip_value, take, search);
+      response = await AdminServices.getUsers(skip_value, take, search, filter);
       // setusertype('doctor');
-      console.log(response)
+      // console.log("response of users get all", response)
       // }
       // else if (usertype === "examiner") {
       //   response = await AdminServices.getExaminers(skip_value, take, search);
       //   setusertype('examiner');
       // }
+      // console.log("Hellow world")
+      // console.log("response take", take);
       setSearch(search);
       setSkip(skip_value);
+      // console.log("length", response.data.data.users.length)
+      // setTake(response.data.data.users.length);
       setUsers(response.data.data.users);
       setTotalItems(response.data.data.usercount);
       // console.log(response);
@@ -136,12 +152,16 @@ const AllUsers = () => {
     }, 200);
   };
 
+  const filterFunc = (filter) => {
+    setFilterBy(filter);
+    // console.log("filter by", filter);
+  }
   // if (loader) {
   //   return <Loader />
   // } else {
     return (
       <div className="all_users">
-        {/* <HeaderTwo /> */}
+        <HeaderTwo/>
 
         <h1 className="alluser_header">All Users</h1>
 
@@ -176,8 +196,18 @@ const AllUsers = () => {
             /> */}
           </div>
             <div></div>
+          <div data-testid='filter-btn' className="filter">
+            <DropdownButton id="dropdown-basic-button" title="Filter By">
+                <Dropdown.Item onClick={()=>filterFunc('firstName')}>First Name</Dropdown.Item>
+                <Dropdown.Item onClick={()=>filterFunc('lastName')}>Last Name</Dropdown.Item>
+                <Dropdown.Item onClick={()=>filterFunc('email')}>Email</Dropdown.Item>
+                <Dropdown.Item onClick={()=>filterFunc('country')}>Country</Dropdown.Item>
+            </DropdownButton>
+          </div>
           <div className="search display-fixed">
-            <Button variant="outline-primary" onClick={() => searchUser()} style={{ borderRadius: "20px", float: "right" }}>Search</Button>
+            <Button data-testid='search-btn' variant="outline-primary" onClick={() => searchUser(filterBy)} style={{ borderRadius: "20px", float: "right" }}>Go</Button>
+            {filterBy===""?setFilterBy("firstName"):null}
+            {/* <Button variant="outline-primary" onClick={() => searchUser()} style={{ borderRadius: "20px", float: "right" }}>Filter</Button> */}
             <input
               type="search"
               placeholder={"   Search " }
@@ -203,11 +233,11 @@ const AllUsers = () => {
                 </div>
               </div>}
             {users.length !== 0 &&
-              <Table style={{ color: "#1376BD", width: "100%" }}>
+              <Table data-testid='test-table' style={{ color: "#1376BD", width: "100%" }}>
                 <thead>
                   <tr>
                     <th></th>
-                    <th>User ID</th>
+                    {/* <th>User ID</th> */}
                     <th>First Name</th>
                     <th>Last Name</th>
                     {/* <th>Contact No</th> */}
@@ -220,21 +250,21 @@ const AllUsers = () => {
                   {/* sample database result object to html convert with search enabled */}
                   {users.map((value, key) => {
                     // Tables should come here
-
+                    // {console.log(value, key)}
                     return (
                       <tr key={key}>
                         <td>
                           {parseInt(value.active) ? <i className="fa fa-check-square" aria-hidden="true" style={{color: "green"}}/> : <i className="fa fa-power-off" aria-hidden="true" style={{margin: "5px", color: "crimson"}}/>}
                           <i className=""></i>
                         </td>
-                        <td>{value['_id']}</td>
+                        {/* <td>{value['_id']}</td> */}
                         <td>{value.firstname}</td>
                         <td>{value.lastname}</td>
                         {/* <td>{value.nic}</td> */}
                         {/* <td>{value['Contact No']}</td> */}
                         <td>{value['email']}</td>
-                        <td>{value['DOB'] && value['DOB'].slice(0, 10)}</td>
-                        <td>{value['Country']}</td>
+                        <td>{value['dob'] && value['dob'].slice(0, 10)}</td>
+                        <td>{value['country']}</td>
                         <td>
                           {/* <Link to={"/update-user"} state={{ user_id: value['_id'] }}>
                             <Button
@@ -247,8 +277,9 @@ const AllUsers = () => {
                           </Link> */}
                         </td>
                         <td>
+                          {/* {console.log("reading active details")}
                           {console.log(value['active'])}
-                          {console.log(parseInt(value.active))}
+                          {console.log(parseInt(value.active))} */}
                           {parseInt(value.active) ? (
                             <Button
                               variant="outline-danger"
@@ -276,6 +307,8 @@ const AllUsers = () => {
               </Table>}
 
             <div className="container paginate_div text-center">
+              {/* {console.log("take", take)}
+              {console.log("skip", skip)} */}
               <Paginate
                 skip={skip}
                 take={take}

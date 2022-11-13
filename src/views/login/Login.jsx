@@ -21,6 +21,10 @@ import { fetchToken } from '../../firebaseInit';
 import AlertServices from '../../services/AlertServices';
 import { useDispatch, useSelector } from "react-redux";
 import { save } from "../../redux/alert";
+import UserServices from "../../services/API/UserServices";
+import { saveImage } from "../../redux/profile";
+import Swal from 'sweetalert2';
+
 // import TokenRequest from "../notification/TokenRequest";
 
 
@@ -38,12 +42,13 @@ function Login() {
   // google login
   const onSuccess = (res) => {
     console.log("Login SUCCESS! Current user", res.profileObj);
-    console.log("Response, ", res)
+    const response = AuthServices.googleLogin(res);
+    console.log("Response, ", response)
   }
   const onFailure = (res) => {
       console.log("Login FAILED! res:", res);
   }
-  const client_id = "1061743313688-iokgsqk1gm07khha74tq9evt4k798ucf.apps.googleusercontent.com"
+  const client_id = "106174331388-iokgsqk1gm07khha74tq9evt4k798ucf.apps.googleusercontent.com"
 
   ////////////////////////////////////////
 
@@ -61,6 +66,7 @@ function Login() {
   // redux for token
   let {token} = useSelector((state)=>state.alert)
   const dispatch = useDispatch()
+  let {link} = useSelector((state)=>state.profile)
 
   const handleChange = (e) => {
     setState({
@@ -89,9 +95,49 @@ function Login() {
         if (response.status == 200){
           
           // const [getFcmToken,setFcmToken]=useState("")
-          // const dispatch = useDispatch()
+          console.log("response of loggin in....", response)
+          // dispatch(save(response.data))
 
           console.log('Token found', isTokenFound)
+
+          console.log("logging in...");
+        const id = jwtDecode(Token.getAccessToken())['user_id'];
+        console.log("id is", id);
+        const response_ = await UserServices.getUser(id);
+        const getuser=response_.data.data
+        if (getuser['active'] == '0'){
+            Swal.fire({
+              title:'Your account has been deactivated',
+              text:'Please contact admin',
+              icon:'question',
+              confirmButtonText:'OK',
+              background:'#111726',
+              color:'white'
+            }
+          ) 
+          throw new Error("Your account is not active. Please contact admin.")
+        }
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top',
+          background:'#111726',
+          color:'white',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        })
+        
+        Toast.fire({
+          icon: 'success',
+          title: 'Login Successful'
+        })
+        console.log('response',getuser['imagepath'])
+        dispatch(saveImage(getuser['imagepath']))
+        
 
           // To load once
             
@@ -114,19 +160,12 @@ function Login() {
           })
 
         }
-        console.log("logging in...");
-        try {
-          console.log(jwtDecode(Token.getAccessToken()));
-          // <TokenRequest/>
-          // setBool(true)
-        } catch (error) {
-          console.log("error is ", error)
-        }
         
 
         navigate(from, { replace: true });
 
-      } catch (error) {
+      }
+      catch (error) {
         console.log(error)
         console.log("error",error?.response?.data?.message);
         console.log("Login failed");

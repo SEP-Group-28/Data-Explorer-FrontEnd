@@ -26,7 +26,6 @@ const addAlert = (data) => {
     return axios({
         method: 'post',
         url: APIEndpoint + `/alert/add-alert/${data.crypto_name}/${data.crypto_price}`,
-        // data: data,
         headers: { Authorization: `Bearer ${token.getAccessToken()}` }
     });
 }
