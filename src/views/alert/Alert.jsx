@@ -86,7 +86,7 @@ export default function Alert({market}) {
     const getAlerts = async() => {
       const response = await AlertServices.getAllAlerts();
       console.log("alerts, ",response.data)
-      const rows = response.data
+      const rows = response.data.allalertlist
       console.log("data, ", rows)
       setData(rows)
       console.log('fectching alerts', data);
@@ -149,7 +149,7 @@ export default function Alert({market}) {
         {console.log("the set data , ", data)}
         <tbody>
           {data?.map((data) => {
-            {console.log(data, " data")}
+            // {console.log(data, " data")}
             return (
               <tr key={data.crypto_price}>
                 <td className="d-flex flex-row" align='center'>

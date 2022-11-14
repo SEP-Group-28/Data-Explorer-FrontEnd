@@ -7,6 +7,7 @@ import StockTypes from './StockTypes';
 import LineChart from "../../components/technicalIndicators/lineChart";
 import MACDChart from "../../components/technicalIndicators/macdChart";
 import StochChart from "../../components/technicalIndicators/stochChart";
+import PageLoader from '../../components/pageLoader/PageLoader';
 
 function StockView() {
 
@@ -42,7 +43,18 @@ function StockView() {
 
   const { macd, obv, roc, rsi, stoch } = externalIndicators;
 
+  const [loading, setLoading] = React.useState(true);
+  React.useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
+  }, []);
+
   return (
+    <div>
+      {loading ? (
+        <PageLoader />
+      ) : (
     <div className="CryptoView">
       <HeaderTwo />
       <div className="d-flex flex-row">
@@ -62,6 +74,8 @@ function StockView() {
           <StockTypes changeStockType={changeStockType} />
         </div>
       </div>
+    </div>
+    )}
     </div>
   );
 }

@@ -11,6 +11,7 @@ import Alert from '../alert/Alert';
 import LineChart from "../../components/technicalIndicators/lineChart";
 import MACDChart from "../../components/technicalIndicators/macdChart";
 import StochChart from "../../components/technicalIndicators/stochChart";
+import PageLoader from "../../components/pageLoader/PageLoader";
 
 function CryptoView() {
   const [market, setMarket] = useState("");
@@ -52,9 +53,19 @@ function CryptoView() {
   // }
   
   // user = true
+  const [loading, setLoading] = React.useState(true);
+  React.useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
+  }, []);
 
   const { macd, obv, roc, rsi, stoch } = externalIndicators;
   return (
+    <div>
+      {loading ? (
+        <PageLoader />
+      ) : (
     <div className="CryptoView">
       <HeaderTwo />
       <div className="d-flex flex-row">
@@ -83,6 +94,8 @@ function CryptoView() {
         {/* TODO: 
         fix css of the alert button */}
       </div>
+    </div>
+      )}
     </div>
   );
 }

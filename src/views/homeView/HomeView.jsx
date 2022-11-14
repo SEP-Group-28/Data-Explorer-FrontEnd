@@ -7,15 +7,23 @@ import HomeSubTwo from "./HomeSubTwo";
 import StockSec from "./StockSec";
 import Slide from "react-reveal/Slide";
 import Footer from "./Footer";
-import PreLoader from "../../components/loader/PageLoader";
+import PageLoader from "../../components/pageLoader/PageLoader";
 
 function HomeView() {
+  const [loading, setLoading] = React.useState(true);
+  React.useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
+  }, []);
 
   return (
-    
-      // <PreLoader/>
-  
-    <div className="homeView ">
+    <div>
+    {loading 
+    ? 
+      <PageLoader/>
+    : 
+    <div className="homeView">
       <HeaderTwo />
       <div
         id="carouselExampleInterval"
@@ -72,6 +80,8 @@ function HomeView() {
       <AlertDetails />
       <Footer />
     </div>
+   }
+  </div>
   );
 }
 
