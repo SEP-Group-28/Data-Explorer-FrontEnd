@@ -44,6 +44,7 @@ function CryptoChart({ market, interval,internalIndicators }) {
   
   useEffect(() => {
     setLoading(true)
+    setChartData([]);
     chart.current = createChart(ref.current, {
       width: 0,
       height: 0,
@@ -80,7 +81,7 @@ function CryptoChart({ market, interval,internalIndicators }) {
       },
       priceScaleId: "",
       scaleMargins: {
-        top: 0.67,
+        top: 0.77,
         bottom: 0,
       },
     });

@@ -14,7 +14,7 @@ function CryptoSec() {
         onClick={() => {
          navigate("/crypto");
         }}
-        className="CryptoSec d-flex flex-column"
+        className="CryptoSec d-flex flex-column mx-auto"
       >
         <div className="crypto-imgs d-flex flex-row ">
           <img id="img1" src={Bitcoin} alt="" />

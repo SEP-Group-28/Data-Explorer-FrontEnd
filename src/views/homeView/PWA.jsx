@@ -2,6 +2,7 @@ import React from "react";
 import { Button } from "@mui/material";
 import GetAppIcon from "@mui/icons-material/GetApp";
 import Typography from "@mui/material/Button";
+import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 
 function PWA() {
   window.onload = function () {
@@ -38,11 +39,10 @@ function PWA() {
         <span className="pwa-span2">Mobile App</span>
       </header>
 
-        <Button className="pwa-button" id="add-to-btn">
-          <GetAppIcon />
-          <Typography style={{ color: "#053ffbfc" }}>Install</Typography>
-        </Button>
-  
+      <Button className="pwa-button" id="add-to-btn">
+        <PhoneIphoneIcon />
+        <Typography style={{ color: "#053ffbfc" }}>Install</Typography>
+      </Button>
     </div>
   );
 }

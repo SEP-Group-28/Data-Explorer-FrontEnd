@@ -736,17 +736,17 @@ margin-right:40px;
       display: none;
     }
     .subOne-details header {
-      font-size: 24px;
+      font-size: 22px;
       font-weight: 800;
     }
     .subOne-details h3 {
-      font-size: 21px;
+      font-size: 19px;
     }
     .detail-list p{
-      font-size: 16px;
+      font-size: 14px;
     }
     .app-description header {
-      font-size: 21px;
+      font-size: 19px;
       font-weight: 600;
     }
     .app-details {
@@ -790,6 +790,7 @@ margin-right:40px;
       display: flex;
       flex-direction: column;
       margin: 0 auto;
+      align-self: center !important;
 
     }
     .crypto-comp{
@@ -799,6 +800,13 @@ margin-right:40px;
       align-self: center !important;
     }
 
+    .crypto-imgs img{
+      width: 70px !important;
+    }
+
+    .stock-imgs img{
+      width: 60px;
+    }
   .CryptoHeader header{
       font-size: 14px;
   }
@@ -829,6 +837,52 @@ margin-right:40px;
     .AppBar img{
       width: 160px;
     }
+    .CryptoSec{
+      height: 230px;
+      align-self: center !important;
+      margin-bottom: 25px;
+    }
+    .CryptoSec p {
+      color: white;
+      font-size: 11.5px;
+    }
+
+    .CryptoSec header {
+      color: white;
+      font-weight: bold;
+      font-size: 17px;
+      margin-bottom: 5px;
+    }
+
+    .CryptoSec span {
+      color: white;
+      color: #0756f4;
+      font-size: 13px;
+      margin-bottom: 5px;
+      text-align: left;
+      font-weight: 500;
+    }
+
+  .alert-details header {
+    font-size: 18px;
+    margin-bottom: 16px;
+
+  }
+
+  .alert-p-1 {
+    font-size: 11.5px;
+    margin-bottom: 1px;
+    font-weight: lighter;
+  }
+
+  .alert-p-2 {
+    font-size: 11.5px;
+    margin-bottom: 20px;
+  }
+  .alert-p-3 {
+    font-size: 15px;
+  }
+    
 }
 
 @media only screen and (max-width: 560px){
