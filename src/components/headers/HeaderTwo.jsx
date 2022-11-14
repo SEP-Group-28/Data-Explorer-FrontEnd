@@ -125,72 +125,72 @@ const HeaderTwo = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-    window.onload=function(){
-      let deferredPrompt;
-    var div =document.getElementById('add-to');
-    var button =document.getElementById('add-to-btn')
-    // if (div){
-    //   console.log('dffsdff')
-    div.style.display='none';
+//     window.onload=function(){
+//       let deferredPrompt;
+//     var div =document.getElementById('add-to');
+//     var button =document.getElementById('add-to-btn')
+//     // if (div){
+//     //   console.log('dffsdff')
+//     div.style.display='none';
     
-    // console.log('heloooooooooo')
+//     // console.log('heloooooooooo')
   
-    window.addEventListener('beforeinstallprompt', (event) => {
-    // Prevent the mini-infobar from appearing on mobile.
-      event.preventDefault();
-      // console.log('beforeinstallprompt', event);
-      // Stash the event so it can be triggered later.
-      deferredPrompt = event;
-      div.style.display='block';
+//     window.addEventListener('beforeinstallprompt', (event) => {
+//     // Prevent the mini-infobar from appearing on mobile.
+//       event.preventDefault();
+//       // console.log('beforeinstallprompt', event);
+//       // Stash the event so it can be triggered later.
+//       deferredPrompt = event;
+//       div.style.display='block';
 
-      // window.deferredPrompt = event;
-      // Remove the 'hidden' class from the install button container.
-      // divInstall.classList.toggle('hidden', false);
-    });
+//       // window.deferredPrompt = event;
+//       // Remove the 'hidden' class from the install button container.
+//       // divInstall.classList.toggle('hidden', false);
+//     });
 
-      button.addEventListener('click', () => {
-      div.style.display='none';
+//       button.addEventListener('click', () => {
+//       div.style.display='none';
 
-      // console.log('butInstall-clicked');
-      // const promptEvent = window.deferredPrompt;
-      deferredPrompt.prompt()
-      // if (!promptEvent) {
-      //   // The deferred prompt isn't available.
-      //   return;
-      // }
-      // Show the install prompt.
-      // promptEvent.prompt();
-      // Log the result
-      const result =  deferredPrompt.userChoice.then(
-        choice=>{
-          if (choice.outcome === 'accepted') {
-            // console.log('User accepted');
-        } else {
-            // console.log('User dismissed');
-        }
-        }
-      )
-      // console.log('👍', 'userChoice', result);
-      // Reset the deferred prompt variable, since
-      // prompt() can only be called once.
-      window.deferredPrompt = null;
-      // Hide the install button.
-      // divInstall.classList.toggle('hidden', true);
+//       // console.log('butInstall-clicked');
+//       // const promptEvent = window.deferredPrompt;
+//       deferredPrompt.prompt()
+//       // if (!promptEvent) {
+//       //   // The deferred prompt isn't available.
+//       //   return;
+//       // }
+//       // Show the install prompt.
+//       // promptEvent.prompt();
+//       // Log the result
+//       const result =  deferredPrompt.userChoice.then(
+//         choice=>{
+//           if (choice.outcome === 'accepted') {
+//             // console.log('User accepted');
+//         } else {
+//             // console.log('User dismissed');
+//         }
+//         }
+//       )
+//       // console.log('👍', 'userChoice', result);
+//       // Reset the deferred prompt variable, since
+//       // prompt() can only be called once.
+//       window.deferredPrompt = null;
+//       // Hide the install button.
+//       // divInstall.classList.toggle('hidden', true);
 
       
-});
+// });
 
  
 
-    }
-    window.addEventListener('appinstalled', () => {
-      // Hide the app-provided install promotion
-      div.style.display='none';
-      // Clear the deferredPrompt so it can be garbage collected
-      deferredPrompt = null;
-      // Optionally, send analytics event to indicate successful install
-      // console.log('PWA was installed');
-    });
+//     }
+//     window.addEventListener('appinstalled', () => {
+//       // Hide the app-provided install promotion
+//       div.style.display='none';
+//       // Clear the deferredPrompt so it can be garbage collected
+//       deferredPrompt = null;
+//       // Optionally, send analytics event to indicate successful install
+//       // console.log('PWA was installed');
+//     });
 
     // function getPWADisplayMode() {
     //   const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
@@ -394,9 +394,9 @@ const HeaderTwo = () => {
                 </NotificationModal>
                 </div>
               }
-              <div id="add-to">
+              {/* <div id="add-to">
               <Button id="add-to-btn">Install</Button>
-              </div>
+              </div> */}
              
             {user && (
               <Box sx={{ flexGrow: 0, marginRight:'5px' }}>
