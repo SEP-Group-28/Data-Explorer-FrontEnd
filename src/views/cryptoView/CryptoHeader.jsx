@@ -27,7 +27,7 @@ const Toast = Swal.mixin({
 });
 
 function CryptoHeader({ market, interval }) {
-  const [volume,setVolume] = useState(19000)
+  const [volume,setVolume] = useState(0)
 
   // for alert
   const [open, setOpen] = useState(false);
@@ -70,49 +70,52 @@ function CryptoHeader({ market, interval }) {
        user = null;
      }
   user=true
-// useEffect(()=>{
-//   let eventSource = new EventSource(
-//     `${config.DOMAIN_NAME}/present/` +
-//       `${market || marketState}/1d`)
+useEffect(()=>{
+  let eventSource = new EventSource(
+    `${config.DOMAIN_NAME}/present/` +
+      `${market || marketState}/1d`)
 
-//       eventSource.addEventListener(
-//         "message",
-//         function(e){
-//           let parsedData = JSON.parse(e.data);
-//           setVolume(parsedData[5]);
-//         },
-//       )
+      eventSource.addEventListener(
+        "message",
+        function(e){
+          let parsedData = JSON.parse(e.data);
+          setVolume(parsedData[5]);
+        },
+      )
   
-// },[market])
+},[market])
   
   return (
     <div className="CryptoHeader crypto-bar stock-header">
-      { user &&
-          <div>
-            <AccessAlarmsIcon sx={{color:'white', transform:'scale(2)'}} onClick={handleOpen}
+      {user && (
+        <div>
+          <AccessAlarmsIcon
+            sx={{ color: "white", transform: "scale(2)" }}
+            onClick={handleOpen}
+          />
+          <AlertModal
+            sx={{ mt: 20, ml: 10, borderWidth: 0, maxWidth: "300px" }}
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Alert
+              open={open}
+              onClose={handleClose}
+              market={market || marketState}
+              // interval={location?.state?.interval || "1m"}
             />
-            <AlertModal sx={{mt:20, ml:10, borderWidth:0, maxWidth:'300px' }}
-                  open={open}
-                  onClose={handleClose}
-                  aria-labelledby="modal-modal-title"
-                  aria-describedby="modal-modal-description"
-            >
-              <Alert
-                open={open}
-                onClose={handleClose}
-                market={market || marketState}
-                // interval={location?.state?.interval || "1m"}
-              />
-            </AlertModal>
-          </div>
-        }
+          </AlertModal>
+        </div>
+      )}
       <header className="stock-header">
         {market || marketState}/USDT - <span>{interval || intervalState}</span>
       </header>
       <div className="d-flex flex-row justify-content-evenly">
         <div className="d-flex flex-column">
           <p>24hVolume</p>
-          <span className="volume-value"></span>
+          <span className="volume-value">{volume}</span>
         </div>
       </div>
       {user && (
