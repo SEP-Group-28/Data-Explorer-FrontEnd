@@ -8,7 +8,7 @@ import { getLineChart } from "../../components/technicalIndicators/lineSeries";
 import { getBbandsChart } from "../../components/technicalIndicators/bbandsIndicator";
 import config from "../../config.json";
 import { useDispatch, useSelector } from "react-redux";
-
+import { updateChartData, updateDataLimit, updateTimeStamp } from "../../redux/chart";
 
 function StockChart({ market, interval, internalIndicators }) {
   const location = useLocation();
@@ -25,13 +25,10 @@ function StockChart({ market, interval, internalIndicators }) {
   const chart = useRef();
   const candleSeries = useRef();
   const volumeSeries = useRef();
-  const [value, setValue] = useState(10)
+  const dispatch = useDispatch();
 
-  const [chartData, setChartData] = useState([]);
-  const [volumeData, setVolumeData] = useState([]);
+  const { chartData, volumeData, chartType ,timeStamp,dataLimit } = useSelector((state) => state.chart);
   const [visibleLogicalRange, setVisibleLogicalRange] = useState({});
-  const [timeStamp, setTimeStamp] = useState(0);
-  const [dataLimit, setDataLimit] = useState(280);
   const arr= []
 
   const { ma, sma, ema, wma, bbands } = internalIndicators;
@@ -42,7 +39,8 @@ function StockChart({ market, interval, internalIndicators }) {
   }
 
   useEffect(() => {
-    setChartData([])
+    // dispatch(updateDataLimit(280));
+    // dispatch(updateTimeStamp(0));
     console.log("Chart data", chartData)
     chart.current = createChart(ref.current, {
       width: 0,
@@ -79,7 +77,7 @@ function StockChart({ market, interval, internalIndicators }) {
       },
       priceScaleId: "",
       scaleMargins: {
-        top: 0.95,
+        top: 0.85,
         bottom: 0,
       },
     });
@@ -122,8 +120,10 @@ function StockChart({ market, interval, internalIndicators }) {
 
         candleSeries.current.setData(tempChartData);
         volumeSeries.current.setData(tempVolumeData);
-        setChartData(tempChartData);
-        setVolumeData(tempVolumeData);
+        dispatch(updateChartData({
+          chartData:tempChartData,
+          volumeData:tempVolumeData
+        }))
         setLoading(false);
         console.log("chart data is",chartData)
       })
@@ -219,10 +219,13 @@ function StockChart({ market, interval, internalIndicators }) {
 
     return () => {
       chart.current.remove();
-      setChartData([]);
-      // setVolumeData([])
-      // setTimeStamp(0);
-      // setDataLimit(280);
+      dispatch(updateChartData({
+        chartData:[],
+        volumeData:[],
+      }))
+      console.log("chart data is", chartData)
+      dispatch(updateDataLimit(280))
+      dispatch(updateTimeStamp(0))
       
     };
   }, [market, interval, internalIndicators]);
@@ -271,14 +274,16 @@ function StockChart({ market, interval, internalIndicators }) {
 
           candleSeries.current.setData(tempChartData);
           volumeSeries.current.setData(tempVolumeData);
-          setChartData(tempChartData);
-          setVolumeData(tempVolumeData);
+          dispatch(updateChartData({
+            chartData: tempChartData,
+            volumeData: tempVolumeData
+          }))
           setLoading(false);
           
           // chart.current.resize(1000, 380);
         })
         .catch();
-  }, [dataLimit, market, interval, internalIndicators]);
+  }, [dataLimit]);
 
   useEffect(() => {
     function handleResize() {
@@ -319,8 +324,8 @@ function StockChart({ market, interval, internalIndicators }) {
       let loadData = Math.ceil(Math.abs(visibleLogicalRange.from));
       console.log(loadData);
       console.log(visibleLogicalRange.from);
-      setTimeStamp(timeStamp + dataLimit);
-      setDataLimit(loadData);
+      dispatch(updateTimeStamp(timeStamp + dataLimit));
+      dispatch(updateDataLimit(loadData))
     }
     console.log("Next stamp is", timeStamp);
   };
