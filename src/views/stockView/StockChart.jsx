@@ -21,7 +21,7 @@ function StockChart({ market, interval, internalIndicators }) {
   var intervalState = location?.state?.interval || "5m";
 
   const ref = useRef();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const chart = useRef();
   const candleSeries = useRef();
   const volumeSeries = useRef();
@@ -41,7 +41,13 @@ function StockChart({ market, interval, internalIndicators }) {
   useEffect(() => {
     // dispatch(updateDataLimit(280));
     // dispatch(updateTimeStamp(0));
-    console.log("Chart data", chartData)
+    dispatch(
+      updateChartData({
+        chartData: [],
+        volumeData: [],
+      })
+    );
+    console.log("Chart data1", chartData)
     chart.current = createChart(ref.current, {
       width: 0,
       height: 0,
@@ -120,12 +126,12 @@ function StockChart({ market, interval, internalIndicators }) {
 
         candleSeries.current.setData(tempChartData);
         volumeSeries.current.setData(tempVolumeData);
+        setLoading(false)
         dispatch(updateChartData({
           chartData:tempChartData,
           volumeData:tempVolumeData
         }))
-        setLoading(false);
-        console.log("chart data is",chartData)
+        console.log("chart data2 is", chartData);
       })
       .catch();
 
@@ -219,13 +225,6 @@ function StockChart({ market, interval, internalIndicators }) {
 
     return () => {
       chart.current.remove();
-      dispatch(updateChartData({
-        chartData:[],
-        volumeData:[],
-      }))
-      console.log("chart data is", chartData)
-      dispatch(updateDataLimit(280))
-      dispatch(updateTimeStamp(0))
       
     };
   }, [market, interval, internalIndicators]);
@@ -278,7 +277,8 @@ function StockChart({ market, interval, internalIndicators }) {
             chartData: tempChartData,
             volumeData: tempVolumeData
           }))
-          setLoading(false);
+          
+          
           
           // chart.current.resize(1000, 380);
         })
@@ -334,7 +334,7 @@ function StockChart({ market, interval, internalIndicators }) {
     <>
       {loading ? <Loader position="relative" left="46.5%" top="9%" /> : null}
       <div
-        className="StockChart"
+        className="StockChart" style={{display:loading?"none":"block"}}
         ref={ref}
         onMouseUpCapture={loadPrevious}
         onTouchEnd={loadPrevious}
