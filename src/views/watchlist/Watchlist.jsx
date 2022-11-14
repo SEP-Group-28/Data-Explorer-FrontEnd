@@ -11,28 +11,10 @@ import Token from '../../services/Token';
 import WatchlistServices from '../../services/WatchlistServices';
 import Loader from '../../components/loader/Loader';
 import Swal from 'sweetalert2';
-// const styles = theme => ({
-//   activeSortIcon: {
-//     opacity: 1,
-//     color : 'blue',
-//   },
-//   inactiveSortIcon: {
-//     opacity: 0.4,
-//     color : 'green',
-//   },
-// });
+import PageLoader from '../../components/pageLoader/PageLoader';
+import { useDispatch, useSelector } from 'react-redux';
+import { removeMarketList, saveWatchlist } from '../../redux/watchlist';
 
-// const rows = [
-//   { id: 1, symbol: 'BTCUSD', price: 4343, high: 5554, low: 3544, volume: 456024 },
-//   { id: 2, symbol: 'BTCUSD', price: 4344, high: 5554, low: 3544, volume: 456024 },
-//   { id: 3, symbol: 'BTCUD', price: 4344, high: 5554, low: 3544, volume: 456024 },
-//   { id: 4, symbol: 'BTCSD', price: 43435, high: 5554, low: 3544, volume: 456024 },
-//   { id: 5, symbol: 'BTCUSD', price: 43432, high: 5554, low: 3544, volume: 456024 },
-//   { id: 6, symbol: 'BTCUSD', price: 43431, high: 5554, low: 3544, volume: 456024 },
-//   { id: 7, symbol: 'BTCUSD', price: 434322, high: 5554, low: 3544, volume: 456024 },
-//   { id: 8, symbol: 'BTCSD', price: 43431, high: 5554, low: 3544, volume: 456024 },
-//   { id: 9, symbol: 'BTCUSD', price: 4343, high: 5554, low: 3544, volume: 456024 }
-// ]
 export default function Watchlist() {
   
   const [loader, setLoader] = useState(true);
@@ -40,64 +22,108 @@ export default function Watchlist() {
   const [rows, setRows] = useState([]);
   const [eventSources, setEventSources] = useState([])
   const [records, setRecords] = useState(new Map())
+  const [removed, setRemoved] = useState(false)
+  // const [removeMarket, setRemoveMarket] = useState([])
+  let {removeMarket} = useSelector(state => state.watchlist)
+  // console.log("Remove market, eliye", removeMarket)
+  const dispatch = useDispatch()
+
   const handleDelete = async(e, id, symbol) => {
-    console.log("handle delete ", symbol)
-    const response = await WatchlistServices.removeMarket(symbol)
-    console.log("response :", response)
-    // setData(response.data.data)
-    // setEventSources([])
-    // records.delete(id)
-    // setRecords(records)
-    // console.log("records :", records)
-    // console.log("before delete",rows)
-    // const index = rows.indexOf(id)
-    // if(index >= 0){
-    //   rows.splice(index, 1)
-    //   setRows(rows)
-    // }
-    // console.log("after delete",rows)
+    
+    setRemoved(true)
+    // console.log("handle delete ", symbol)
+    // const response = await WatchlistServices.removeMarket(symbol)
+    // console.log("response :", response)
+    // console.log("records before .....", records)
     let record_ = records
-    record_.delete(symbol)
-    console.log("table records", record_)
+    // console.log("records before", record_)
+    if (record_.delete(symbol)){
+      dispatch(saveWatchlist(symbol))
+    }
     setRecords(record_)
-    if (response.status === 200) {
-      Swal.fire({
-        title: `${symbol}`,
-        text: 'Removed from watchlist successfully',
-        icon: 'success',
-        background:'#111726',
-        showConfirmButton: false,
-        color:'white',
-      })
-      setTimeout(() => {
-        window.location.reload();
-      }, 1500);
+    // console.log("records", record_)
+    setformat()
+
+    
+    
+    // getWatchlist()
+    let data_ = data
+    data_ = data_.filter((item, index) => {
+      return item !== symbol
+    })
+    console.log("data", data_)
+    setRemoved(true)
+    setData(data_)
+    // const refreshTable = async() => {
+    //   console.log("after delete",rows)
+    //   let record_ = records
+    //   record_.delete(symbol)
+    //   console.log("table records", record_)
+    //   setRemoved(true)
+    //   setRecords(record_)
+    // }
+    console.log("hee heee")
+    // console.log("rows :", rows)
+    // await refreshTable();
+    // console.log("after delete",records)
+    // if (response.status === 200) {
+    //   Swal.fire({
+    //     title: `${symbol}`,
+    //     text: 'Removed from watchlist successfully',
+    //     icon: 'success',
+    //     background:'#111726',
+    //     showConfirmButton: false,
+    //     color:'white',
+    //     timer: 1500,
+    //   })
+    //   setTimeout(() => {
+    //     setLoader(false)
+    //   }, 1500);
       
-    }
-    else{
-      Swal.fire({
-        title: `Error removing ${symbol} from watchlist`,
-        text: response.data.message,
-        icon: 'error',
-        confirmButtonText: 'Ok',
-        background:'#111726',
-        color:'white',
-      })
-    }
+    // }
+    // else{
+    //   Swal.fire({
+    //     title: `Error removing ${symbol} from watchlist`,
+    //     text: response.data.message,
+    //     icon: 'error',
+    //     confirmButtonText: 'Ok',
+    //     background:'#111726',
+    //     color:'white',
+    //   })
+    // }
+    setRemoved(false)
   }
   
   const [itemArr, setItemArr] = useState([])
   const userDecode = Token.getAuth()
   const user_id = userDecode['user_id']
-  
+  const [loading, setLoading] = React.useState(true);
+
+  const checkMarket = async() => {
+    console.log("remove use effect", removeMarket)
+    if (removeMarket.length > 0){
+      console.log("remove use.....")
+      console.log("remove market", removeMarket)
+      const response = await WatchlistServices.removeMarket(removeMarket)
+      console.log("response :", response)
+      dispatch(removeMarketList())
+    }
+  };
   useEffect(()=>{
+    checkMarket()
+    console.log("calling.........")
+    setTimeout(() => {
+      setLoading(false)
+    }, 1000);
     getWatchlist()
 
   }, []);
   const getWatchlist = async() => {
+    //     console.log("response :", response) 
     const response = await WatchlistServices.viewWatchlist()
+    console.log("response get watchlist:", response)
     const data_ = response.data.data
-    console.log("data of list", data_)
+    // console.log("data of list", data_)
     if (data_==null)
       setData([])
     else
@@ -105,15 +131,17 @@ export default function Watchlist() {
   };
 
   useEffect(()=>{
+    console.log(removed)
+    if(removed){return}
     let watcheventSource = null
     if (data !== null) {
+      console.log("data in event source", data)
       for (let i in data) {
           watcheventSource  = new EventSource( "http://127.0.0.1:5000/present/" + data[i].split('/')[0] + '/1m')
           watcheventSource.addEventListener(
             'message',
             function(e){
               let parsedData = JSON.parse(e.data)
-              // console.log(parsedData)
               let object = {
                 id: i,
                 symbol: data[i],
@@ -122,12 +150,9 @@ export default function Watchlist() {
                 low: parseFloat(parsedData[2]).toFixed(4),
                 volume: parseFloat(parsedData[5]).toFixed(4)
               }
-              // console.log("Object", object)
-              // setHighVal(parsedData.k.h)
               records.set(data[i], object)
               setRecords(records)
               setformat()
-              // console.log("function call set format")
             }
           )
           eventSources.push(watcheventSource)
@@ -137,12 +162,10 @@ export default function Watchlist() {
       
     }
 
-    return () => {
+    return async() => {
       if (eventSources.length !== 0) {
-        // console.log(eventSources)
         for (let eventsource of eventSources) {
           eventsource.close()
-          // console.log('event source closed')
         }
         setEventSources([])
       }
@@ -150,20 +173,21 @@ export default function Watchlist() {
 
   },[data])
 
-  // const handlePresentCrypto=(e,i) =>
-  // eth:{id,symbl,price,high,low,volume},bth
-  const setformat=()=>{
+  // useEffect(()=>{
+  //     const response = WatchlistServices.removeMarket(removeMarket)
+  //     console.log("response :", response) 
+  // },[removeMarket])
 
-    // console.log("function inside : set format")
+  const setformat=()=>{
     const rows=[]
+    const ids = []
     for (let [key, value] of records){
-      // console.log("key value", key, value)
+      if (ids.includes(value.id)) continue
+      ids.push(value.id)
       rows.push(value)
-      
     }
-    // console.log("rows:", rows)
+    // console.log("rows", rows)
     setRows(rows)
-    console.log("rows", rows)
     setLoader(false)
   }
   const columns = [
@@ -213,20 +237,16 @@ export default function Watchlist() {
     }
   ];
   
-  // const row_data= data.map((item, index) => {
-  //   return (
-  //     <tr key={index}>
-  //       <td>{item}</td>
-  //       <td><button onClick={e => handleDelete(index,e)}>Delete</button></td>
-  //     </tr>
-  //   )
-  // })
   return (
-    
+    <div>
+    {loading
+    ? 
+      <PageLoader/>
+    :
     <div>
       <HeaderTwo/>
 
-      { data?.length <= 0 
+      { rows?.length <= 0 
       ? 
       <div >
       <h1 align='center' style={{ color:'white', left:'50%', size:'50px',marginTop:"20%"}}>No items to display in your watchlist</h1>
@@ -238,13 +258,14 @@ export default function Watchlist() {
       <div >
         <Container maxWidth="lg">
         <div style={{ height: 400, width: '100%'}}>
+          {/* {console.log("rows for the data grid", rows)} */}
           <DataGrid
             rows={
             rows
             }
             columns={columns}
-            pageSize={5}
-            rowsPerPageOptions={[5]}
+            pageSize={6}
+            rowsPerPageOptions={[6]}
             disableColumnFilter
             disableColumnSelector
             disableColumnMenu
@@ -261,6 +282,7 @@ export default function Watchlist() {
         </div>
         </Container>
       </div>}
+    </div>}
     </div>
   )
 }

@@ -40,14 +40,14 @@ function CryptoHeader({ market, interval }) {
         if(response.data.message == "Crypto type already added"){
           Toast.fire({
             icon: 'warning',
-            title: `${market+'/USDT'}`,
+            title: `${(market=="") ? marketState+"/USDT" : market+"/USDT"}`,
             text:'Already added to watchlist',
           })
         }
         else{
           Toast.fire({
             icon: 'success',
-            title: `${market+'/USDT'}`,
+            title: `${(market=="") ? marketState+"/USDT" : market+"/USDT"}`,
             text:'Successfully added to watchlist',
           })
         }
