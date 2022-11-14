@@ -30,11 +30,11 @@ const AllUsers = () => {
     // console.log(skip_value);
     // setSkip(skip_value);
     if (filterBy === "") {
-      console.log("searching null..............................")
-      console.log("filterBy", filterBy);
+      // console.log("searching null..............................")
+      // console.log("filterBy", filterBy);
         getUsers(skip_value, take, search, filterBy);
     } else {
-        console.log("searching..............................")
+        // console.log("searching..............................")
         getUsers(skip_value, -1, search, filterBy);
     }
   }
@@ -65,7 +65,7 @@ const AllUsers = () => {
     // console.log("Inside activate changing");
     try {
       const response = await UserServices.changeActivation( {user_id} );
-      console.log(response);
+      // console.log(response);
       if (response.status === 200) {
         // Messages.SuccessMessage("Changed activation successfully");
         
@@ -100,8 +100,8 @@ const AllUsers = () => {
   const [search, setSearch] = useState("");
   const [filterBy, setFilterBy] = useState("");
   const searchUser = (filter) => {
-    console.log("filter search", filter);
-    console.log("search by", search);
+    // console.log("filter search", filter);
+    // console.log("search by", search);
     getUsers(0, -1, search, filter);
   }
 
@@ -118,14 +118,14 @@ const AllUsers = () => {
       // if (usertype === "doctor") {
       response = await AdminServices.getUsers(skip_value, take, search, filter);
       // setusertype('doctor');
-      console.log("response of users get all", response)
+      // console.log("response of users get all", response)
       // }
       // else if (usertype === "examiner") {
       //   response = await AdminServices.getExaminers(skip_value, take, search);
       //   setusertype('examiner');
       // }
-      console.log("Hellow world")
-      console.log("response take", take);
+      // console.log("Hellow world")
+      // console.log("response take", take);
       setSearch(search);
       setSkip(skip_value);
       // console.log("length", response.data.data.users.length)
@@ -154,7 +154,7 @@ const AllUsers = () => {
 
   const filterFunc = (filter) => {
     setFilterBy(filter);
-    console.log("filter by", filter);
+    // console.log("filter by", filter);
   }
   // if (loader) {
   //   return <Loader />
@@ -307,8 +307,8 @@ const AllUsers = () => {
               </Table>}
 
             <div className="container paginate_div text-center">
-              {console.log("take", take)}
-              {console.log("skip", skip)}
+              {/* {console.log("take", take)}
+              {console.log("skip", skip)} */}
               <Paginate
                 skip={skip}
                 take={take}

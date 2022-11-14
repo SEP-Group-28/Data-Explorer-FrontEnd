@@ -17,6 +17,7 @@ import AlarmAddOutlinedIcon from '@mui/icons-material/AlarmAddOutlined';
 import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
 import Form from 'react-bootstrap/Form';
+import Swal from 'sweetalert2';
 
 export default function Alert({market}) {
     // popover
