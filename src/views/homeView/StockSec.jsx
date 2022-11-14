@@ -10,14 +10,14 @@ function StockSec() {
       onClick={() => {
         navigate("/stock");
       }}
-      className="CryptoSec d-flex flex-column"
+      className="CryptoSec d-flex flex-column mx-auto"
     >
       <div className="stock-imgs d-flex flex-row ">
         <img id="img1" src={Stock1} alt="" />
         <img id="img2" src={Stock2} alt="" />
       </div>
       <header style={{ marginTop: "10px" }}>Stock</header>
-      <p data-testid='stockDes'>
+      <p data-testid="stockDes">
         View the stock market price variations and analyse them in time frames.
         Make back testing easier with candlestick charts
       </p>

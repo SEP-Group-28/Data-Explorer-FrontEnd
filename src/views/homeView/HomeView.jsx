@@ -8,6 +8,8 @@ import StockSec from "./StockSec";
 import Slide from "react-reveal/Slide";
 import Footer from "./Footer";
 import PageLoader from "../../components/pageLoader/PageLoader";
+import PreLoader from "../../components/loader/PageLoader";
+import PWA from "./PWA";
 
 function HomeView() {
   const [loading, setLoading] = React.useState(true);
@@ -23,7 +25,7 @@ function HomeView() {
     ? 
       <PageLoader/>
     : 
-    <div className="homeView">
+    <div className="homeView ">
       <HeaderTwo />
       <div
         id="carouselExampleInterval"
@@ -44,7 +46,10 @@ function HomeView() {
           data-bs-target="#carouselExampleInterval"
           data-bs-slide="prev"
         >
-          <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span
+            className="carousel-control-prev-icon"
+            aria-hidden="true"
+          ></span>
           <span className="visually-hidden">Previous</span>
         </button>
         <button
@@ -53,7 +58,10 @@ function HomeView() {
           data-bs-target="#carouselExampleInterval"
           data-bs-slide="next"
         >
-          <span className="carousel-control-next-icon" aria-hidden="true"></span>
+          <span
+            className="carousel-control-next-icon"
+            aria-hidden="true"
+          ></span>
           <span className="visually-hidden">Next</span>
         </button>
       </div>
@@ -69,6 +77,7 @@ function HomeView() {
           <p>Make your trading life simpler</p>
         </div>
       </div>
+      <PWA />
       <div className="market-cards">
         <Slide left duration={1500}>
           <CryptoSec className="crypto-comp" />

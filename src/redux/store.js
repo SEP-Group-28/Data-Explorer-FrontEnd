@@ -3,6 +3,7 @@ import { persistReducer, persistStore } from 'redux-persist';
 import alertReducer from "./alert"
 import profileReducer from "./profile"
 import watchlistReducer from "./watchlist"
+import chartReducer from "./chart"
 import storage from 'redux-persist/lib/storage';
 import thunk from 'redux-thunk';
 
@@ -28,8 +29,9 @@ export const store = configureStore({
     alert: presistAlertReducer,
     profile: presistProfileReducer,
     watchlist: presistWatchlistReducer,
+    chart: chartReducer,
   },
-  middleware : [thunk]
-})
+  middleware: [thunk],
+});
 
 export const presistor = persistStore(store)
