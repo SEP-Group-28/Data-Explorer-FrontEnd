@@ -7,6 +7,8 @@ import Loader from "../../components/loader/Loader";
 import config from "../../config.json"
 import { getLineChart } from "../../components/technicalIndicators/lineSeries";
 import { getBbandsChart } from "../../components/technicalIndicators/bbandsIndicator";
+import { useDispatch, useSelector } from "react-redux";
+import { updateChartData, updateDataLimit, updateTimeStamp } from "../../redux/chart";
 
 function CryptoChart({ market, interval,internalIndicators }) {
   const location = useLocation();
@@ -33,18 +35,19 @@ function CryptoChart({ market, interval,internalIndicators }) {
   const lineSeries = useRef();
   const volumeSeries = useRef();
 
-  const [chartData, setChartData] = useState([]);
-  const [volumeData, setVolumeData] = useState([]);
-  // const [timeLine, setTimeLine] = useState([]);
+    const dispatch = useDispatch();
+
+    const { chartData, volumeData, chartType, timeStamp, dataLimit } =
+      useSelector((state) => state.chart);
+
 
   const [visibleRange, setVisibleRange] = useState({});
   const [visibleLogicalRange,setVisibleLogicalRange] = useState({})
-  const [timeStamp,setTimeStamp] =useState(0)
-  const [dataLimit,setDataLimit] = useState(280)
+
   
   useEffect(() => {
     setLoading(true)
-    setChartData([]);
+      console.log("charttt dataa", chartData)
     chart.current = createChart(ref.current, {
       width: 0,
       height: 0,
@@ -94,9 +97,9 @@ function CryptoChart({ market, interval,internalIndicators }) {
         autoScale: false,
         shiftVisibleRangeOnNewBar: true,
       },
-      priceScale: {
-         autoScale: true,
-      },
+      // priceScale: {
+      //    autoScale: true,
+      // },
     
     });
 
@@ -133,16 +136,20 @@ function CryptoChart({ market, interval,internalIndicators }) {
 
         candleSeries.current.setData(tempChartData);
         volumeSeries.current.setData(tempVolumeData)
-        setChartData(tempChartData)
-        setVolumeData(tempVolumeData)
+
+         dispatch(
+           updateChartData({
+             chartData: tempChartData,
+             volumeData: tempVolumeData,
+           })
+         );
         
         // let tempTimeLineData = tempTimeLine.filter((c, index) => {
         //   return tempTimeLine.indexOf(c) === index;
         // });
         // setTimeLine(tempTimeLineData);
         setLoading(false);
-  
-       
+
         
       })
       .catch();
@@ -268,8 +275,6 @@ function CryptoChart({ market, interval,internalIndicators }) {
     return () => {
       chart.current.remove();
       eventSource.close();
-      setChartData([]);
-      // setTimeLine([]);
     };
   }, [market, interval,internalIndicators]);
 
@@ -310,8 +315,10 @@ function CryptoChart({ market, interval,internalIndicators }) {
           //   return tempTimeLine.indexOf(c) === index;
           // });
           // setTimeLine(tempTimeLineData);
-          setChartData(tempChartData)
-          setVolumeData(tempVolumeData)
+          dispatch(updateChartData({
+            chartData: tempChartData,
+            volumeData: tempVolumeData
+          }))
           setLoading(false);
         })
         .catch();
@@ -367,8 +374,8 @@ function CryptoChart({ market, interval,internalIndicators }) {
       let loadData = Math.ceil(Math.abs(visibleLogicalRange.from));
       console.log(loadData)
       console.log("Change stamp")
-      setTimeStamp(timeStamp+dataLimit)
-      setDataLimit(loadData);
+      dispatch(updateTimeStamp(timeStamp + dataLimit));
+      dispatch(updateDataLimit(loadData));
     }
     console.log("Next stamp is",timeStamp)
   }
