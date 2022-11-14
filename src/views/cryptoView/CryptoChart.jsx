@@ -40,7 +40,7 @@ function CryptoChart({ market, interval,internalIndicators }) {
   const [visibleRange, setVisibleRange] = useState({});
   const [visibleLogicalRange,setVisibleLogicalRange] = useState({})
   const [timeStamp,setTimeStamp] =useState(0)
-  const [dataLimit,setDataLimit] = useState(80)
+  const [dataLimit,setDataLimit] = useState(280)
   
   useEffect(() => {
     setLoading(true)
@@ -246,8 +246,6 @@ function CryptoChart({ market, interval,internalIndicators }) {
     // console.log("Range", chart.current.timeScale().getVisibleRange());
     function onVisibleTimeRangeChanged(newVisibleTimeRange) {
       setVisibleRange(newVisibleTimeRange);
-      
-      
     }
     
 
