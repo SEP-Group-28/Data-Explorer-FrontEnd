@@ -9,3 +9,5 @@ export const OBV = "OBV";
 export const ROC = "ROC";
 export const MACD = "MACD";
 export const STOCH = "STOCH";
+
+export const CANDLESTICK = "candleStick";
