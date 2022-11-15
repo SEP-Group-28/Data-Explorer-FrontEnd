@@ -9,6 +9,7 @@ import MACDChart from "../../components/technicalIndicators/macdChart";
 import StochChart from "../../components/technicalIndicators/stochChart";
 import { useDispatch, useSelector } from "react-redux";
 import { updateStockChartData, updateStockDataLimit, updateStockTimeStamp } from "../../redux/chart";
+import PageLoader from '../../components/pageLoader/PageLoader';
 
 function StockView() {
   const dispatch = useDispatch();
@@ -60,7 +61,18 @@ function StockView() {
 
   const { macd, obv, roc, rsi, stoch } = externalIndicators;
 
+  const [loading, setLoading] = React.useState(true);
+  React.useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
+  }, []);
+
   return (
+    <div>
+      {loading ? (
+        <PageLoader />
+      ) : (
     <div className="CryptoView">
       <HeaderTwo />
       <div className="d-flex flex-row">
@@ -80,6 +92,8 @@ function StockView() {
           <StockTypes changeStockType={changeStockType} />
         </div>
       </div>
+    </div>
+    )}
     </div>
   );
 }

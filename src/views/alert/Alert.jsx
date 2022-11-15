@@ -18,18 +18,39 @@ import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
 import Form from 'react-bootstrap/Form';
 import Swal from 'sweetalert2';
+import { Box } from '@mui/system';
 
 export default function Alert({market}) {
     // popover
     const [anchorEl, setAnchorEl] = useState(null);
-
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top',
+      background:'#111726',
+      color:'white',
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+      }
+    })
+    
     const handleClick = (event) => {
+      console.log(popLoading , "popLoading")
+      console.log("data received ", data)
+      
+      if (!popLoading && data.length > 0){
+        setPopLoading(true)
+      }
       console.log("target event ", event.currentTarget)
       setAnchorEl(event.currentTarget);
     };
 
     const handleClose = () => {
       setAnchorEl(null);
+      console.log("closing popover.....", anchorEl)
     };
 
     const open = Boolean(anchorEl);
@@ -40,6 +61,19 @@ export default function Alert({market}) {
       console.log("removing data :", data)
       const response = await AlertServices.removeAlert(data);
       console.log("remove response, ", response)
+      if (response.status === 200){
+        
+        Toast.fire({
+          title: `Alert removed successfully`,
+          icon: 'success',
+        })
+        getAlerts()
+      }else{
+        Toast.fire({
+          title: `Error removing alert`,
+          icon: 'error',})
+      }
+
     };
     // const handleAddAlert = () => {
     //   console.log("market received ", market);
@@ -50,6 +84,9 @@ export default function Alert({market}) {
     // handeling adding of alerts
     // [count, setCount] = useState(0)
     const handleSetAlert = async() => {
+      if (data.length <= 0){
+        setPopLoading(false)
+      }
       console.log("going to add an alert now")
       console.log("alert set called ", state.value[0])
       const value = state.value[0]
@@ -69,7 +106,13 @@ export default function Alert({market}) {
         }
       
       }
-      if(!flag){
+      if(flag){
+        getAlerts()
+        Toast.fire({
+          title: `Alert already exists`,
+          icon: 'error',
+        })
+        return }
       const newAlert = {crypto_name: market,
                         crypto_price: value
                       }
@@ -80,13 +123,23 @@ export default function Alert({market}) {
       
       getAlerts()
       console.log("alert response :", response)
+      if (response.status === 200){
+        Toast.fire({
+          title: `Alert added successfully`,
+          icon: 'success',
+        })
+      }else{
+        Toast.fire({
+          title: `Error adding alert`,
+          icon: 'error',
+        })
       }
     }
        
     const getAlerts = async() => {
       const response = await AlertServices.getAllAlerts();
       console.log("alerts, ",response.data)
-      const rows = response.data
+      const rows = response.data.allalertlist
       console.log("data, ", rows)
       setData(rows)
       console.log('fectching alerts', data);
@@ -123,18 +176,26 @@ export default function Alert({market}) {
     //     },
     // ];
     const [data, setData] = useState([]);
+    const [popLoading, setPopLoading] = useState(true);
     console.log("the data", data)
     useEffect( () => {
       getAlerts();
     }, [])
 
     return(
-    <div className="Alerts">
-      <Table striped hover variant="dark">
+    <div className='Alerts'>
+      {data?.length <= 0 ?
+        <Box style={{marginTop:'50px', width:'200px', color:'white', textAlign:'center', overflowY:'hidden'}}>
+        <p>No alerts set</p>
+        <AlarmAddOutlinedIcon onClick={(event)=>handleClick(event)} style={{marginTop:'20px', transform:'scale(2)'}}/>
+        <p style={{marginTop:'30px'}}>Click to add an alert</p>
+        </Box>:
+    
+      <Table className="alerttable" striped bordered hover variant="dark" style={{textAlign:'center', background:'#212529'}} >
         <thead>
           <tr>
             <th>Alerts</th>
-            <th>
+            <th >
               <AlarmAddOutlinedIcon onClick={(event)=>handleClick(event)}/>
             </th>
           </tr>
@@ -149,7 +210,7 @@ export default function Alert({market}) {
         {console.log("the set data , ", data)}
         <tbody>
           {data?.map((data) => {
-            {console.log(data, " data")}
+            // {console.log(data, " data")}
             return (
               <tr key={data.crypto_price}>
                 <td className="d-flex flex-row" align='center'>
@@ -181,8 +242,10 @@ export default function Alert({market}) {
             );
           })}
         </tbody>
-      </Table>
-      <Popover
+      </Table>}
+      {console.log("pop loading", popLoading)}
+      {popLoading &&
+        <Popover
         id={id}
         open={open}
         anchorEl={anchorEl}
@@ -191,23 +254,26 @@ export default function Alert({market}) {
           vertical: 'bottom',
           horizontal: 'left',
         }}
+        // hideBackdrop= {true}
         // style={{color:"blue"}}
       >
+      
           <Form className='alertForm'>
             <Form.Group className="mb-3" controlId="formBasicMarket">
               <Form.Label>Cryptocurrency</Form.Label>
-              <Form.Control type="text" placeholder={market} disabled={true}/>
+              <Form.Control className = 'alert-form-control' type="text" placeholder={market} disabled={true}/>
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formBasicValue">
               <Form.Label>Value</Form.Label>
-              <Form.Control name='value' type='number' step="0.01" min='0' placeholder="Enter Value" onChange={handleChange}/>
+              <Form.Control className='alert-form-control' name='value' type='number' step="0.01" min='0' placeholder="Enter Value" onChange={handleChange}/>
             </Form.Group>
-            <Button className="login-btn signup-btn" id="alert-btn" onClick={handleSetAlert}>
+            <Button className="alert-btn signup-btn" id="alert-btn" onClick={handleSetAlert}>
               Set Alert
             </Button>
         </Form>
       </Popover>
+    }
     </div>
     );
 }

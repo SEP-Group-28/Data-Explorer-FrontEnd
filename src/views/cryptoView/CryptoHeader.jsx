@@ -11,6 +11,8 @@ import Badge from '@mui/material/Badge';
 import Alert from '../alert/Alert';
 import AlertModal from '@mui/material/Modal';
 import Swal from 'sweetalert2';
+import { Container } from '@mui/system';
+import { Popover, Popper } from '@mui/material';
 
 const Toast = Swal.mixin({
   toast: true,
@@ -40,14 +42,14 @@ function CryptoHeader({ market, interval }) {
         if(response.data.message == "Crypto type already added"){
           Toast.fire({
             icon: 'warning',
-            title: `${market+'/USDT'}`,
+            title: `${(market=="") ? marketState+"/USDT" : market+"/USDT"}`,
             text:'Already added to watchlist',
           })
         }
         else{
           Toast.fire({
             icon: 'success',
-            title: `${market+'/USDT'}`,
+            title: `${(market=="") ? marketState+"/USDT" : market+"/USDT"}`,
             text:'Successfully added to watchlist',
           })
         }
@@ -87,28 +89,25 @@ useEffect(()=>{
   
   return (
     <div className="CryptoHeader crypto-bar stock-header">
-      {user && (
-        <div>
-          <AccessAlarmsIcon
-            sx={{ color: "white", transform: "scale(2)" }}
-            onClick={handleOpen}
-          />
-          <AlertModal
-            sx={{ mt: 20, ml: 10, borderWidth: 0, maxWidth: "300px" }}
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-          >
-            <Alert
-              open={open}
-              onClose={handleClose}
-              market={market || marketState}
-              // interval={location?.state?.interval || "1m"}
+      { user &&
+          <div className='d-flex'>
+            <p style={{marginRight: '20px'}}>Alerts</p>
+            <AccessAlarmsIcon sx={{color:'white', transform:'scale(1.8)'}} onClick={handleOpen}
             />
-          </AlertModal>
-        </div>
-      )}
+            
+            <Popover sx={{mt:20, ml:10, borderWidth:0, maxWidth:'400px' }}
+                  open={open}
+                  onClose={handleClose}
+            >
+              <Alert
+                open={open}
+                onClose={handleClose}
+                market={market || marketState}
+                // interval={location?.state?.interval || "1m"}
+              />
+            </Popover>
+          </div>
+        }
       <header className="stock-header">
         {market || marketState}/USDT - <span>{interval || intervalState}</span>
       </header>

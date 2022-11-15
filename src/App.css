@@ -584,19 +584,36 @@ margin-right:40px;
   font-size: 15px;
 } */
 .alertForm{
-  background-color:#20232B;
+  background-color:#212529;
   color: #C2C1C1;
+  text-align: center;
 }
+
+.alert-form-control{
+  border-radius: 5px !important;
+  background-color: #30353F !important;
+  border: none !important;
+  color: rgb(194, 193, 193)!important;
+  height: 37px;
+  margin-bottom: 12px !important;
+  text-align: center;
+  
+}
+.alert-form-control:disabled{
+  color: rgb(243, 76, 76)!important;
+}
+
 .Alerts{
   /* box-shadow: 5px 4px 5px 1px rgba(0, 0, 0, 0.8); */
   /* margin-top: 120px; */
-  height: 300px;
+  height: 270px;
   overflow-y: scroll;
-  width: 365px;
-}
+  max-width: fit-content;
+  background-color: #212529;
 
-.Alerts Table{
-  width: 100px;
+}
+.alerttable{
+  width: 400px;
   font-size: 15px;
 }
 
@@ -651,6 +668,8 @@ margin-right:40px;
   align-self: center;
   margin-left: 10px;
 }
+/* 
+/* Toastify__toast Toastify__toast-theme--light Toastify__toast--info */
 
 .paw-span1{
   color: white;
@@ -664,7 +683,7 @@ margin-right:40px;
   align-items: center;
  
 }
-
+ 
 .pwa-button{
   background-color:#282b32 !important;
   padding: 0px !important;

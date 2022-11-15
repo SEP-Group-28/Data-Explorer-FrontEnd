@@ -18,6 +18,7 @@ import {
   updateCryptoTimeStamp,
   updateIndicatorData,
 } from "../../redux/chart";
+import PageLoader from "../../components/pageLoader/PageLoader";
 
 function CryptoView() {
   const dispatch = useDispatch();
@@ -98,9 +99,19 @@ function CryptoView() {
   // }
   
   // user = true
+  const [loading, setLoading] = React.useState(true);
+  React.useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
+  }, []);
 
   const { macd, obv, roc, rsi, stoch } = externalIndicators;
   return (
+    <div>
+      {loading ? (
+        <PageLoader />
+      ) : (
     <div className="CryptoView">
       <HeaderTwo />
       <div className="d-flex flex-row">
@@ -129,6 +140,8 @@ function CryptoView() {
         {/* TODO: 
         fix css of the alert button */}
       </div>
+    </div>
+      )}
     </div>
   );
 }

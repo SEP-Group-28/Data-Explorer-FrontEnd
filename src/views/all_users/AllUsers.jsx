@@ -29,6 +29,7 @@ const AllUsers = () => {
   const changePage = async (skip_value) => {
     // console.log(skip_value);
     // setSkip(skip_value);
+    console.log("filterby", filterBy);
     if (filterBy === "") {
       // console.log("searching null..............................")
       // console.log("filterBy", filterBy);
@@ -99,10 +100,11 @@ const AllUsers = () => {
   // Search term
   const [search, setSearch] = useState("");
   const [filterBy, setFilterBy] = useState("");
-  const searchUser = (filter) => {
+  const searchUser = () => {
     // console.log("filter search", filter);
     // console.log("search by", search);
-    getUsers(0, -1, search, filter);
+    filterBy===""?setFilterBy("firstName"):null
+    getUsers(0, -1, search, filterBy);
   }
 
   const [users, setUsers] = useState([]);
@@ -205,8 +207,8 @@ const AllUsers = () => {
             </DropdownButton>
           </div>
           <div className="search display-fixed">
-            <Button data-testid='search-btn' variant="outline-primary" onClick={() => searchUser(filterBy)} style={{ borderRadius: "20px", float: "right" }}>Go</Button>
-            {filterBy===""?setFilterBy("firstName"):null}
+            <Button data-testid='search-btn' variant="outline-primary" onClick={() => searchUser()} style={{ borderRadius: "20px", float: "right" }}>Go</Button>
+            
             {/* <Button variant="outline-primary" onClick={() => searchUser()} style={{ borderRadius: "20px", float: "right" }}>Filter</Button> */}
             <input
               type="search"
@@ -246,7 +248,7 @@ const AllUsers = () => {
                     <th>Country</th>
                   </tr>
                 </thead>
-                <tbody style={{ color: "black" }}>
+                <tbody style={{ color: "white" }}>
                   {/* sample database result object to html convert with search enabled */}
                   {users.map((value, key) => {
                     // Tables should come here
