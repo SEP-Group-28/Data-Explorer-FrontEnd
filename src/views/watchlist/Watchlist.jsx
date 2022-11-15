@@ -14,6 +14,7 @@ import Swal from 'sweetalert2';
 import PageLoader from '../../components/pageLoader/PageLoader';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeMarketList, saveWatchlist } from '../../redux/watchlist';
+import { WindowSharp } from '@mui/icons-material';
 
 export default function Watchlist() {
   
@@ -23,74 +24,50 @@ export default function Watchlist() {
   const [eventSources, setEventSources] = useState([])
   const [records, setRecords] = useState(new Map())
   const [removed, setRemoved] = useState(false)
-  // const [removeMarket, setRemoveMarket] = useState([])
-  let {removeMarket} = useSelector(state => state.watchlist)
-  // console.log("Remove market, eliye", removeMarket)
-  const dispatch = useDispatch()
 
   const handleDelete = async(e, id, symbol) => {
     
     setRemoved(true)
-    // console.log("handle delete ", symbol)
-    // const response = await WatchlistServices.removeMarket(symbol)
-    // console.log("response :", response)
-    // console.log("records before .....", records)
-    let record_ = records
-    // console.log("records before", record_)
-    if (record_.delete(symbol)){
-      dispatch(saveWatchlist(symbol))
+    const response = await checkMarket(symbol)
+    console.log("response :", response)
+    if (response.status === 200){
+        console.log("awaaa awaaa")
+        let record_ = records
+        record_.delete(symbol)
+        setRecords(record_)
+        setformat()
+        let data_ = data
+        data_ = data_.filter((item, index) => {
+          return item !== symbol
+        })
+        console.log("data", data_)
+        setRemoved(true)
+        setData(data_)
+          Swal.fire({
+            title: `${symbol}`,
+            text: 'Removed from watchlist successfully',
+            icon: 'success',
+            background:'#111726',
+            showConfirmButton: false,
+            color:'white',
+            timer: 1500,
+          })
+          setTimeout(() => {
+            setLoader(false)
+          }, 1500);
+    }else{
+        Swal.fire({
+          title: `Error removing ${symbol} from watchlist`,
+          text: response.data.message,
+          icon: 'error',
+          confirmButtonText: 'Ok',
+          background:'#111726',
+          color:'white',
+        })
     }
-    setRecords(record_)
-    // console.log("records", record_)
-    setformat()
-
     
-    
-    // getWatchlist()
-    let data_ = data
-    data_ = data_.filter((item, index) => {
-      return item !== symbol
-    })
-    console.log("data", data_)
-    setRemoved(true)
-    setData(data_)
-    // const refreshTable = async() => {
-    //   console.log("after delete",rows)
-    //   let record_ = records
-    //   record_.delete(symbol)
-    //   console.log("table records", record_)
-    //   setRemoved(true)
-    //   setRecords(record_)
-    // }
     console.log("hee heee")
-    // console.log("rows :", rows)
-    // await refreshTable();
-    // console.log("after delete",records)
-    // if (response.status === 200) {
-    //   Swal.fire({
-    //     title: `${symbol}`,
-    //     text: 'Removed from watchlist successfully',
-    //     icon: 'success',
-    //     background:'#111726',
-    //     showConfirmButton: false,
-    //     color:'white',
-    //     timer: 1500,
-    //   })
-    //   setTimeout(() => {
-    //     setLoader(false)
-    //   }, 1500);
-      
-    // }
-    // else{
-    //   Swal.fire({
-    //     title: `Error removing ${symbol} from watchlist`,
-    //     text: response.data.message,
-    //     icon: 'error',
-    //     confirmButtonText: 'Ok',
-    //     background:'#111726',
-    //     color:'white',
-    //   })
-    // }
+    
     setRemoved(false)
   }
   
@@ -99,19 +76,14 @@ export default function Watchlist() {
   const user_id = userDecode['user_id']
   const [loading, setLoading] = React.useState(true);
 
-  const checkMarket = async() => {
-    console.log("remove use effect", removeMarket)
-    if (removeMarket.length > 0){
-      console.log("remove use.....")
-      console.log("remove market", removeMarket)
-      const response = await WatchlistServices.removeMarket(removeMarket)
-      console.log("response :", response)
-      dispatch(removeMarketList())
+  const checkMarket = async(symbol) => {
+      console.log("calling check market")
+      const response = await WatchlistServices.removeMarket(symbol)
+      
+      console.log("response in checkMarket", response)
+      return response
     }
-  };
   useEffect(()=>{
-    checkMarket()
-    console.log("calling.........")
     setTimeout(() => {
       setLoading(false)
     }, 1000);
@@ -119,8 +91,8 @@ export default function Watchlist() {
 
   }, []);
   const getWatchlist = async() => {
-    //     console.log("response :", response) 
     const response = await WatchlistServices.viewWatchlist()
+    
     console.log("response get watchlist:", response)
     const data_ = response.data.data
     // console.log("data of list", data_)
@@ -129,7 +101,6 @@ export default function Watchlist() {
     else
       setData(data_)
   };
-
   useEffect(()=>{
     console.log(removed)
     if(removed){return}
