@@ -44,6 +44,10 @@ export default function Alert({market}) {
       if (!popLoading && data.length > 0){
         setPopLoading(true)
       }
+      console.log("data triggered ", data)
+      if (data.length <= 0){
+        setPopLoading(true)
+      }
       console.log("target event ", event.currentTarget)
       setAnchorEl(event.currentTarget);
     };
@@ -61,6 +65,13 @@ export default function Alert({market}) {
       console.log("removing data :", data)
       const response = await AlertServices.removeAlert(data);
       console.log("remove response, ", response)
+      if (response.status == 202){
+        Toast.fire({
+          icon: 'warning',
+          title: 'Alerady removed'
+        })
+        return
+      }
       if (response.status === 200){
         
         Toast.fire({
@@ -84,6 +95,7 @@ export default function Alert({market}) {
     // handeling adding of alerts
     // [count, setCount] = useState(0)
     const handleSetAlert = async() => {
+      console.log("data triggered ", data)
       if (data.length <= 0){
         setPopLoading(false)
       }
@@ -158,23 +170,6 @@ export default function Alert({market}) {
         [e.target.name] : [parseFloat(e.target.value)]
       })
     } 
-    // console.log("interval, ", interval)
-
-    // const dummy = 
-    // [
-    //     {
-    //         crypto_name:"BTC",
-    //         crypto_price :"19219",
-    //     },
-    //     {
-    //         symbol:"SOL",
-    //         value :"2832",
-    //     },
-    //     {
-    //         symbol:"ETH",
-    //         value :"2324",
-    //     },
-    // ];
     const [data, setData] = useState([]);
     const [popLoading, setPopLoading] = useState(true);
     console.log("the data", data)
