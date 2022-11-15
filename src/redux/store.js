@@ -8,7 +8,7 @@ import storage from 'redux-persist/lib/storage';
 import thunk from 'redux-thunk';
 
 const presistAlertConfig = {
-    key: 'token',
+    key: 'alerts',
     storage,
 }
 const presistProfileConfig = {
