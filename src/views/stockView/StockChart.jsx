@@ -7,6 +7,8 @@ import { removeDuplicates } from "../../utils/functions";
 import { getLineChart } from "../../components/technicalIndicators/lineSeries";
 import { getBbandsChart } from "../../components/technicalIndicators/bbandsIndicator";
 import config from "../../config.json";
+import { useDispatch, useSelector } from "react-redux";
+import { updateChartData, updateDataLimit, updateTimeStamp } from "../../redux/chart";
 
 function StockChart({ market, interval, internalIndicators }) {
   const location = useLocation();
@@ -20,12 +22,14 @@ function StockChart({ market, interval, internalIndicators }) {
 
   const ref = useRef();
   const [loading, setLoading] = useState(false);
-
-  const [chartData, setChartData] = useState([]);
-
   const chart = useRef();
   const candleSeries = useRef();
   const volumeSeries = useRef();
+  const dispatch = useDispatch();
+
+  const { chartData, volumeData, chartType ,timeStamp,dataLimit } = useSelector((state) => state.chart);
+  const [visibleLogicalRange, setVisibleLogicalRange] = useState({});
+  const arr= []
 
   const { ma, sma, ema, wma, bbands } = internalIndicators;
 
@@ -35,7 +39,9 @@ function StockChart({ market, interval, internalIndicators }) {
   }
 
   useEffect(() => {
-    setLoading(true);
+    // dispatch(updateDataLimit(280));
+    // dispatch(updateTimeStamp(0));
+    console.log("Chart data", chartData)
     chart.current = createChart(ref.current, {
       width: 0,
       height: 0,
@@ -71,7 +77,7 @@ function StockChart({ market, interval, internalIndicators }) {
       },
       priceScaleId: "",
       scaleMargins: {
-        top: 0.95,
+        top: 0.85,
         bottom: 0,
       },
     });
@@ -86,7 +92,7 @@ function StockChart({ market, interval, internalIndicators }) {
 
     fetch(
       "http://127.0.0.1:5000" +
-        `/stockhistory/${market || marketState}/${interval || intervalState}`
+        `/stockhistory/${market || marketState}/${interval || intervalState}/0/${dataLimit}`
     )
       .then((res) => res.json())
       .then((data) => {
@@ -109,14 +115,17 @@ function StockChart({ market, interval, internalIndicators }) {
           fetchedData.push(object);
           tempVolume.push(volume);
         });
-        let tempChartData = removeDuplicates(fetchedData).sort(compare);
-        let tempVolumeData = removeDuplicates(tempVolume).sort(compare);
+        let tempChartData = removeDuplicates([...fetchedData,...chartData]).sort(compare);
+        let tempVolumeData = removeDuplicates([...tempVolume,...volumeData]).sort(compare);
 
-        candleSeries.current.setData(fetchedData);
+        candleSeries.current.setData(tempChartData);
         volumeSeries.current.setData(tempVolumeData);
-        setChartData(tempChartData);
+        dispatch(updateChartData({
+          chartData:tempChartData,
+          volumeData:tempVolumeData
+        }))
         setLoading(false);
-        chart.current.resize(1000, 380);
+        console.log("chart data is",chartData)
       })
       .catch();
 
@@ -200,14 +209,81 @@ function StockChart({ market, interval, internalIndicators }) {
       );
     }
 
+    function onVisibleLogicalRangeChanged(newVisibleLogicalRange) {
+      setVisibleLogicalRange(newVisibleLogicalRange);
+    }
+
+    chart.current
+      .timeScale()
+      .subscribeVisibleLogicalRangeChange(onVisibleLogicalRangeChanged);
+
     return () => {
       chart.current.remove();
+      dispatch(updateChartData({
+        chartData:[],
+        volumeData:[],
+      }))
+      console.log("chart data is", chartData)
+      dispatch(updateDataLimit(280))
+      dispatch(updateTimeStamp(0))
+      
     };
   }, [market, interval, internalIndicators]);
 
   const [windowDimensions, setWindowDimensions] = useState(
     getWindowDimension()
   );
+
+  useEffect(() => {
+    timeStamp !== 0 &&
+      fetch(
+        "http://127.0.0.1:5000" +
+          `/stockhistory/${market || marketState}/${
+            interval || intervalState
+          }/${timeStamp}/${dataLimit}`
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          let fetchedData = [];
+          // let tempTimeLine = [];
+          let tempVolume = [];
+          data.forEach((row) => {
+            let object = {
+              time: row[0] / 1000,
+              open: row[1],
+              high: row[2],
+              low: row[3],
+              close: row[4],
+            };
+            let volume = {
+              time: row[0] / 1000,
+              value: row[5],
+              color: row[1] > row[4] ? "#834C4B" : "#318B52",
+            };
+            fetchedData.push(object);
+            tempVolume.push(volume);
+          });
+          let tempChartData = removeDuplicates([
+            ...fetchedData,
+            ...chartData,
+          ]).sort(compare);
+          let tempVolumeData = removeDuplicates([
+            ...tempVolume,
+            ...volumeData,
+          ]).sort(compare);
+
+          candleSeries.current.setData(tempChartData);
+          volumeSeries.current.setData(tempVolumeData);
+          dispatch(updateChartData({
+            chartData: tempChartData,
+            volumeData: tempVolumeData
+          }))
+          setLoading(false);
+          
+          // chart.current.resize(1000, 380);
+        })
+        .catch();
+  }, [dataLimit]);
 
   useEffect(() => {
     function handleResize() {
@@ -242,12 +318,27 @@ function StockChart({ market, interval, internalIndicators }) {
     };
   });
 
-
+  const loadPrevious = () => {
+    console.log("Previous stamp is", timeStamp);
+    if (visibleLogicalRange.from < 0) {
+      let loadData = Math.ceil(Math.abs(visibleLogicalRange.from));
+      console.log(loadData);
+      console.log(visibleLogicalRange.from);
+      dispatch(updateTimeStamp(timeStamp + dataLimit));
+      dispatch(updateDataLimit(loadData))
+    }
+    console.log("Next stamp is", timeStamp);
+  };
 
   return (
     <>
       {loading ? <Loader position="relative" left="46.5%" top="9%" /> : null}
-      <div className="StockChart" ref={ref} />
+      <div
+        className="StockChart"
+        ref={ref}
+        onMouseUpCapture={loadPrevious}
+        onTouchEnd={loadPrevious}
+      />
     </>
   );
 }
