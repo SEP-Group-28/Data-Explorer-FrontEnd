@@ -11,13 +11,18 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import NotificationServices from "../../services/NotificationServices";
 import { Fragment } from "react";
+import Token from "../../services/Token";
+import { useDispatch, useSelector } from "react-redux";
+import { decrement, setCount } from "../../redux/notification";
 
 // const rows = DummyData;
 
-export default function Notifications({increment}){
+export default function Notifications(){
   // for no new notification alert
     const [open_, setOpen_] = useState(true);
     const handleOpen_ = () => setOpen_(true);
+    // let {count} = useSelector(state => state.notification)
+    const dispatch = useDispatch()
     const handleClose_ = (event, reason) => {
       if (reason == 'clickaway'){
         return;
@@ -27,13 +32,43 @@ export default function Notifications({increment}){
     };
     const callHistoricNotifications = async() => {
       const rows = await NotificationServices.getNotifications();
-      setData(rows?.data['last 5 days notifications'])
+      const rows_ = rows?.data['last day notifications'].map((row, index) => {
+        return {
+          id: index,
+          date:  " " + new Date(row[0]).getDate() + "/" + new Date(row[0]).getMonth() + "/" + new Date(row[0]).getFullYear() + " " + new Date(row[0]).getHours() + ":" + new Date(row[0]).getMinutes() + ":" + new Date(row[0]).getSeconds(),
+          symbol: row[1],
+          price: row[2],
+          type: 'crossing',
+        }
+      })
+      console.log("rows", rows_)
+      // console.log("rows", rows?.data['last day notifications'])
+      setData(rows_)
       console.log("data  notifications:", rows)
+      
     };
     useEffect(()=>{
       callHistoricNotifications();
+      // let eventSource = new EventSource(
+      //   `${config.DOMAIN_NAME}/notifications/present`,
+      //   {headers: { Authorization: `Bearer ${Token.getAccessToken()}` }}
+      // );
+      // eventSource.addEventListener(
+      //   "message",
+      //   function (e) {
+      //     let parsedData = JSON.parse(e.data);
+      //     console.log("parsedData", parsedData)
+      //     // let object = {
+      //     //   time: parsedData[0],
+            
+      //     // };
+      //     // candleSeries.current.update(object);
+      //   }
+      // );
     }, [])
     
+    
+
     const action = (
       <Fragment>
         <IconButton
@@ -49,15 +84,17 @@ export default function Notifications({increment}){
 
     const [data, setData] = useState([]);
     const handleMark = (e, id) => {
-        increment();
+        dispatch(decrement())
         setData(data?.filter(elem=> elem.id !== id));
     }
     const columns = [
         { field:'id', hide:true},
+        { field: 'date', headerName: 'Date', width: 175, headerAlign:'center', align:'center', sortable:true },
         { field: 'symbol', headerName: 'Symbol', width: 100, headerAlign:'center', align:'center', sortable:false },
-        { field: 'type', headerName: 'Message', width: 200, headerAlign:'center', align:'center', sortable:false },
-        { field: 'open price', headerName: 'Open Price',type: 'number', width: 120, headerAlign:'center', align:'center', sortable:false },
-        { field: 'current peak price', headerName: 'Current Peak',type: 'number', width: 120, headerAlign:'center', align:'center', sortable:false },
+        { field: 'price', headerName: 'Price',type: 'number', width: 120, headerAlign:'center', align:'center', sortable:false },
+        { field: 'type', headerName: 'Type', width: 200, headerAlign:'center', align:'center', sortable:false },
+        
+        // { field: 'current peak price', headerName: 'Current Peak',type: 'number', width: 120, headerAlign:'center', align:'center', sortable:false },
         {
           field: "Mark As Read",
           sortable: false,
@@ -109,7 +146,7 @@ export default function Notifications({increment}){
         <div style={{ height: 400, width: '100%'}}>
           
           <DataGrid
-            rows={data.map((row)=>row[1])}
+            rows={data}
             columns={columns}
             pageSize={5}
             rowsPerPageOptions={[5]}

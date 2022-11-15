@@ -32,17 +32,17 @@ export default function Watchlist() {
     console.log("response :", response)
     if (response.status === 200){
         console.log("awaaa awaaa")
-        let record_ = records
-        record_.delete(symbol)
-        setRecords(record_)
-        setformat()
-        let data_ = data
-        data_ = data_.filter((item, index) => {
-          return item !== symbol
-        })
-        console.log("data", data_)
-        setRemoved(true)
-        setData(data_)
+        // let record_ = records
+        // record_.delete(symbol)
+        // setRecords(record_)
+        // setformat()
+        // let data_ = data
+        // data_ = data_.filter((item, index) => {
+        //   return item !== symbol
+        // })
+        // console.log("data", data_)
+        // setRemoved(true)
+        // setData(data_)
           Swal.fire({
             title: `${symbol}`,
             text: 'Removed from watchlist successfully',
@@ -78,6 +78,17 @@ export default function Watchlist() {
 
   const checkMarket = async(symbol) => {
       console.log("calling check market")
+      let record_ = records
+        record_.delete(symbol)
+        setRecords(record_)
+        setformat()
+        let data_ = data
+        data_ = data_.filter((item, index) => {
+          return item !== symbol
+        })
+        console.log("data", data_)
+        setRemoved(true)
+        setData(data_)
       const response = await WatchlistServices.removeMarket(symbol)
       
       console.log("response in checkMarket", response)
