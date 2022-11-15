@@ -8,8 +8,16 @@ const APIEndpoint = config.DOMAIN_NAME;
 const getNotifications = () => {
     return axios({
         method: "get",
-        url: APIEndpoint + '/notifications/history/open_price',
-        // headers: { Authorization: `Bearer ${token.getAccessToken()}` }
+        url: APIEndpoint + '/notifications/history',
+        headers: { Authorization: `Bearer ${token.getAccessToken()}` }
+    });
+};
+
+const getNotificationCount = () => {
+    return axios({
+        method: "get",
+        url: APIEndpoint + '/notifications/get-count',
+        headers: { Authorization: `Bearer ${token.getAccessToken()}` }
     });
 };
 
@@ -38,4 +46,5 @@ const getNotifications = () => {
 
 export default{
     getNotifications,
+    getNotificationCount,
 };

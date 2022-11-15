@@ -27,8 +27,10 @@ import Snackbar from '@mui/material/Snackbar';
 import CloseIcon from '@mui/icons-material/Close';
 import { useEffect } from "react";
 import TokenRequest from "../../views/notification/TokenRequest";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
+import NotificationServices from "../../services/NotificationServices";
+import { increment, setCount } from "../../redux/notification";
 
 const style = {
   position: 'relative',
@@ -63,8 +65,29 @@ const settings = ["Profile", "Watchlist", "Logout"];
 const HeaderTwo = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
-  
-  var [count, setCount] = useState(0);
+  let {count} = useSelector(state => state.notification)
+  const dispatch = useDispatch()
+
+  try{
+    var user=jwtDecode(Token.getAccessToken())
+    
+   }
+   catch(err){
+     user=null
+   }
+
+  const getCount = async() => {
+      if (!user) return
+      const response = await NotificationServices.getNotificationCount();
+      if (response.status === 200) {
+        dispatch(setCount(response.data))
+      }
+      console.log("get count response", response)
+  }
+  useEffect(() => {
+    getCount()
+  }, [])
+  // var [count, setCount] = useState(0);
 
   const {link} = useSelector((state)=>state.profile)
   // console.log("link", link)
@@ -76,10 +99,10 @@ const HeaderTwo = () => {
   //   setImage(imagepath)
   // },[imagepath])
 
-  const increment = () =>{
-    count = count+1
-    setCount(count)
-  }
+  // const increment = () =>{
+  //   count = count+1
+  //   setCount(count)
+  // }
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -111,13 +134,7 @@ const HeaderTwo = () => {
     e.target.style.background = "none";
    }
 
-   try{
-      var user=jwtDecode(Token.getAccessToken())
-      
-     }
-     catch(err){
-       user=null
-     }
+   
     // const user = false;
    
   // for modal
@@ -379,7 +396,7 @@ const HeaderTwo = () => {
             </Box>
             { user &&
                 <div style={{marginRight:'18px'}}>
-                <Badge badgeContent={DummyData.length-count} color="primary">
+                <Badge badgeContent={count} color="primary">
                 <NotificationsRoundedIcon sx={{}} onClick={handleOpen}/>  
                 </Badge>
                 <NotificationModal sx={{mt:-8, borderWidth:0 }}
