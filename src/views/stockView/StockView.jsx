@@ -8,7 +8,7 @@ import LineChart from "../../components/technicalIndicators/lineChart";
 import MACDChart from "../../components/technicalIndicators/macdChart";
 import StochChart from "../../components/technicalIndicators/stochChart";
 import { useDispatch, useSelector } from "react-redux";
-import { updateChartData, updateDataLimit, updateTimeStamp } from "../../redux/chart";
+import { updateStockChartData, updateStockDataLimit, updateStockTimeStamp } from "../../redux/chart";
 
 function StockView() {
   const dispatch = useDispatch();
@@ -32,24 +32,24 @@ function StockView() {
   const changeStockType = (marketType) => {
     setMarket(marketType);
     dispatch(
-      updateChartData({
-        chartData: [],
-        volumeData: [],
+      updateStockChartData({
+        stockChartData: [],
+        stockVolumeData: [],
       })
     );
-    dispatch(updateDataLimit(280));
-    dispatch(updateTimeStamp(0));
+    dispatch(updateStockDataLimit(280));
+    dispatch(updateStockTimeStamp(0));
   };
   const changeInterval = (interval)=>{
     setInterval(interval)
-    dispatch(
-      updateChartData({
-        chartData: [],
-        volumeData: [],
-      })
-    );
-    dispatch(updateDataLimit(280));
-    dispatch(updateTimeStamp(0));
+   dispatch(
+     updateStockChartData({
+       stockChartData: [],
+       stockVolumeData: [],
+     })
+   );
+   dispatch(updateStockDataLimit(280));
+   dispatch(updateStockTimeStamp(0));
   }
   const addInternalIndicators = (indicators) => {
     setInternalIndicators(indicators);
