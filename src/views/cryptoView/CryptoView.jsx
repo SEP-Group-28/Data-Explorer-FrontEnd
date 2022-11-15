@@ -12,7 +12,12 @@ import LineChart from "../../components/technicalIndicators/lineChart";
 import MACDChart from "../../components/technicalIndicators/macdChart";
 import StochChart from "../../components/technicalIndicators/stochChart";
 import { useDispatch, useSelector } from "react-redux";
-import { updateChartData, updateDataLimit, updateTimeStamp } from "../../redux/chart";
+import {
+  updateCryptoChartData,
+  updateCryptoDataLimit,
+  updateCryptoTimeStamp,
+  updateIndicatorData,
+} from "../../redux/chart";
 
 function CryptoView() {
   const dispatch = useDispatch();
@@ -37,28 +42,49 @@ function CryptoView() {
   const changeCryptoType = (marketType) => {
     setMarket(marketType);
     dispatch(
-      updateChartData({
-        chartData: [],
-        volumeData: [],
+      updateCryptoChartData({
+        cryptoChartData: [],
+        cryptoVolumeData: [],
       })
     );
-    dispatch(updateDataLimit(280));
-    dispatch(updateTimeStamp(0));
+    dispatch(updateCryptoDataLimit(280));
+    dispatch(updateCryptoTimeStamp(0));
+    dispatch(updateIndicatorData({ indicatorType: "ma", data: [] }));
+    dispatch(updateIndicatorData({ indicatorType: "sma", data: [] }));
+    dispatch(updateIndicatorData({ indicatorType: "wma", data: [] }));
+    dispatch(updateIndicatorData({ indicatorType: "ema", data: [] }));
+    dispatch(
+      updateIndicatorData({
+        indicatorType: "bbands",
+        data: { upper: [], middle: [], lower: [] },
+      })
+    );
 
   };
   const changeInterval = (interval) => {
     setInterval(interval);
     dispatch(
-      updateChartData({
-        chartData: [],
-        volumeData: [],
+      updateCryptoChartData({
+        cryptoChartData: [],
+        cryptoVolumeData: [],
       })
     );
-    dispatch(updateDataLimit(280));
-    dispatch(updateTimeStamp(0));
+    dispatch(updateCryptoDataLimit(280));
+    dispatch(updateCryptoTimeStamp(0));
+    dispatch(updateIndicatorData({ indicatorType: "ma", data: [] }));
+    dispatch(updateIndicatorData({ indicatorType: "sma", data: [] }));
+    dispatch(updateIndicatorData({ indicatorType: "wma", data: [] }));
+    dispatch(updateIndicatorData({ indicatorType: "ema", data: [] }));
+    dispatch(
+      updateIndicatorData({
+        indicatorType: "bbands",
+        data: { upper: [], middle: [], lower: [] },
+      })
+    );
   };
     const addInternalIndicators = (indicators) => {
       setInternalIndicators(indicators);
+      
     };
     const addExternalIndicators = (indicators) => {
       setExternlIndicators(indicators);
