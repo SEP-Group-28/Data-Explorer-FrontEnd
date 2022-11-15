@@ -8,26 +8,23 @@ import { getLineChart } from "../../components/technicalIndicators/lineSeries";
 import { getBbandsChart } from "../../components/technicalIndicators/bbandsIndicator";
 import config from "../../config.json";
 import { useDispatch, useSelector } from "react-redux";
-import { updateChartData, updateDataLimit, updateTimeStamp } from "../../redux/chart";
+import { updateStockChartData, updateStockDataLimit, updateStockTimeStamp } from "../../redux/chart";
 
 function StockChart({ market, interval, internalIndicators }) {
   const location = useLocation();
 
-  try {
-    var marketState = location.state.market;
-  } catch (error) {
-    marketState = "TSLA";
-  }
+
+  const  marketState = "TSLA";
   var intervalState = location?.state?.interval || "5m";
 
   const ref = useRef();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const chart = useRef();
   const candleSeries = useRef();
   const volumeSeries = useRef();
   const dispatch = useDispatch();
 
-  const { chartData, volumeData, chartType ,timeStamp,dataLimit } = useSelector((state) => state.chart);
+  const { stockChartData, stockVolumeData, chartType ,stockTimeStamp,stockDataLimit } = useSelector((state) => state.chart);
   const [visibleLogicalRange, setVisibleLogicalRange] = useState({});
   const arr= []
 
@@ -39,9 +36,15 @@ function StockChart({ market, interval, internalIndicators }) {
   }
 
   useEffect(() => {
-    // dispatch(updateDataLimit(280));
-    // dispatch(updateTimeStamp(0));
-    console.log("Chart data", chartData)
+    // dispatch(updateStockDataLimit(280));
+    // dispatch(updateStockTimeStamp(0));
+    dispatch(
+      updateStockChartData({
+        stockChartData: [],
+        stockVolumeData: [],
+      })
+    );
+    console.log("Chart data1", stockChartData);
     chart.current = createChart(ref.current, {
       width: 0,
       height: 0,
@@ -89,10 +92,13 @@ function StockChart({ market, interval, internalIndicators }) {
         secondsVisible: false,
       },
     });
+    console.log("http://127.0.0.1:5000" +
+        `/stockhistory/${market || marketState}/${interval || intervalState}/0/${stockDataLimit}`)
 
+        console.log("market is",market || marketState)
     fetch(
       "http://127.0.0.1:5000" +
-        `/stockhistory/${market || marketState}/${interval || intervalState}/0/${dataLimit}`
+        `/stockhistory/${market || marketState}/${interval || intervalState}/0/${stockDataLimit}`
     )
       .then((res) => res.json())
       .then((data) => {
@@ -115,17 +121,17 @@ function StockChart({ market, interval, internalIndicators }) {
           fetchedData.push(object);
           tempVolume.push(volume);
         });
-        let tempChartData = removeDuplicates([...fetchedData,...chartData]).sort(compare);
-        let tempVolumeData = removeDuplicates([...tempVolume,...volumeData]).sort(compare);
+        let tempChartData = removeDuplicates([...fetchedData,...stockChartData]).sort(compare);
+        let tempVolumeData = removeDuplicates([...tempVolume,...stockVolumeData]).sort(compare);
 
         candleSeries.current.setData(tempChartData);
         volumeSeries.current.setData(tempVolumeData);
-        dispatch(updateChartData({
-          chartData:tempChartData,
-          volumeData:tempVolumeData
+        setLoading(false)
+        dispatch(updateStockChartData({
+          stockChartData:tempChartData,
+          stockVolumeData:tempVolumeData
         }))
-        setLoading(false);
-        console.log("chart data is",chartData)
+        console.log("chart data2 is", stockChartData);
       })
       .catch();
 
@@ -219,13 +225,6 @@ function StockChart({ market, interval, internalIndicators }) {
 
     return () => {
       chart.current.remove();
-      dispatch(updateChartData({
-        chartData:[],
-        volumeData:[],
-      }))
-      console.log("chart data is", chartData)
-      dispatch(updateDataLimit(280))
-      dispatch(updateTimeStamp(0))
       
     };
   }, [market, interval, internalIndicators]);
@@ -235,12 +234,12 @@ function StockChart({ market, interval, internalIndicators }) {
   );
 
   useEffect(() => {
-    timeStamp !== 0 &&
+    stockTimeStamp !== 0 &&
       fetch(
         "http://127.0.0.1:5000" +
           `/stockhistory/${market || marketState}/${
             interval || intervalState
-          }/${timeStamp}/${dataLimit}`
+          }/${stockTimeStamp}/${stockDataLimit}`
       )
         .then((res) => res.json())
         .then((data) => {
@@ -265,25 +264,26 @@ function StockChart({ market, interval, internalIndicators }) {
           });
           let tempChartData = removeDuplicates([
             ...fetchedData,
-            ...chartData,
+            ...stockChartData,
           ]).sort(compare);
           let tempVolumeData = removeDuplicates([
             ...tempVolume,
-            ...volumeData,
+            ...stockVolumeData,
           ]).sort(compare);
 
           candleSeries.current.setData(tempChartData);
           volumeSeries.current.setData(tempVolumeData);
-          dispatch(updateChartData({
-            chartData: tempChartData,
-            volumeData: tempVolumeData
-          }))
-          setLoading(false);
-          
+          dispatch(
+            updateStockChartData({
+              stockChartData: tempChartData,
+              stockVolumeData: tempVolumeData,
+            })
+          );
+
           // chart.current.resize(1000, 380);
         })
         .catch();
-  }, [dataLimit]);
+  }, [stockDataLimit]);
 
   useEffect(() => {
     function handleResize() {
@@ -319,22 +319,22 @@ function StockChart({ market, interval, internalIndicators }) {
   });
 
   const loadPrevious = () => {
-    console.log("Previous stamp is", timeStamp);
+    console.log("Previous stamp is", stockTimeStamp);
     if (visibleLogicalRange.from < 0) {
       let loadData = Math.ceil(Math.abs(visibleLogicalRange.from));
       console.log(loadData);
       console.log(visibleLogicalRange.from);
-      dispatch(updateTimeStamp(timeStamp + dataLimit));
-      dispatch(updateDataLimit(loadData))
+      dispatch(updateStockTimeStamp(stockTimeStamp + stockDataLimit));
+      dispatch(updateStockDataLimit(loadData))
     }
-    console.log("Next stamp is", timeStamp);
+    console.log("Next stamp is", stockTimeStamp);
   };
 
   return (
     <>
       {loading ? <Loader position="relative" left="46.5%" top="9%" /> : null}
       <div
-        className="StockChart"
+        className="StockChart" style={{display:loading?"none":"block"}}
         ref={ref}
         onMouseUpCapture={loadPrevious}
         onTouchEnd={loadPrevious}

@@ -29,7 +29,7 @@ const Toast = Swal.mixin({
 });
 
 function CryptoHeader({ market, interval }) {
-  const [volume,setVolume] = useState(19000)
+  const [volume,setVolume] = useState(0)
 
   // for alert
   const [open, setOpen] = useState(false);
@@ -72,20 +72,20 @@ function CryptoHeader({ market, interval }) {
        user = null;
      }
   user=true
-// useEffect(()=>{
-//   let eventSource = new EventSource(
-//     `${config.DOMAIN_NAME}/present/` +
-//       `${market || marketState}/1d`)
+useEffect(()=>{
+  let eventSource = new EventSource(
+    `${config.DOMAIN_NAME}/present/` +
+      `${market || marketState}/1d`)
 
-//       eventSource.addEventListener(
-//         "message",
-//         function(e){
-//           let parsedData = JSON.parse(e.data);
-//           setVolume(parsedData[5]);
-//         },
-//       )
+      eventSource.addEventListener(
+        "message",
+        function(e){
+          let parsedData = JSON.parse(e.data);
+          setVolume(parsedData[5]);
+        },
+      )
   
-// },[market])
+},[market])
   
   return (
     <div className="CryptoHeader crypto-bar stock-header">
@@ -114,7 +114,7 @@ function CryptoHeader({ market, interval }) {
       <div className="d-flex flex-row justify-content-evenly">
         <div className="d-flex flex-column">
           <p>24hVolume</p>
-          <span className="volume-value"></span>
+          <span className="volume-value">{volume}</span>
         </div>
       </div>
       {user && (

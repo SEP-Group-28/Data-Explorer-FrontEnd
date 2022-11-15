@@ -1,11 +1,12 @@
-import { removeDuplicates } from "../../utils/functions";
+import { removeDuplicates,compare } from "../../utils/functions";
+import { updateIndicatorData } from "../../redux/chart";
 
-export const getLineChart = (url,lineSeries,type) => {
+export const getLineChart = (url,lineSeries,type,dispatch,chartData,indicatorType) => {
     let tempLineData = [];
     fetch(url)
     .then(res => res.json())
     .then(data=>{
-        console.log("data issss, ",data)
+        console.log("state redux is", chartData)
         if (!data.hasOwnProperty('error')){
             let tempLines = []
             for(let i in data){
@@ -19,10 +20,9 @@ export const getLineChart = (url,lineSeries,type) => {
                 }
             }
             // console.log(tempLines)
-            let tempLineData = removeDuplicates(tempLines);
-            
+            let tempLineData = removeDuplicates([...tempLines, ...chartData]).sort(compare);
             lineSeries.setData(tempLineData)
-            
+            dispatch(updateIndicatorData({indicatorType,data: tempLineData}));
         }
         
     }).catch()
