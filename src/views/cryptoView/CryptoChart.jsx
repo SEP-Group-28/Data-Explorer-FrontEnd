@@ -59,7 +59,6 @@ function CryptoChart({ market, interval, internalIndicators }) {
     internalIndicatorData,
   } = useSelector((state) => state.chart);
 
-  const [visibleRange, setVisibleRange] = useState({});
   const [visibleLogicalRange, setVisibleLogicalRange] = useState({});
 
   useEffect(() => {
@@ -123,8 +122,6 @@ function CryptoChart({ market, interval, internalIndicators }) {
       config.DOMAIN_NAME +
       "/history/" +
       `${market || marketState}/${interval || intervalState}/0/${cryptoDataLimit}`;
-    //<interval><166660222.33>
-
     fetch(newCrypto)
       .then((res) => res.json())
       .then((data) => {
@@ -166,11 +163,6 @@ function CryptoChart({ market, interval, internalIndicators }) {
             cryptoVolumeData: tempVolumeData,
           })
         );
-
-        // let tempTimeLineData = tempTimeLine.filter((c, index) => {
-        //   return tempTimeLine.indexOf(c) === index;
-        // });
-        // setTimeLine(tempTimeLineData);
         setLoading(false);
       })
       .catch();
@@ -300,24 +292,11 @@ function CryptoChart({ market, interval, internalIndicators }) {
         "bbands"
       );
     }
-    // console.log("Range", chart.current.timeScale().getVisibleRange());
-    function onVisibleTimeRangeChanged(newVisibleTimeRange) {
-      setVisibleRange(newVisibleTimeRange);
-    }
-
-    chart.current
-      .timeScale()
-      .subscribeVisibleTimeRangeChange(onVisibleTimeRangeChanged);
-    // chart.current.timeScale().setVisibleLogicalRange({
-    //   from: -5,
-    //   to: 150,
-    // });
-
+    
     function onVisibleLogicalRangeChanged(newVisibleLogicalRange) {
       setVisibleLogicalRange(newVisibleLogicalRange);
     }
     chart.current.timeScale().scrollToPosition(cryptoChartDataLength);
-    console.log("scroll poston",cryptoChartDataLength)
 
     chart.current
       .timeScale()
