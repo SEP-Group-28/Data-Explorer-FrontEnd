@@ -104,7 +104,7 @@ function StockChart({ market, interval, internalIndicators }) {
     });
     console.log("market is", market || marketState);
     fetch(
-      "http://127.0.0.1:5000" +
+      `${config.DOMAIN_NAME}` +
         `/stockhistory/${market || marketState}/${
           interval || intervalState
         }/0/${stockDataLimit}`
@@ -160,7 +160,9 @@ function StockChart({ market, interval, internalIndicators }) {
       });
       getLineChart(
         `${config.DOMAIN_NAME}/ma/stock/` +
-          `${market || marketState}/${interval || intervalState}`,
+          `${market || marketState}/${
+            interval || intervalState
+          }/0/${stockDataLimit}`,
         maLineSeries.current,
         "stock",
         dispatch,
@@ -176,7 +178,9 @@ function StockChart({ market, interval, internalIndicators }) {
       });
       getLineChart(
         `${config.DOMAIN_NAME}/sma/stock/` +
-          `${market || marketState}/${interval || intervalState}`,
+          `${market || marketState}/${
+            interval || intervalState
+          }/0/${stockDataLimit}`,
         smalineSeries.current,
         "stock",
         dispatch,
@@ -193,7 +197,9 @@ function StockChart({ market, interval, internalIndicators }) {
       });
       getLineChart(
         `${config.DOMAIN_NAME}/ema/stock/` +
-          `${market || marketState}/${interval || intervalState}`,
+          `${market || marketState}/${
+            interval || intervalState
+          }/0/${stockDataLimit}`,
         emalineSeries.current,
         "stock",
         dispatch,
@@ -209,7 +215,9 @@ function StockChart({ market, interval, internalIndicators }) {
       });
       getLineChart(
         `${config.DOMAIN_NAME}/wma/stock/` +
-          `${market || marketState}/${interval || intervalState}`,
+          `${market || marketState}/${
+            interval || intervalState
+          }/0/${stockDataLimit}`,
         wmalineSeries.current,
         "stock",
         dispatch,
@@ -238,7 +246,9 @@ function StockChart({ market, interval, internalIndicators }) {
 
       getBbandsChart(
         `${config.DOMAIN_NAME}/bbands/stock/` +
-          `${market || marketState}/${interval || intervalState}`,
+          `${market || marketState}/${
+            interval || intervalState
+          }/0/${stockDataLimit}`,
         bbandUpperSeries.current,
         bbandMiddleSeries.current,
         bbandLowerSeries.current,
@@ -257,7 +267,7 @@ function StockChart({ market, interval, internalIndicators }) {
       .timeScale()
       .subscribeVisibleLogicalRangeChange(onVisibleLogicalRangeChanged);
 
-      chart.current.timeScale().scrollToPosition(stockChartDataLength);
+    chart.current.timeScale().scrollToPosition(stockChartDataLength);
     return () => {
       chart.current.remove();
     };
@@ -270,7 +280,7 @@ function StockChart({ market, interval, internalIndicators }) {
   useEffect(() => {
     stockTimeStamp !== 0 &&
       fetch(
-        "http://127.0.0.1:5000" +
+        `${config.DOMAIN_NAME}` +
           `/stockhistory/${market || marketState}/${
             interval || intervalState
           }/${stockTimeStamp}/${stockDataLimit}`
@@ -278,7 +288,6 @@ function StockChart({ market, interval, internalIndicators }) {
         .then((res) => res.json())
         .then((data) => {
           let fetchedData = [];
-          // let tempTimeLine = [];
           let tempVolume = [];
           data.forEach((row) => {
             let object = {
@@ -313,8 +322,6 @@ function StockChart({ market, interval, internalIndicators }) {
               stockVolumeData: tempVolumeData,
             })
           );
-
-          // chart.current.resize(1000, 380);
         })
         .catch();
   }, [stockDataLimit]);
