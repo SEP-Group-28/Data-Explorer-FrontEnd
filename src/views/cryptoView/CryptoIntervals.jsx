@@ -1,6 +1,7 @@
 import React from 'react'
 import IndicatorMenuOne from '../../components/indicators/IndicatorMenuOne';
 import IndicatorMenuTwo from '../../components/indicators/IndicatorMenuTwo';
+import ChartTypes from "../../components/chartType/ChartType";
 
 function CryptoIntervals({ changeInterval, addInternalIndicators,addExternalIndicators }) {
   const intervals = ["1m", "5m", "30m", "1h", "1d"];
@@ -20,9 +21,14 @@ function CryptoIntervals({ changeInterval, addInternalIndicators,addExternalIndi
   
   return (
     <div className="CryptoIntervals crypto-bar">
+      <ChartTypes />
       <div className="d-flex flex-row justify-content-evenly align-items-center">
-        <IndicatorMenuOne displayInternalIndicators={displayInternalIndicators} />
-        <IndicatorMenuTwo displayExternalIndicators={displayExternalIndicators}/>
+        <IndicatorMenuOne
+          displayInternalIndicators={displayInternalIndicators}
+        />
+        <IndicatorMenuTwo
+          displayExternalIndicators={displayExternalIndicators}
+        />
       </div>
       <div className="d-flex flex-row justify content-center">
         <header>Time interval</header>
@@ -31,9 +37,7 @@ function CryptoIntervals({ changeInterval, addInternalIndicators,addExternalIndi
             return (
               <button
                 type="button"
-                className={
-                  " interval-btn " 
-                }
+                className={" interval-btn "}
                 onClick={() => {
                   handleClick(interval);
                 }}
