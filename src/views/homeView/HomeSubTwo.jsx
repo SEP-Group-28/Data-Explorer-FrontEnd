@@ -2,11 +2,12 @@ import React from "react";
 import Crypto from "../../assets/cryptonMain.jpg";
 import StarIcon from "@mui/icons-material/Star";
 import Slide  from "react-reveal/Slide";
+import Zoom from "react-reveal/Zoom";
 
 function HomeSubTwo() {
   return (
     <div className="HomeSubTwo d-flex flex-row justify-content-evenly white">
-      <Slide left duration={1500}>
+      <Slide left duration={2500}>
         
       <div className="subOne-details">
         <header> <span className="main-title">Crypto analysis</span></header>
@@ -19,7 +20,7 @@ function HomeSubTwo() {
         </div>
       </div>
       </Slide>
-      <Slide right duration={1500}>
+      <Slide right duration={2500}>
         <div className="img-sec" >
         <img src={Crypto} alt="" />
       </div>

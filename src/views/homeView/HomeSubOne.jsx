@@ -2,11 +2,12 @@ import React from "react";
 import Stock from "../../assets/stockMain.jpg";
 import StarIcon from "@mui/icons-material/Star";
 import Slide  from "react-reveal/Slide";
+import Zoom from "react-reveal/Zoom";
 
 function HomeSubOne() {
   return (
     <div className="HomeSubOne d-flex flex-row justify-content-evenly white">
-      <Slide left duration={1500}>
+      <Slide left duration={2500}>
         
       <div className="subOne-details">
         <header> <span className="main-title">Stock analysis</span></header>
@@ -19,7 +20,7 @@ function HomeSubOne() {
         </div>
       </div>
       </Slide>
-      <Slide right duration={1500}>
+      <Slide right duration={2500}>
         <div className="img-sec" >
         <img src={Stock} alt="" />
       </div>
