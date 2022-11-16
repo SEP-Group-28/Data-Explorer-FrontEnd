@@ -6,11 +6,13 @@ export const chartSlice = createSlice({
   name: "chart",
   initialState: {
     cryptoChartData: [],
+    cryptoChartDataLength: 0,
     cryptoVolumeData: [],
     cryptoTimeStamp: 0,
     cryptoDataLimit: 280,
 
     stockChartData: [],
+    stockChartDataLength:0,
     stockVolumeData: [],
     stockTimeStamp: 0,
     stockDataLimit: 280,
@@ -46,6 +48,7 @@ export const chartSlice = createSlice({
     updateCryptoChartData: (state, action) => {
       state.cryptoChartData = action.payload.cryptoChartData;
       state.cryptoVolumeData = action.payload.cryptoVolumeData;
+      state.cryptoChartDataLength = (action.payload.cryptoChartData).length
     },
     updateChartType: (state, action) => {
       state.chartType = action.payload;
