@@ -113,9 +113,6 @@ function CryptoChart({ market, interval, internalIndicators }) {
         autoScale: false,
         shiftVisibleRangeOnNewBar: true,
       },
-      // priceScale: {
-      //    autoScale: true,
-      // },
     });
 
     let newCrypto =
@@ -296,7 +293,10 @@ function CryptoChart({ market, interval, internalIndicators }) {
     function onVisibleLogicalRangeChanged(newVisibleLogicalRange) {
       setVisibleLogicalRange(newVisibleLogicalRange);
     }
-    chart.current.timeScale().scrollToPosition(cryptoChartDataLength);
+    // if(cryptoChartDataLength>280){
+    //   chart.current.timeScale().scrollToPosition(cryptoChartDataLength);
+    // }
+    
 
     chart.current
       .timeScale()
