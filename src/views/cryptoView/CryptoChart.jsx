@@ -92,7 +92,12 @@ function CryptoChart({ market, interval, internalIndicators }) {
       wickDownColor: "#851D1A",
       wickUpColor: "rgba(0,133,48,1)",
     });
-
+    candleSeries.current.applyOptions({
+      scaleMargins: {
+        top: 0.05, 
+        bottom: 0.17, 
+      },
+    });
     volumeSeries.current = chart.current.addHistogramSeries({
       color: "#26a69a",
       priceFormat: {

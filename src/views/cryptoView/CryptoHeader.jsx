@@ -84,6 +84,10 @@ useEffect(()=>{
           setVolume(parsedData[5]);
         },
       )
+
+      return ()=>{
+        eventSource.close()
+      }
   
 },[market])
   
@@ -114,7 +118,7 @@ useEffect(()=>{
       <div className="d-flex flex-row justify-content-evenly">
         <div className="d-flex flex-column">
           <p>24hVolume</p>
-          <span className="volume-value">{volume}</span>
+          <span className="volume-value">{volume.toFixed(2)}</span>
         </div>
       </div>
       {user && (
