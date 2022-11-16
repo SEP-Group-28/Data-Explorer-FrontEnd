@@ -8,13 +8,16 @@ import { getLineChart } from "../../components/technicalIndicators/lineSeries";
 import { getBbandsChart } from "../../components/technicalIndicators/bbandsIndicator";
 import config from "../../config.json";
 import { useDispatch, useSelector } from "react-redux";
-import { updateStockChartData, updateStockDataLimit, updateStockTimeStamp } from "../../redux/chart";
+import {
+  updateStockChartData,
+  updateStockDataLimit,
+  updateStockTimeStamp,
+} from "../../redux/chart";
 
 function StockChart({ market, interval, internalIndicators }) {
   const location = useLocation();
 
-
-  const  marketState = "TSLA";
+  const marketState = "TSLA";
   var intervalState = location?.state?.interval || "5m";
 
   const ref = useRef();
@@ -22,11 +25,26 @@ function StockChart({ market, interval, internalIndicators }) {
   const chart = useRef();
   const candleSeries = useRef();
   const volumeSeries = useRef();
+  const smalineSeries = useRef();
+  const wmalineSeries = useRef();
+  const emalineSeries = useRef();
+  const maLineSeries = useRef();
+  const bbandLowerSeries = useRef();
+  const bbandMiddleSeries = useRef();
+  const bbandUpperSeries = useRef();
+
   const dispatch = useDispatch();
 
-  const { stockChartData, stockVolumeData, chartType ,stockTimeStamp,stockDataLimit } = useSelector((state) => state.chart);
+  const {
+    stockChartData,
+    stockChartDataLength,
+    stockVolumeData,
+    chartType,
+    stockTimeStamp,
+    stockDataLimit,
+    internalIndicatorData,
+  } = useSelector((state) => state.chart);
   const [visibleLogicalRange, setVisibleLogicalRange] = useState({});
-  const arr= []
 
   const { ma, sma, ema, wma, bbands } = internalIndicators;
 
@@ -36,14 +54,6 @@ function StockChart({ market, interval, internalIndicators }) {
   }
 
   useEffect(() => {
-    // dispatch(updateStockDataLimit(280));
-    // dispatch(updateStockTimeStamp(0));
-    dispatch(
-      updateStockChartData({
-        stockChartData: [],
-        stockVolumeData: [],
-      })
-    );
     console.log("Chart data1", stockChartData);
     chart.current = createChart(ref.current, {
       width: 0,
@@ -92,13 +102,12 @@ function StockChart({ market, interval, internalIndicators }) {
         secondsVisible: false,
       },
     });
-    console.log("http://127.0.0.1:5000" +
-        `/stockhistory/${market || marketState}/${interval || intervalState}/0/${stockDataLimit}`)
-
-        console.log("market is",market || marketState)
+    console.log("market is", market || marketState);
     fetch(
       "http://127.0.0.1:5000" +
-        `/stockhistory/${market || marketState}/${interval || intervalState}/0/${stockDataLimit}`
+        `/stockhistory/${market || marketState}/${
+          interval || intervalState
+        }/0/${stockDataLimit}`
     )
       .then((res) => res.json())
       .then((data) => {
@@ -114,29 +123,37 @@ function StockChart({ market, interval, internalIndicators }) {
             close: row[4],
           };
           let volume = {
-            time: row[0]/1000,
+            time: row[0] / 1000,
             value: row[5],
             color: row[1] > row[4] ? "#834C4B" : "#318B52",
           };
           fetchedData.push(object);
           tempVolume.push(volume);
         });
-        let tempChartData = removeDuplicates([...fetchedData,...stockChartData]).sort(compare);
-        let tempVolumeData = removeDuplicates([...tempVolume,...stockVolumeData]).sort(compare);
+        let tempChartData = removeDuplicates([
+          ...fetchedData,
+          ...stockChartData,
+        ]).sort(compare);
+        let tempVolumeData = removeDuplicates([
+          ...tempVolume,
+          ...stockVolumeData,
+        ]).sort(compare);
 
         candleSeries.current.setData(tempChartData);
         volumeSeries.current.setData(tempVolumeData);
-        setLoading(false)
-        dispatch(updateStockChartData({
-          stockChartData:tempChartData,
-          stockVolumeData:tempVolumeData
-        }))
+        setLoading(false);
+        dispatch(
+          updateStockChartData({
+            stockChartData: tempChartData,
+            stockVolumeData: tempVolumeData,
+          })
+        );
         console.log("chart data2 is", stockChartData);
       })
       .catch();
 
     if (ma) {
-      const maLineSeries = chart.current.addLineSeries({
+      maLineSeries.current = chart.current.addLineSeries({
         lineWidth: 1,
         title: "MA",
         color: "blue",
@@ -144,11 +161,15 @@ function StockChart({ market, interval, internalIndicators }) {
       getLineChart(
         `${config.DOMAIN_NAME}/ma/stock/` +
           `${market || marketState}/${interval || intervalState}`,
-        maLineSeries,"stock"
+        maLineSeries.current,
+        "stock",
+        dispatch,
+        internalIndicatorData.ma,
+        "ma"
       );
     }
     if (sma) {
-      const smalineSeries = chart.current.addLineSeries({
+      smalineSeries.current = chart.current.addLineSeries({
         lineWidth: 1,
         title: "SMA",
         color: "red",
@@ -156,13 +177,16 @@ function StockChart({ market, interval, internalIndicators }) {
       getLineChart(
         `${config.DOMAIN_NAME}/sma/stock/` +
           `${market || marketState}/${interval || intervalState}`,
-        smalineSeries,
-        "stock"
+        smalineSeries.current,
+        "stock",
+        dispatch,
+        internalIndicatorData.sma,
+        "sma"
       );
     }
-    
+
     if (ema) {
-      const emalineSeries = chart.current.addLineSeries({
+      emalineSeries.current = chart.current.addLineSeries({
         lineWidth: 1,
         title: "EMA",
         color: "#0397EC",
@@ -170,12 +194,15 @@ function StockChart({ market, interval, internalIndicators }) {
       getLineChart(
         `${config.DOMAIN_NAME}/ema/stock/` +
           `${market || marketState}/${interval || intervalState}`,
-        emalineSeries,
-        "stock"
+        emalineSeries.current,
+        "stock",
+        dispatch,
+        internalIndicatorData.ema,
+        "ema"
       );
     }
     if (wma) {
-      const wmalineSeries = chart.current.addLineSeries({
+      wmalineSeries.current = chart.current.addLineSeries({
         lineWidth: 1,
         title: "WMA",
         color: "#C5EC03",
@@ -183,24 +210,27 @@ function StockChart({ market, interval, internalIndicators }) {
       getLineChart(
         `${config.DOMAIN_NAME}/wma/stock/` +
           `${market || marketState}/${interval || intervalState}`,
-        wmalineSeries,
-        "stock"
+        wmalineSeries.current,
+        "stock",
+        dispatch,
+        internalIndicatorData.wma,
+        "wma"
       );
     }
     if (bbands) {
-      const bbandUpperSeries = chart.current.addLineSeries({
+      bbandUpperSeries.current = chart.current.addLineSeries({
         lineWidth: 1,
         title: "BBAND Upper",
         color: "#022875",
       });
 
-      const bbandMiddleSeries = chart.current.addLineSeries({
+      bbandMiddleSeries.current = chart.current.addLineSeries({
         lineWidth: 1,
         title: "BBAND Middle",
         color: "#0B3894",
       });
 
-      const bbandLowerSeries = chart.current.addLineSeries({
+      bbandLowerSeries.current = chart.current.addLineSeries({
         lineWidth: 1,
         title: "BBAND Lower",
         color: "#022875",
@@ -209,9 +239,13 @@ function StockChart({ market, interval, internalIndicators }) {
       getBbandsChart(
         `${config.DOMAIN_NAME}/bbands/stock/` +
           `${market || marketState}/${interval || intervalState}`,
-        bbandUpperSeries,
-        bbandMiddleSeries,
-        bbandLowerSeries,"stock"
+        bbandUpperSeries.current,
+        bbandMiddleSeries.current,
+        bbandLowerSeries.current,
+        "stock",
+        dispatch,
+        internalIndicatorData.bbands,
+        "bbands"
       );
     }
 
@@ -223,9 +257,9 @@ function StockChart({ market, interval, internalIndicators }) {
       .timeScale()
       .subscribeVisibleLogicalRangeChange(onVisibleLogicalRangeChanged);
 
+      chart.current.timeScale().scrollToPosition(stockChartDataLength);
     return () => {
       chart.current.remove();
-      
     };
   }, [market, interval, internalIndicators]);
 
@@ -325,7 +359,7 @@ function StockChart({ market, interval, internalIndicators }) {
       console.log(loadData);
       console.log(visibleLogicalRange.from);
       dispatch(updateStockTimeStamp(stockTimeStamp + stockDataLimit));
-      dispatch(updateStockDataLimit(loadData))
+      dispatch(updateStockDataLimit(loadData));
     }
     console.log("Next stamp is", stockTimeStamp);
   };
@@ -334,7 +368,8 @@ function StockChart({ market, interval, internalIndicators }) {
     <>
       {loading ? <Loader position="relative" left="46.5%" top="9%" /> : null}
       <div
-        className="StockChart" style={{display:loading?"none":"block"}}
+        className="StockChart"
+        style={{ display: loading ? "none" : "block" }}
         ref={ref}
         onMouseUpCapture={loadPrevious}
         onTouchEnd={loadPrevious}
