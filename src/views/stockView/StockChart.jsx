@@ -324,7 +324,76 @@ function StockChart({ market, interval, internalIndicators }) {
           );
         })
         .catch();
-  }, [stockDataLimit]);
+
+    if (ma) {
+      getLineChart(
+        `${config.DOMAIN_NAME}/ma/stock/` +
+          `${market || marketState}/${
+            interval || intervalState
+          }/${stockTimeStamp}/${stockDataLimit}`,
+        maLineSeries.current,
+        "stock",
+        dispatch,
+        internalIndicatorData.ma,
+        "ma"
+      );
+    }
+    if (sma) {
+      getLineChart(
+        `${config.DOMAIN_NAME}/sma/stock/` +
+          `${market || marketState}/${
+            interval || intervalState
+          }/${stockTimeStamp}/${stockDataLimit}`,
+        smalineSeries.current,
+        "stock",
+        dispatch,
+        internalIndicatorData.sma,
+        "sma"
+      );
+    }
+
+    if (ema) {
+      getLineChart(
+        `${config.DOMAIN_NAME}/ema/stock/` +
+          `${market || marketState}/${
+            interval || intervalState
+          }/${stockTimeStamp}/${stockDataLimit}`,
+        emalineSeries.current,
+        "stock",
+        dispatch,
+        internalIndicatorData.ema,
+        "ema"
+      );
+    }
+    if (wma) {
+      getLineChart(
+        `${config.DOMAIN_NAME}/wma/stock/` +
+          `${market || marketState}/${
+            interval || intervalState
+          }/${stockTimeStamp}/${stockDataLimit}`,
+        wmalineSeries.current,
+        "stock",
+        dispatch,
+        internalIndicatorData.wma,
+        "wma"
+      );
+    }
+    if (bbands) {
+      getBbandsChart(
+        `${config.DOMAIN_NAME}/bbands/stock/` +
+          `${market || marketState}/${
+            interval || intervalState
+          }/${stockTimeStamp}/${stockDataLimit}`,
+        bbandUpperSeries.current,
+        bbandMiddleSeries.current,
+        bbandLowerSeries.current,
+        "stock",
+        dispatch,
+        internalIndicatorData.bbands,
+        "bbands"
+      );
+    }
+  }, [stockTimeStamp]);
 
   useEffect(() => {
     function handleResize() {
