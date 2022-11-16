@@ -51,6 +51,7 @@ function CryptoChart({ market, interval, internalIndicators }) {
 
   const {
     cryptoChartData,
+    cryptoChartDataLength,
     cryptoVolumeData,
     chartType,
     cryptoTimeStamp,
@@ -315,6 +316,8 @@ function CryptoChart({ market, interval, internalIndicators }) {
     function onVisibleLogicalRangeChanged(newVisibleLogicalRange) {
       setVisibleLogicalRange(newVisibleLogicalRange);
     }
+    chart.current.timeScale().scrollToPosition(cryptoChartDataLength);
+    console.log("scroll poston",cryptoChartDataLength)
 
     chart.current
       .timeScale()
@@ -491,7 +494,7 @@ function CryptoChart({ market, interval, internalIndicators }) {
             "bbands"
           );
         }
-  }, [cryptoDataLimit]);
+  }, [cryptoTimeStamp]);
 
   const [windowDimensions, setWindowDimensions] = useState(
     getWindowDimension()

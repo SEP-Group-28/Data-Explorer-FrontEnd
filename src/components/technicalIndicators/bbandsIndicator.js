@@ -55,7 +55,7 @@ export const getBbandsChart = (
           ...chartData.middle,
         ]).sort(compare);
         let tempLowerSeries = removeDuplicates([
-          ...upper,
+          ...lower,
           ...chartData.lower,
         ]).sort(compare);
 

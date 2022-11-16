@@ -3,6 +3,7 @@ import { Button } from "@mui/material";
 import GetAppIcon from "@mui/icons-material/GetApp";
 import Typography from "@mui/material/Button";
 import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
+import Jump from "react-reveal/Jump";
 
 function PWA() {
   window.onload = function () {
@@ -42,18 +43,20 @@ function PWA() {
   };
 
   return (
-    <div id="pwa" className="pwa d-flex flex-column">
-      <header>
-        <span className="paw-span1">Download our </span>
-        <span className="pwa-span2">Mobile App</span>
-      </header>
-      <div id="add-to">
-        <Button className="pwa-button" id="add-to-btn">
-          <PhoneIphoneIcon />
-          <Typography style={{ color: "#053ffbfc" }}>Install</Typography>
-        </Button>
+    <Jump>
+      <div id="pwa" className="pwa d-flex flex-column">
+        <header>
+          <span className="paw-span1">Download our </span>
+          <span className="pwa-span2">Mobile App</span>
+        </header>
+        <div id="add-to">
+          <Button className="pwa-button" id="add-to-btn">
+            <PhoneIphoneIcon />
+            <Typography style={{ color: "#053ffbfc" }}>Install</Typography>
+          </Button>
+        </div>
       </div>
-    </div>
+    </Jump>
   );
 }
 

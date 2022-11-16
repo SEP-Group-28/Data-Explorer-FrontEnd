@@ -31,6 +31,7 @@ function CryptoView() {
     wma: false,
     bbands: false,
   });
+  const { cryptoChartDataLength } = useSelector((state) => state.chart);
 
   const [externalIndicators, setExternlIndicators] = useState({
     macd: false,
@@ -84,7 +85,10 @@ function CryptoView() {
     );
   };
     const addInternalIndicators = (indicators) => {
+      console.log("length", cryptoChartDataLength)
       setInternalIndicators(indicators);
+      dispatch(updateCryptoDataLimit(cryptoChartDataLength));
+      dispatch(updateCryptoTimeStamp(0));
       
     };
     const addExternalIndicators = (indicators) => {
