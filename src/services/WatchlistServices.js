@@ -5,8 +5,8 @@ import token from "./Token";
 
 const APIEndpoint = config.DOMAIN_NAME;
 
-const viewWatchlist = () => {
-    return axios({
+const viewWatchlist = async() => {
+    return await axios({
         method: "get",
         url: APIEndpoint + "/view-watchlist",
         headers: { Authorization: `Bearer ${token.getAccessToken()}` }

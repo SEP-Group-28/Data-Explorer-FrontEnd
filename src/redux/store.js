@@ -6,6 +6,7 @@ import watchlistReducer from "./watchlist"
 import chartReducer from "./chart"
 import storage from 'redux-persist/lib/storage';
 import thunk from 'redux-thunk';
+import notificationReducer from './notification';
 
 const presistAlertConfig = {
     key: 'alerts',
@@ -19,10 +20,15 @@ const presistWatchlistConfig = {
     key: 'watchlist',
     storage,
 }
+const presistNotificationConfig = {
+    key: 'notification',
+    storage,
+}
 
 const presistProfileReducer = persistReducer(presistProfileConfig, profileReducer)
 const presistAlertReducer = persistReducer(presistAlertConfig, alertReducer)
 const presistWatchlistReducer = persistReducer(presistWatchlistConfig, watchlistReducer)
+const presistNotificationReducer = persistReducer(presistNotificationConfig, notificationReducer)
 
 export const store = configureStore({
   reducer: {
@@ -30,6 +36,7 @@ export const store = configureStore({
     profile: presistProfileReducer,
     watchlist: presistWatchlistReducer,
     chart: chartReducer,
+    notification: presistNotificationReducer,
   },
   middleware: [thunk],
 });
