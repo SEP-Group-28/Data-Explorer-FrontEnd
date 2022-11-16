@@ -4,7 +4,7 @@ import alertReducer from "./alert"
 import profileReducer from "./profile"
 import watchlistReducer from "./watchlist"
 import chartReducer from "./chart"
-import storage from 'redux-persist/lib/storage';
+import storage from 'redux-persist/lib/storage/session'
 import thunk from 'redux-thunk';
 import notificationReducer from './notification';
 

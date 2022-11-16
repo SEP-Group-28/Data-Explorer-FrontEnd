@@ -27,6 +27,8 @@ function App() {
   // }, [show]);
   onMessageListener()
     .then((payload) => {
+      console.log("hey hey hey a new notification has arvied", payload);
+      callDispatch();
       setShow(true);
       // toast.success(`${payload.notification.body}`)
       setNotification({
@@ -60,7 +62,6 @@ function App() {
           body={notification.body}
         />
       )}
-      {show && callDispatch()}
       
       
     </div>
