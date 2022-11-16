@@ -68,7 +68,14 @@ export const chartSlice = createSlice({
         },
       };
     },
-
+    updateExternalIndicatorData: (state,action) =>{
+      return{
+        ...state,externalIndicatorData:{
+          ...state.externalIndicatorData,
+          [action.payload.indicatorType]:action.payload.data,
+        }
+      }
+    },
     updateStockChartData: (state, action) => {
       state.stockChartData = action.payload.stockChartData;
       state.stockVolumeData = action.payload.stockVolumeData;
@@ -92,5 +99,6 @@ export const {
   updateStockChartData,
   updateStockDataLimit,
   updateStockTimeStamp,
+  updateExternalIndicatorData,
 } = chartSlice.actions;
 export default chartSlice.reducer;
