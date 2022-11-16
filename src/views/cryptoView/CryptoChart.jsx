@@ -13,6 +13,7 @@ import {
   updateCryptoDataLimit,
   updateCryptoTimeStamp,
 } from "../../redux/chart";
+import { CANDLESTICK, LINE } from "../../utils/Constants";
 
 function CryptoChart({ market, interval, internalIndicators }) {
   const location = useLocation();
@@ -36,7 +37,7 @@ function CryptoChart({ market, interval, internalIndicators }) {
   const candleSeries = useRef();
   const volumeSeries = useRef();
   const lineSeries = useRef();
-  
+
   const smalineSeries = useRef();
   const wmalineSeries = useRef();
   const emalineSeries = useRef();
@@ -44,8 +45,6 @@ function CryptoChart({ market, interval, internalIndicators }) {
   const bbandLowerSeries = useRef();
   const bbandMiddleSeries = useRef();
   const bbandUpperSeries = useRef();
-
-
 
   const dispatch = useDispatch();
 
@@ -83,21 +82,6 @@ function CryptoChart({ market, interval, internalIndicators }) {
         mode: CrosshairMode.Normal,
       },
     });
-
-    candleSeries.current = chart.current.addCandlestickSeries({
-      upColor: "rgba(0,133,48,1)",
-      downColor: "#851D1A",
-      borderDownColor: "#851D1A",
-      borderUpColor: "rgba(0,133,48,1)",
-      wickDownColor: "#851D1A",
-      wickUpColor: "rgba(0,133,48,1)",
-    });
-    candleSeries.current.applyOptions({
-      scaleMargins: {
-        top: 0.05, 
-        bottom: 0.17, 
-      },
-    });
     volumeSeries.current = chart.current.addHistogramSeries({
       color: "#26a69a",
       priceFormat: {
@@ -109,7 +93,6 @@ function CryptoChart({ market, interval, internalIndicators }) {
         bottom: 0,
       },
     });
-
     chart.current.applyOptions({
       timeScale: {
         visible: true,
@@ -119,55 +102,97 @@ function CryptoChart({ market, interval, internalIndicators }) {
         shiftVisibleRangeOnNewBar: true,
       },
     });
-
     let newCrypto =
       config.DOMAIN_NAME +
       "/history/" +
-      `${market || marketState}/${interval || intervalState}/0/${cryptoDataLimit}`;
-    fetch(newCrypto)
-      .then((res) => res.json())
-      .then((data) => {
-        let tempCandlesticks = [];
-        // let tempTimeLine = [];
-        let tempVolume = [];
-        data.data.forEach((row) => {
-          let object = {
-            time: row[0],
-            open: row[1],
-            high: row[2],
-            low: row[3],
-            close: row[4],
-          };
-          let volume = {
-            time: row[0],
-            value: row[5],
-            color: row[1] > row[4] ? "#834C4B" : "#318B52",
-          };
-          // tempTimeLine.push(object.time);
-          tempCandlesticks.push(object);
-          tempVolume.push(volume);
-        });
-        let tempChartData = removeDuplicates([
-          ...tempCandlesticks,
-          ...cryptoChartData,
-        ]).sort(compare);
-        let tempVolumeData = removeDuplicates([
-          ...tempVolume,
-          ...cryptoVolumeData,
-        ]).sort(compare);
+      `${market || marketState}/${
+        interval || intervalState
+      }/0/${cryptoDataLimit}`;
+      fetch(newCrypto)
+        .then((res) => res.json())
+        .then((data) => {
+          let tempCandlesticks = [];
+          // let tempTimeLine = [];
+          let tempVolume = [];
+          data.data.forEach((row) => {
+            let object = {
+              time: row[0],
+              open: row[1],
+              high: row[2],
+              low: row[3],
+              close: row[4],
+            };
+            let volume = {
+              time: row[0],
+              value: row[5],
+              color: row[1] > row[4] ? "#834C4B" : "#318B52",
+            };
+            // tempTimeLine.push(object.time);
+            tempCandlesticks.push(object);
+            tempVolume.push(volume);
+          });
+          let tempChartData = removeDuplicates([
+            ...tempCandlesticks,
+            ...cryptoChartData,
+          ]).sort(compare);
+          let tempVolumeData = removeDuplicates([
+            ...tempVolume,
+            ...cryptoVolumeData,
+          ]).sort(compare);
 
-        candleSeries.current.setData(tempChartData);
-        volumeSeries.current.setData(tempVolumeData);
+          if (chartType == CANDLESTICK) {
+            candleSeries.current = chart.current.addCandlestickSeries({
+              upColor: "rgba(0,133,48,1)",
+              downColor: "#851D1A",
+              borderDownColor: "#851D1A",
+              borderUpColor: "rgba(0,133,48,1)",
+              wickDownColor: "#851D1A",
+              wickUpColor: "rgba(0,133,48,1)",
+            });
+            candleSeries.current.applyOptions({
+              scaleMargins: {
+                top: 0.05,
+                bottom: 0.17,
+              },
+            });
+            candleSeries.current.setData(tempChartData);
+          }
 
-        dispatch(
-          updateCryptoChartData({
-            cryptoChartData: tempChartData,
-            cryptoVolumeData: tempVolumeData,
-          })
-        );
-        setLoading(false);
-      })
-      .catch();
+          if(chartType== LINE){
+            lineSeries.current = chart.current.addLineSeries({
+              lineWidth: 2.5,
+              color: "#286AEF",
+            });
+            lineSeries.current.applyOptions({
+              scaleMargins: {
+                top: 0.05,
+                bottom: 0.17,
+              },
+            });
+
+            let tempLineData=[]
+            tempChartData.forEach((obj)=>{
+              let lineObject = {
+                time : obj["time"],
+                value : obj["close"],
+              }
+              tempLineData.push(lineObject)
+            })
+            lineSeries.current.setData(tempLineData);
+          }
+
+          
+          volumeSeries.current.setData(tempVolumeData);
+
+          dispatch(
+            updateCryptoChartData({
+              cryptoChartData: tempChartData,
+              cryptoVolumeData: tempVolumeData,
+            })
+          );
+          setLoading(false);
+        })
+        .catch();
 
     let eventSource = new EventSource(
       `${config.DOMAIN_NAME}/present/` +
@@ -182,7 +207,13 @@ function CryptoChart({ market, interval, internalIndicators }) {
         low: parsedData[3],
         close: parsedData[4],
       };
-      candleSeries.current.update(object);
+      let LineObject = {
+        time: parsedData[0],
+        value: parsedData[4],
+      };
+
+      if(chartType== CANDLESTICK) candleSeries.current.update(object);
+      if(chartType ==LINE) lineSeries.current.update(LineObject);
     });
 
     if (ma) {
@@ -203,7 +234,7 @@ function CryptoChart({ market, interval, internalIndicators }) {
         "ma"
       );
 
-      console.log("inidcator ma",internalIndicatorData.ma)
+      console.log("inidcator ma", internalIndicatorData.ma);
     }
     if (sma) {
       smalineSeries.current = chart.current.addLineSeries({
@@ -301,7 +332,6 @@ function CryptoChart({ market, interval, internalIndicators }) {
     // if(cryptoChartDataLength>280){
     //   chart.current.timeScale().scrollToPosition(cryptoChartDataLength);
     // }
-    
 
     chart.current
       .timeScale()
@@ -310,7 +340,7 @@ function CryptoChart({ market, interval, internalIndicators }) {
       chart.current.remove();
       eventSource.close();
     };
-  }, [market, interval, internalIndicators]);
+  }, [market, interval, internalIndicators,chartType]);
 
   useEffect(() => {
     let newCrypto =
@@ -363,78 +393,77 @@ function CryptoChart({ market, interval, internalIndicators }) {
         })
         .catch();
 
+    if (ma) {
+      getLineChart(
+        `${config.DOMAIN_NAME}/ma/crypto/` +
+          `${market || marketState}/${
+            interval || intervalState
+          }/${cryptoTimeStamp}/${cryptoDataLimit}`,
+        maLineSeries.current,
+        "crypto",
+        dispatch,
+        internalIndicatorData.ma,
+        "ma"
+      );
 
-        if (ma) {
-          getLineChart(
-            `${config.DOMAIN_NAME}/ma/crypto/` +
-              `${market || marketState}/${
-                interval || intervalState
-              }/${cryptoTimeStamp}/${cryptoDataLimit}`,
-            maLineSeries.current,
-            "crypto",
-            dispatch,
-            internalIndicatorData.ma,
-            "ma"
-          );
+      console.log("inidcator ma", internalIndicatorData.ma);
+    }
+    if (sma) {
+      getLineChart(
+        `${config.DOMAIN_NAME}/sma/crypto/` +
+          `${market || marketState}/${
+            interval || intervalState
+          }/${cryptoTimeStamp}/${cryptoDataLimit}`,
+        smalineSeries.current,
+        "crypto",
+        dispatch,
+        internalIndicatorData.sma,
+        "sma"
+      );
+    }
 
-          console.log("inidcator ma", internalIndicatorData.ma);
-        }
-        if (sma) {
-          getLineChart(
-            `${config.DOMAIN_NAME}/sma/crypto/` +
-              `${market || marketState}/${
-                interval || intervalState
-              }/${cryptoTimeStamp}/${cryptoDataLimit}`,
-            smalineSeries.current,
-            "crypto",
-            dispatch,
-            internalIndicatorData.sma,
-            "sma"
-          );
-        }
+    if (ema) {
+      getLineChart(
+        `${config.DOMAIN_NAME}/ema/crypto/` +
+          `${market || marketState}/${
+            interval || intervalState
+          }/${cryptoTimeStamp}/${cryptoDataLimit}`,
+        emalineSeries.current,
+        "crypto",
+        dispatch,
+        internalIndicatorData.ema,
+        "ema"
+      );
+    }
 
-        if (ema) {
-          getLineChart(
-            `${config.DOMAIN_NAME}/ema/crypto/` +
-              `${market || marketState}/${
-                interval || intervalState
-              }/${cryptoTimeStamp}/${cryptoDataLimit}`,
-            emalineSeries.current,
-            "crypto",
-            dispatch,
-            internalIndicatorData.ema,
-            "ema"
-          );
-        }
-
-        if (wma) {
-          getLineChart(
-            `${config.DOMAIN_NAME}/wma/crypto/` +
-              `${market || marketState}/${
-                interval || intervalState
-              }/${cryptoTimeStamp}/${cryptoDataLimit}`,
-            wmalineSeries.current,
-            "crypto",
-            dispatch,
-            internalIndicatorData.wma,
-            "wma"
-          );
-        }
-        if (bbands) {
-          getBbandsChart(
-            `${config.DOMAIN_NAME}/bbands/crypto/` +
-              `${market || marketState}/${
-                interval || intervalState
-              }/${cryptoTimeStamp}/${cryptoDataLimit}`,
-            bbandUpperSeries.current,
-            bbandMiddleSeries.current,
-            bbandLowerSeries.current,
-            "crypto",
-            dispatch,
-            internalIndicatorData.bbands,
-            "bbands"
-          );
-        }
+    if (wma) {
+      getLineChart(
+        `${config.DOMAIN_NAME}/wma/crypto/` +
+          `${market || marketState}/${
+            interval || intervalState
+          }/${cryptoTimeStamp}/${cryptoDataLimit}`,
+        wmalineSeries.current,
+        "crypto",
+        dispatch,
+        internalIndicatorData.wma,
+        "wma"
+      );
+    }
+    if (bbands) {
+      getBbandsChart(
+        `${config.DOMAIN_NAME}/bbands/crypto/` +
+          `${market || marketState}/${
+            interval || intervalState
+          }/${cryptoTimeStamp}/${cryptoDataLimit}`,
+        bbandUpperSeries.current,
+        bbandMiddleSeries.current,
+        bbandLowerSeries.current,
+        "crypto",
+        dispatch,
+        internalIndicatorData.bbands,
+        "bbands"
+      );
+    }
   }, [cryptoTimeStamp]);
 
   const [windowDimensions, setWindowDimensions] = useState(

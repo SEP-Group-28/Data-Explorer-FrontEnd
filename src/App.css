@@ -697,6 +697,10 @@ margin-right:40px;
 }
 
 
+.chartType-menu:hover{
+  background-color: #20232B !important;
+}
+
 
 
 ::-webkit-scrollbar{
