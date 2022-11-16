@@ -72,6 +72,7 @@ export const chartSlice = createSlice({
     updateStockChartData: (state, action) => {
       state.stockChartData = action.payload.stockChartData;
       state.stockVolumeData = action.payload.stockVolumeData;
+      state.stockChartDataLength = (action.payload.stockChartData).length;
     },
     updateStockTimeStamp: (state, action) => {
       state.stockTimeStamp = action.payload;
