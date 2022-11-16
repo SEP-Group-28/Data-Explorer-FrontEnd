@@ -161,7 +161,7 @@ function CryptoChart({ market, interval, internalIndicators }) {
           if(chartType== LINE){
             lineSeries.current = chart.current.addLineSeries({
               lineWidth: 2.5,
-              color: "#286AEF",
+              color: "#0C57EE",
             });
             lineSeries.current.applyOptions({
               scaleMargins: {
@@ -381,7 +381,20 @@ function CryptoChart({ market, interval, internalIndicators }) {
             ...tempVolume,
             ...cryptoVolumeData,
           ]).sort(compare);
-          candleSeries.current.setData(tempChartData);
+
+          if(chartType==CANDLESTICK) candleSeries.current.setData(tempChartData);
+
+          if(chartType==LINE){
+            let tempLineData = [];
+            tempChartData.forEach((obj) => {
+              let lineObject = {
+                time: obj["time"],
+                value: obj["close"],
+              };
+              tempLineData.push(lineObject);
+            });
+            lineSeries.current.setData(tempLineData);
+          }
           volumeSeries.current.setData(tempVolumeData);
           dispatch(
             updateCryptoChartData({
