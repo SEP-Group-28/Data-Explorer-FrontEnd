@@ -13,7 +13,7 @@ import {
   updateStockDataLimit,
   updateStockTimeStamp,
 } from "../../redux/chart";
-import { CANDLESTICK } from "../../utils/Constants";
+import { CANDLESTICK,LINE } from "../../utils/Constants";
 
 function StockChart({ market, interval, internalIndicators }) {
   const location = useLocation();
@@ -349,7 +349,20 @@ function StockChart({ market, interval, internalIndicators }) {
             ...stockVolumeData,
           ]).sort(compare);
 
-          candleSeries.current.setData(tempChartData);
+          if(chartType==CANDLESTICK) candleSeries.current.setData(tempChartData);
+
+          if (chartType == LINE) {
+            let tempLineData = [];
+            tempChartData.forEach((obj) => {
+              let lineObject = {
+                time: obj["time"],
+                value: obj["close"],
+              };
+              tempLineData.push(lineObject);
+            });
+            lineSeries.current.setData(tempLineData);
+          }
+          
           volumeSeries.current.setData(tempVolumeData);
           dispatch(
             updateStockChartData({
