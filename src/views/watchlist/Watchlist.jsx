@@ -15,6 +15,7 @@ import PageLoader from '../../components/pageLoader/PageLoader';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeMarketList, saveWatchlist } from '../../redux/watchlist';
 import { WindowSharp } from '@mui/icons-material';
+import SimpleLoader from '../../components/loaders/lottieLoader/simpleLoader';
 
 export default function Watchlist() {
   
@@ -111,6 +112,7 @@ export default function Watchlist() {
       setData([])
     else
       setData(data_)
+    console.log("finised loading")
   };
   useEffect(()=>{
     console.log(removed)
