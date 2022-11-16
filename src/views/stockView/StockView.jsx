@@ -86,6 +86,8 @@ function StockView() {
   };
   const addExternalIndicators = (indicators) => {
     setExternlIndicators(indicators);
+    dispatch(updateStockDataLimit(stockChartDataLength));
+    dispatch(updateStockTimeStamp(0));
   };
 
   const { macd, obv, roc, rsi, stoch } = externalIndicators;
@@ -118,44 +120,11 @@ function StockView() {
                 internalIndicators={internalIndicators}
               />
 
-              {rsi && (
-                <LineChart
-                  marketType="stock"
-                  market={market}
-                  interval={interval}
-                  type="rsi"
-                />
-              )}
-              {obv && (
-                <LineChart
-                  marketType="stock"
-                  market={market}
-                  interval={interval}
-                  type="obv"
-                />
-              )}
-              {roc && (
-                <LineChart
-                  marketType="stock"
-                  market={market}
-                  interval={interval}
-                  type="roc"
-                />
-              )}
-              {macd && (
-                <MACDChart
-                  marketType="stock"
-                  market={market}
-                  interval={interval}
-                />
-              )}
-              {stoch && (
-                <StochChart
-                  marketType="stock"
-                  market={market}
-                  interval={interval}
-                />
-              )}
+              {rsi && ( <LineChart marketType="stock" market={market} interval={interval} type="rsi"/>)}
+              {obv && ( <LineChart marketType="stock" market={market} interval={interval} type="obv"/>)}
+              {roc && ( <LineChart marketType="stock" market={market} interval={interval} type="roc"/>)}
+              {macd && ( <MACDChart marketType="stock" market={market} interval={interval} /> )}
+              {stoch && ( <StochChart marketType="stock" market={market} interval={interval} />)}
             </div>
             <div className="types-crypto">
               <StockTypes changeStockType={changeStockType} />
