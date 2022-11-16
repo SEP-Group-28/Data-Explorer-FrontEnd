@@ -1,6 +1,7 @@
 import React, {Fragment} from 'react';
 import "./PageLoader.css"
 import loader from "../../../public/assets/icons/icon-128x128.png"
+import CoinLoader from '../loaders/coinLoader/CoinLoader';
 
 const PreLoader = () => {
 	// console.log('preloader', props.isLoading);
@@ -11,10 +12,11 @@ const PreLoader = () => {
         {/*  Preloader */}
         <div id="digimax-preloader" className="digimax-preloader">
           {/* Preloader Animation */}
-          <div className="preloader-animation">
+          <div className="preloader-animation" style={{marginTop:'-100px'}}>
             {/* Spinner */}
             <div className="img">
-              <div className="spinner"/>
+              {/* <div className="spinner"/> */}
+              {<CoinLoader/>}
               {/* <img style={{borderRadius:"70px",position:"absolute",top:"24%",left:"44.9%"}} src={loader} alt="" /> */}
             </div>
             {/* Loader */}

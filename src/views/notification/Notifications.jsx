@@ -45,7 +45,8 @@ export default function Notifications(){
       // console.log("rows", rows?.data['last day notifications'])
       setData(rows_)
       console.log("data  notifications:", rows)
-      
+      console.log("length of data", rows?.data['last day notifications'].length)
+      dispatch(setCount(rows?.data['last day notifications'].length))
     };
     useEffect(()=>{
       callHistoricNotifications();
@@ -83,9 +84,23 @@ export default function Notifications(){
     );
 
     const [data, setData] = useState([]);
-    const handleMark = (e, id) => {
-        dispatch(decrement())
-        setData(data?.filter(elem=> elem.id !== id));
+    const handleMark = async(e, id, symbol, price) => {
+        const data_ = {'symbol': symbol.split("/")[0], 'price': price}
+        console.log("data_", data_)
+        const response = await NotificationServices.readNotification(data_);
+        console.log("response for reading notification", response)
+        if (response.data == 'success'){
+          setData(data.filter(item => item.id !== id))
+          dispatch(decrement())
+        }
+    }
+    const handleMarkAll = async(e) => {
+      const response = await NotificationServices.readAllNotifications();
+      console.log("response for reading all notifications", response)
+      if (response.data == 'success'){
+        setData([])
+        dispatch(setCount(0))
+      }
     }
     const columns = [
         { field:'id', hide:true},
@@ -116,7 +131,9 @@ export default function Notifications(){
               color="primary"
               sx= {{pr:3, pl:3, w:'auto'}}
               onClick={(event) =>{
-                handleMark(event, cellValues.id);
+                console.log("cellValues", cellValues)
+                handleMark(event, cellValues.id, cellValues.row.symbol, cellValues.row.price);
+                // handleMarkAll(event);
               }}
               >
               </Button>
@@ -148,8 +165,8 @@ export default function Notifications(){
           <DataGrid
             rows={data}
             columns={columns}
-            pageSize={5}
-            rowsPerPageOptions={[5]}
+            pageSize={10}
+            rowsPerPageOptions={[10]}
             disableColumnFilter
             disableColumnSelector
             disableColumnMenu

@@ -1,11 +1,16 @@
 // Scripts for firebase and firebase messaging
+
+import { useDispatch } from "react-redux"
+import { increment } from "../src/redux/notification"
+
 // eslint-disable-next-line no-undef
-importScripts('https://www.gstatic.com/firebasejs/9.12.1/firebase-app-compat.js')
+importScripts('https://www.gstatic.com/firebasejs/9.10.0/firebase-app-compat.js')
 // eslint-disable-next-line no-undef
-importScripts('https://www.gstatic.com/firebasejs/9.12.1/firebase-messaging-compat.js')
+importScripts('https://www.gstatic.com/firebasejs/9.10.0/firebase-messaging-compat.js')
 
 // Initialize the Firebase app in the service worker by passing the generated config
 
+const dispatch = useDispatch()
 
 // eslint-disable-next-line no-undef
 firebase.initializeApp( {
@@ -23,18 +28,21 @@ firebase.initializeApp( {
 const messaging = firebase.messaging()
 
 messaging.onBackgroundMessage(function (payload) {
+  console.log("background notification....")
+  dispatch(increment())
   console.log('Received background message ', payload)
 
   const notificationTitle = payload.notification.title
   const notificationOptions = {
     body: payload.notification.body,
-    icon: '/logo192.png'
+    tag: "notification-1",
+    icon: "./logo192.png",
   }
 
   // eslint-disable-next-line no-restricted-globals
   // self.ServiceWorkerRegistration.showNotification( notificationTitle,
   //   notificationOptions)
-  return self.registration.showNotification(
+  self.registration.showNotification(
     notificationTitle,
     notificationOptions
   )
