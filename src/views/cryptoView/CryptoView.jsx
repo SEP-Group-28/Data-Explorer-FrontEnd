@@ -31,7 +31,7 @@ function CryptoView() {
     wma: false,
     bbands: false,
   });
-  const { cryptoChartDataLength } = useSelector((state) => state.chart);
+  const { cryptoChartDataLength} = useSelector((state) => state.chart);
 
   const [externalIndicators, setExternlIndicators] = useState({
     macd: false,
@@ -93,6 +93,8 @@ function CryptoView() {
     };
     const addExternalIndicators = (indicators) => {
       setExternlIndicators(indicators);
+      dispatch(updateCryptoDataLimit(cryptoChartDataLength));
+      dispatch(updateCryptoTimeStamp(0));
     };
 
   // getting user
@@ -131,9 +133,9 @@ function CryptoView() {
             interval={interval}
             internalIndicators={internalIndicators}
           />
-          {rsi && <LineChart marketType="crypto" market={market} interval={interval} type="rsi" />}
-          {obv && <LineChart marketType="crypto" market={market} interval={interval} type="obv" />}
-          {roc && <LineChart marketType="crypto" market={market} interval={interval} type="roc" />}
+          {rsi && <LineChart marketType="crypto" market={market} interval={interval} type="rsi"  />}
+          {obv && <LineChart marketType="crypto" market={market} interval={interval} type="obv"/>}
+          {roc && <LineChart marketType="crypto" market={market} interval={interval} type="roc"  />}
           {macd && <MACDChart marketType="crypto" market={market} interval={interval} />}
           {stoch && <StochChart marketType="crypto" market={market} interval={interval}/>}
         </div>
