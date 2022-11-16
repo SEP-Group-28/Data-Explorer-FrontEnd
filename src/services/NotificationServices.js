@@ -21,6 +21,21 @@ const getNotificationCount = () => {
     });
 };
 
+const readNotification = (data) => {
+    return axios({
+        method: "delete",
+        url: APIEndpoint + `/notifications/delete/${data['symbol']}/${data['price']}`,
+        headers: { Authorization: `Bearer ${token.getAccessToken()}` }
+    });
+};
+
+const readAllNotifications = () => {
+    return axios({
+        method: "delete",
+        url: APIEndpoint + `/notifications/delete/all`,
+        headers: { Authorization: `Bearer ${token.getAccessToken()}` }
+    });
+};
 // const addMarket = (data) => {
 //     return axios({
 //         method: "post",
@@ -47,4 +62,6 @@ const getNotificationCount = () => {
 export default{
     getNotifications,
     getNotificationCount,
+    readNotification,
+    readAllNotifications
 };
