@@ -10,4 +10,5 @@ export const ROC = "ROC";
 export const MACD = "MACD";
 export const STOCH = "STOCH";
 
-export const CANDLESTICK = "candleStick";
+export const CANDLESTICK = "Candles";
+export const LINE = "Line" 
