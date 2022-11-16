@@ -113,9 +113,6 @@ function CryptoChart({ market, interval, internalIndicators }) {
         autoScale: false,
         shiftVisibleRangeOnNewBar: true,
       },
-      // priceScale: {
-      //    autoScale: true,
-      // },
     });
 
     let newCrypto =
@@ -292,11 +289,14 @@ function CryptoChart({ market, interval, internalIndicators }) {
         "bbands"
       );
     }
-    
+
     function onVisibleLogicalRangeChanged(newVisibleLogicalRange) {
       setVisibleLogicalRange(newVisibleLogicalRange);
     }
-    chart.current.timeScale().scrollToPosition(cryptoChartDataLength);
+    // if(cryptoChartDataLength>280){
+    //   chart.current.timeScale().scrollToPosition(cryptoChartDataLength);
+    // }
+    
 
     chart.current
       .timeScale()
@@ -348,11 +348,6 @@ function CryptoChart({ market, interval, internalIndicators }) {
           ]).sort(compare);
           candleSeries.current.setData(tempChartData);
           volumeSeries.current.setData(tempVolumeData);
-
-          // let tempTimeLineData = tempTimeLine.filter((c, index) => {
-          //   return tempTimeLine.indexOf(c) === index;
-          // });
-          // setTimeLine(tempTimeLineData);
           dispatch(
             updateCryptoChartData({
               cryptoChartData: tempChartData,
@@ -365,11 +360,6 @@ function CryptoChart({ market, interval, internalIndicators }) {
 
 
         if (ma) {
-          // const maLineSeries = chart.current.addLineSeries({
-          //   lineWidth: 1,
-          //   title: "MA",
-          //   color: "blue",
-          // });
           getLineChart(
             `${config.DOMAIN_NAME}/ma/crypto/` +
               `${market || marketState}/${
@@ -385,11 +375,6 @@ function CryptoChart({ market, interval, internalIndicators }) {
           console.log("inidcator ma", internalIndicatorData.ma);
         }
         if (sma) {
-          // const smalineSeries = chart.current.addLineSeries({
-          //   lineWidth: 1,
-          //   title: "SMA",
-          //   color: "red",
-          // });
           getLineChart(
             `${config.DOMAIN_NAME}/sma/crypto/` +
               `${market || marketState}/${
@@ -404,11 +389,6 @@ function CryptoChart({ market, interval, internalIndicators }) {
         }
 
         if (ema) {
-          // const emalineSeries = chart.current.addLineSeries({
-          //   lineWidth: 1,
-          //   title: "EMA",
-          //   color: "#0397EC",
-          // });
           getLineChart(
             `${config.DOMAIN_NAME}/ema/crypto/` +
               `${market || marketState}/${
@@ -423,11 +403,6 @@ function CryptoChart({ market, interval, internalIndicators }) {
         }
 
         if (wma) {
-          // const wmalineSeries = chart.current.addLineSeries({
-          //   lineWidth: 1,
-          //   title: "WMA",
-          //   color: "#C5EC03",
-          // });
           getLineChart(
             `${config.DOMAIN_NAME}/wma/crypto/` +
               `${market || marketState}/${
@@ -441,24 +416,6 @@ function CryptoChart({ market, interval, internalIndicators }) {
           );
         }
         if (bbands) {
-          // const bbandUpperSeries = chart.current.addLineSeries({
-          //   lineWidth: 1,
-          //   title: "BBAND Upper",
-          //   color: "#022875",
-          // });
-
-          // const bbandMiddleSeries = chart.current.addLineSeries({
-          //   lineWidth: 1,
-          //   title: "BBAND Middle",
-          //   color: "#0B3894",
-          // });
-
-          // const bbandLowerSeries = chart.current.addLineSeries({
-          //   lineWidth: 1,
-          //   title: "BBAND Lower",
-          //   color: "#022875",
-          // });
-
           getBbandsChart(
             `${config.DOMAIN_NAME}/bbands/crypto/` +
               `${market || marketState}/${
@@ -529,6 +486,7 @@ function CryptoChart({ market, interval, internalIndicators }) {
       {loading ? <Loader position="relative" left="46.5%" top="9%" /> : null}
       <div
         className="CryptoChart"
+        style={{ display: loading ? "none" : "block" }}
         ref={ref}
         onMouseUpCapture={loadPrevious}
         onTouchEnd={loadPrevious}
