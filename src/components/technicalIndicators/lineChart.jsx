@@ -1,29 +1,55 @@
 import React, { useEffect, useRef, useState } from "react";
 import { createChart, CrosshairMode } from "lightweight-charts";
-import { removeDuplicates } from "../../utils/functions";
+import { removeDuplicates ,compare} from "../../utils/functions";
 import { useLocation } from "react-router-dom";
 import { Typography } from "@mui/material";
 import config from "../../config.json";
 import Loader from "../../components/loader/Loader";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  updateCryptoDataLimit,
+  updateCryptoTimeStamp,
+  updateExternalIndicatorData,
+  updateStockDataLimit,
+  updateStockTimeStamp
+} from "../../redux/chart";
 
-function LineChart({marketType, market, interval, type }) {
-  const location = useLocation();
-  try {
-    var marketState = location.state.market;
-  } catch (error) {
-    marketState = "BTC";
-  }
-  var intervalState = location?.state?.interval || marketType=="crypto"?"1m":"5m";
+function LineChart({
+  marketType,
+  market,
+  interval,
+  type
+}) {
+
+   const marketState = "BTC";
+
+  var intervalState =
+    location?.state?.interval || marketType == "crypto" ? "1m" : "5m";
 
   function getWindowDimension() {
     const { innerWidth: width, innerHeight: height } = window;
     return { width, height };
   }
+  const dispatch =useDispatch()
+  const {
+    cryptoChartDataLength,
+    cryptoTimeStamp,
+    cryptoDataLimit,
+    externalIndicatorData,
+    stockTimeStamp,
+    stockDataLimit,
+  } = useSelector((state) => state.chart);
 
   const ref = useRef();
   const chart = useRef();
   const lineSeries = useRef();
   const [loading, setLoading] = useState(false);
+
+  const [visibleLogicalRange, setVisibleLogicalRange] = useState({});
+
+  const timeStamp = marketType=="crypto"? cryptoTimeStamp:stockTimeStamp;
+  const dataLimit = marketType=="crypto"? cryptoDataLimit:stockDataLimit;
+  console.log("timestamp is ",timeStamp)
 
   useEffect(() => {
     setLoading(true);
@@ -62,10 +88,11 @@ function LineChart({marketType, market, interval, type }) {
         secondsVisible: false,
       },
     });
-
     const url =
       `${config.DOMAIN_NAME}/${type}/${marketType}/` +
-      `${market || marketState}/${interval || intervalState}`;
+      `${market || marketState}/${
+        interval || intervalState
+      }/0/${dataLimit}`;
     console.log(url);
 
     fetch(url)
@@ -85,19 +112,77 @@ function LineChart({marketType, market, interval, type }) {
             tempTimeLine.push(object.time);
           }
         }
-
-        let tempLineData = removeDuplicates(tempLines);
-        console.log("RSI data", tempLineData);
+        console.log("heyyy timestamp 0");
+        let tempLineData = removeDuplicates([
+          ...tempLines,
+          ...externalIndicatorData[type],
+        ]).sort(compare);
+        dispatch(
+          updateExternalIndicatorData({
+            indicatorType: type,
+            data: tempLineData,
+          })
+        );
+        console.log("external indicator data",externalIndicatorData[type])
         lineSeries.current.setData(tempLineData);
 
         setLoading(false);
       })
       .catch();
 
+      function onVisibleLogicalRangeChanged(newVisibleLogicalRange) {
+        setVisibleLogicalRange(newVisibleLogicalRange);
+      }
+      chart.current
+        .timeScale()
+        .subscribeVisibleLogicalRangeChange(onVisibleLogicalRangeChanged);
+
     return () => {
       chart.current.remove();
     };
   }, [market, interval]);
+
+  useEffect(() => {
+    const url =
+      `${config.DOMAIN_NAME}/${type}/${marketType}/` +
+      `${market || marketState}/${interval || intervalState}/${timeStamp}/${dataLimit}`;
+    console.log(url);
+    timeStamp!==0 &&
+      fetch(url)
+        .then((res) => res.json())
+        .then((data) => {
+          let tempLines = [];
+          let tempTimeLine = [];
+
+          for (let key in data) {
+            if (data.hasOwnProperty(key)) {
+              let object = {
+                time: marketType == "crypto" ? Number(key) : Number(key) / 1000,
+                value: data[key],
+              };
+              tempLines.push(object);
+              tempTimeLine.push(object.time);
+            }
+          }
+          
+          let tempLineData = removeDuplicates([
+            ...tempLines,
+            ...externalIndicatorData[type],
+          ]).sort(compare);
+          lineSeries.current.setData(tempLineData);
+          dispatch(
+            updateExternalIndicatorData({
+              indicatorType: type,
+              data: tempLineData,
+            })
+          );
+          console.log("external indicator data", externalIndicatorData[type]);       
+          setLoading(false);
+        })
+        .catch();
+  }, [
+    marketType == "crypto" ? cryptoTimeStamp : stockTimeStamp,
+  ]);
 
   const [windowDimensions, setWindowDimensions] = useState(
     getWindowDimension()
@@ -136,6 +221,22 @@ function LineChart({marketType, market, interval, type }) {
     };
   });
 
+  const loadPrevious = () => {
+    if (visibleLogicalRange.from < 0) {
+      let loadData = Math.ceil(Math.abs(visibleLogicalRange.from));
+      if(marketType=="crypto"){
+        dispatch(updateCryptoTimeStamp(cryptoTimeStamp + cryptoDataLimit));
+        dispatch(updateCryptoDataLimit(loadData));
+      }
+      else{
+        dispatch(updateStockTimeStamp(stockTimeStamp + stockDataLimit));
+        dispatch(updateStockDataLimit(loadData));
+
+      }
+      
+    }
+  };
+
   return (
     <>
       {/* {loading ? <Loader position="relative" left="46.5%" top="9%" /> : null} */}
@@ -143,8 +244,13 @@ function LineChart({marketType, market, interval, type }) {
         <div
           className="CryptoChart"
           ref={ref}
-          // onMouseUpCapture={handleDrag}
-          style={{ marginBottom: "-10px",marginLeft:"15px", marginRight:"20px" }}
+          onMouseUpCapture={loadPrevious}
+          onTouchEnd={loadPrevious}
+          style={{
+            marginBottom: "-10px",
+            marginLeft: "15px",
+            marginRight: "20px",
+          }}
         />
         <div>
           <Typography
@@ -160,7 +266,6 @@ function LineChart({marketType, market, interval, type }) {
             {type.toUpperCase()}
           </Typography>
         </div>
-        
       </div>
       ;
     </>
