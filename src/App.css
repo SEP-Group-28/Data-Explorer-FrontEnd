@@ -696,9 +696,12 @@ margin-right:40px;
   background-color: #01213c !important;
 }
 
-
+.chartType-menu{
+  font-size: 14px !important;
+}
 .chartType-menu:hover{
   background-color: #20232B !important;
+
 }
 
 

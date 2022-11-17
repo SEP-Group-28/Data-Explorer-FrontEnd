@@ -13,6 +13,7 @@ import {
   updateStockDataLimit,
   updateStockTimeStamp,
 } from "../../redux/chart";
+import { CANDLESTICK, LINE, BAR } from "../../utils/Constants";
 
 function StockChart({ market, interval, internalIndicators }) {
   const location = useLocation();
@@ -24,7 +25,10 @@ function StockChart({ market, interval, internalIndicators }) {
   const [loading, setLoading] = useState(true);
   const chart = useRef();
   const candleSeries = useRef();
+  const lineSeries = useRef();
+  const barSeries = useRef();
   const volumeSeries = useRef();
+
   const smalineSeries = useRef();
   const wmalineSeries = useRef();
   const emalineSeries = useRef();
@@ -74,21 +78,6 @@ function StockChart({ market, interval, internalIndicators }) {
         mode: CrosshairMode.Normal,
       },
     });
-    candleSeries.current = chart.current.addCandlestickSeries({
-      upColor: "rgba(0,133,48,1)",
-      downColor: "#851D1A",
-      borderDownColor: "#851D1A",
-      borderUpColor: "rgba(0,133,48,1)",
-      wickDownColor: "#851D1A",
-      wickUpColor: "rgba(0,133,48,1)",
-    });
-    candleSeries.current.applyOptions({
-      scaleMargins: {
-        top: 0.05,
-        bottom: 0.17,
-      },
-    });
-
     volumeSeries.current = chart.current.addHistogramSeries({
       color: "#26a69a",
       priceFormat: {
@@ -100,7 +89,6 @@ function StockChart({ market, interval, internalIndicators }) {
         bottom: 0,
       },
     });
-
     chart.current.applyOptions({
       timeScale: {
         visible: true,
@@ -108,6 +96,7 @@ function StockChart({ market, interval, internalIndicators }) {
         secondsVisible: false,
       },
     });
+
     console.log("market is", market || marketState);
     fetch(
       `${config.DOMAIN_NAME}` +
@@ -145,8 +134,63 @@ function StockChart({ market, interval, internalIndicators }) {
           ...stockVolumeData,
         ]).sort(compare);
 
-        candleSeries.current.setData(tempChartData);
+        if (chartType == CANDLESTICK) {
+          candleSeries.current = chart.current.addCandlestickSeries({
+            upColor: "rgba(0,133,48,1)",
+            downColor: "#851D1A",
+            borderDownColor: "#851D1A",
+            borderUpColor: "rgba(0,133,48,1)",
+            wickDownColor: "#851D1A",
+            wickUpColor: "rgba(0,133,48,1)",
+          });
+          candleSeries.current.applyOptions({
+            scaleMargins: {
+              top: 0.05,
+              bottom: 0.17,
+            },
+          });
+          candleSeries.current.setData(tempChartData);
+        }
+
+        if (chartType == LINE) {
+          lineSeries.current = chart.current.addLineSeries({
+            lineWidth: 2.5,
+            color: "#0F9FF7",
+          });
+          lineSeries.current.applyOptions({
+            scaleMargins: {
+              top: 0.05,
+              bottom: 0.17,
+            },
+          });
+
+          let tempLineData = [];
+          tempChartData.forEach((obj) => {
+            let lineObject = {
+              time: obj["time"],
+              value: obj["close"],
+            };
+            tempLineData.push(lineObject);
+          });
+          lineSeries.current.setData(tempLineData);
+        }
+         if (chartType == BAR) {
+           barSeries.current = chart.current.addBarSeries({
+             thinBars: false,
+             downColor: "#A70808",
+             upColor: "#129F01",
+           });
+           barSeries.current.applyOptions({
+             scaleMargins: {
+               top: 0.05,
+               bottom: 0.17,
+             },
+           });
+           barSeries.current.setData(tempChartData);
+         }
+
         volumeSeries.current.setData(tempVolumeData);
+
         setLoading(false);
         dispatch(
           updateStockChartData({
@@ -277,7 +321,7 @@ function StockChart({ market, interval, internalIndicators }) {
     return () => {
       chart.current.remove();
     };
-  }, [market, interval, internalIndicators]);
+  }, [market, interval, internalIndicators, chartType]);
 
   const [windowDimensions, setWindowDimensions] = useState(
     getWindowDimension()
@@ -320,7 +364,21 @@ function StockChart({ market, interval, internalIndicators }) {
             ...stockVolumeData,
           ]).sort(compare);
 
-          candleSeries.current.setData(tempChartData);
+          if(chartType==CANDLESTICK) candleSeries.current.setData(tempChartData);
+          if (chartType == BAR) barSeries.current.setData(tempChartData);
+
+          if (chartType == LINE) {
+            let tempLineData = [];
+            tempChartData.forEach((obj) => {
+              let lineObject = {
+                time: obj["time"],
+                value: obj["close"],
+              };
+              tempLineData.push(lineObject);
+            });
+            lineSeries.current.setData(tempLineData);
+          }
+
           volumeSeries.current.setData(tempVolumeData);
           dispatch(
             updateStockChartData({

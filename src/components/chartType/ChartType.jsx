@@ -5,7 +5,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import { useDispatch, useSelector } from "react-redux";
-import { LINE, CANDLESTICK } from "../../utils/Constants";
+import { LINE, CANDLESTICK ,BAR } from "../../utils/Constants";
 import { updateChartType } from "../../redux/chart";
 
 const ChartTypes = () => {
@@ -25,9 +25,9 @@ const ChartTypes = () => {
 
   return (
     <div data-testid="chartTypes" className="chart-types">
-      <FormControl >
+      <FormControl>
         <Select
-          style={{ height: "27px", color: "white", backgroundColor: "#2E3035" }}
+          style={{ height: "27px", color: "white", backgroundColor: "#2E3035",fontSize:"14px" }}
           autoWidth
           value={type}
           onChange={handleChange}
@@ -47,12 +47,20 @@ const ChartTypes = () => {
             {CANDLESTICK}
           </MenuItem>
           <MenuItem
-            style={{ backgroundColor: "#292C31", marginBottom: "-8px" }}
+            style={{ backgroundColor: "#292C31" }}
             className="chartType-menu"
             key={1}
             value={LINE}
           >
             {LINE}
+          </MenuItem>
+          <MenuItem
+            style={{ backgroundColor: "#292C31", marginBottom: "-8px" }}
+            className="chartType-menu"
+            key={3}
+            value={BAR}
+          >
+            {BAR}
           </MenuItem>
         </Select>
       </FormControl>
