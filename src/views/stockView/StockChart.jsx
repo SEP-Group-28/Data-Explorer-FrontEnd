@@ -13,7 +13,7 @@ import {
   updateStockDataLimit,
   updateStockTimeStamp,
 } from "../../redux/chart";
-import { CANDLESTICK,LINE } from "../../utils/Constants";
+import { CANDLESTICK, LINE, BAR } from "../../utils/Constants";
 
 function StockChart({ market, interval, internalIndicators }) {
   const location = useLocation();
@@ -26,6 +26,7 @@ function StockChart({ market, interval, internalIndicators }) {
   const chart = useRef();
   const candleSeries = useRef();
   const lineSeries = useRef();
+  const barSeries = useRef();
   const volumeSeries = useRef();
 
   const smalineSeries = useRef();
@@ -154,7 +155,7 @@ function StockChart({ market, interval, internalIndicators }) {
         if (chartType == LINE) {
           lineSeries.current = chart.current.addLineSeries({
             lineWidth: 2.5,
-            color: "#0C57EE",
+            color: "#0F9FF7",
           });
           lineSeries.current.applyOptions({
             scaleMargins: {
@@ -173,6 +174,20 @@ function StockChart({ market, interval, internalIndicators }) {
           });
           lineSeries.current.setData(tempLineData);
         }
+         if (chartType == BAR) {
+           barSeries.current = chart.current.addBarSeries({
+             thinBars: false,
+             downColor: "#A70808",
+             upColor: "#129F01",
+           });
+           barSeries.current.applyOptions({
+             scaleMargins: {
+               top: 0.05,
+               bottom: 0.17,
+             },
+           });
+           barSeries.current.setData(tempChartData);
+         }
 
         volumeSeries.current.setData(tempVolumeData);
 
@@ -350,6 +365,7 @@ function StockChart({ market, interval, internalIndicators }) {
           ]).sort(compare);
 
           if(chartType==CANDLESTICK) candleSeries.current.setData(tempChartData);
+          if (chartType == BAR) barSeries.current.setData(tempChartData);
 
           if (chartType == LINE) {
             let tempLineData = [];
@@ -362,7 +378,7 @@ function StockChart({ market, interval, internalIndicators }) {
             });
             lineSeries.current.setData(tempLineData);
           }
-          
+
           volumeSeries.current.setData(tempVolumeData);
           dispatch(
             updateStockChartData({
