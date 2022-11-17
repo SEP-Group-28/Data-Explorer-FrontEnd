@@ -407,6 +407,7 @@ function CryptoChart({ market, interval, internalIndicators }) {
           ]).sort(compare);
 
           if(chartType==CANDLESTICK) candleSeries.current.setData(tempChartData);
+          if(chartType==BAR) barSeries.current.setData(tempChartData);
 
           if(chartType==LINE){
             let tempLineData = [];
@@ -419,6 +420,8 @@ function CryptoChart({ market, interval, internalIndicators }) {
             });
             lineSeries.current.setData(tempLineData);
           }
+
+
           volumeSeries.current.setData(tempVolumeData);
           dispatch(
             updateCryptoChartData({

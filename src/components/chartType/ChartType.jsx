@@ -27,7 +27,7 @@ const ChartTypes = () => {
     <div data-testid="chartTypes" className="chart-types">
       <FormControl>
         <Select
-          style={{ height: "27px", color: "white", backgroundColor: "#2E3035" }}
+          style={{ height: "27px", color: "white", backgroundColor: "#2E3035",fontSize:"14px" }}
           autoWidth
           value={type}
           onChange={handleChange}
@@ -47,7 +47,7 @@ const ChartTypes = () => {
             {CANDLESTICK}
           </MenuItem>
           <MenuItem
-            style={{ backgroundColor: "#292C31", marginBottom: "-8px" }}
+            style={{ backgroundColor: "#292C31" }}
             className="chartType-menu"
             key={1}
             value={LINE}
