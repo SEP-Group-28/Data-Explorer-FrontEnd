@@ -484,10 +484,10 @@ margin-right:40px;
 
 
 .CryptoHeader header{
-  font-size: 22px;
+  font-size: 20px;
   color: white;
   margin-left: 15px;
-  border: 1px solid;
+  border-bottom: 1px solid;
   padding: 3px;
 }
 
@@ -495,14 +495,23 @@ margin-right:40px;
   color: rgb(227, 221, 221);
   margin-left: 8px;
   margin-right: 8px;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: lighter !important;
   margin-bottom: -4px;
 }
+.alarm-icon{
+  border-radius: 5px;
+  box-shadow: inset 4px 4px 4px 4px rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+  transform: scale(1.3)
+}
 
+.alarm-icon:hover{
+  transform: scale(1.4)
+}
 .volume-value{
-  font-size: 13px;
-  color: #b8b9be;
+  font-size: 11px;
+  color: #a0a1a4;
   margin-left: 15px;
 }
 
@@ -704,6 +713,11 @@ margin-right:40px;
 
 }
 
+.chart-type-img{
+  margin-left: -6px;
+  
+}
+
 
 
 ::-webkit-scrollbar{
@@ -758,6 +772,31 @@ margin-right:40px;
       }
 }
 @media only screen and (max-width: 800px) {
+
+  .CryptoHeader header {
+      font-size: 17px;
+    }
+  
+    .CryptoHeader p {
+      font-size: 15px;
+
+    }
+    .alarm-icon {
+      transform: scale(1.2)
+    }
+  
+    .alarm-icon:hover {
+      transform: scale(1.3)
+    }
+  
+    .volume-value {
+      font-size: 9px;
+      color: #a0a1a4;
+      margin-left: 11px;
+    }
+    .watchlist-btn {
+      font-size: 12px !important;
+    }
   .img-sec {
       display: none;
     }
@@ -810,8 +849,13 @@ margin-right:40px;
           width: 220px;
         }
 }
-
+@media only screen and (max-width: 705px){
+    .alerts-name {
+        display: none;
+      }
+}
 @media only screen and (max-width: 650px) {
+
   .market-cards {
       display: flex;
       flex-direction: column;
@@ -834,11 +878,18 @@ margin-right:40px;
       width: 60px;
     }
   .CryptoHeader header{
-      font-size: 14px;
+      font-size: 13px;
   }
   .CryptoHeader p {
-    font-size: 13px;
+    font-size: 12px;
   }
+    .alarm-icon {
+      transform: scale(1.05)
+    }
+  
+    .alarm-icon:hover {
+      transform: scale(1.12)
+    }
   .watchlist-btn{
     font-size: 10px!important;
     height: 28px;
@@ -916,8 +967,15 @@ margin-right:40px;
   .alert-img-sec{
     display: none;
   }
+  .indicator-img-btn{
+  width: 25px;
+  
 }
-
+  .indicator-img-btn img{
+    object-fit: contain;
+    width: 13px;
+  }
+}
 @media only screen and (max-width: 500px) {
 
   .Register header{
@@ -976,18 +1034,84 @@ margin-right:40px;
 
     }
     .CryptoTypes Table th {
-      font-size: 12px;
+      font-size: 9px;
     }
     .CryptoTypes Table td {
       font-size: 8px;
     }
 
+    .interval-btns button {
+      margin-left: 3px;
+      width: 28px;
+      font-size: 9px;
+      height: 20px;
+    }
+
+    .indicator-img-btn {
+      width: 25px;
+    }
+
+    .indicator-img-btn img {
+      object-fit: contain;
+      width: 12px;
+    }
+  
+}
+
+@media only screen and (max-width: 420px){
+  .CryptoHeader header {
+      font-size: 10px;
+      margin-left: 7px;
+    }
+  
+    .CryptoHeader p {
+      margin-left: 5px;
+      margin-right: 5px;
+      font-size: 9px;
+    }
+  
+    .alarm-icon {
+      border-radius: 5px;
+      box-shadow: inset 4px 4px 4px 4px rgba(0, 0, 0, 0.35);
+      cursor: pointer;
+      transform: scale(1)
+    }
+  
+    .alarm-icon:hover {
+      transform: scale(1.05)
+    }
+  
+    .volume-value {
+      font-size: 7px;
+      color: #a0a1a4;
+      margin-left: 5px;
+     margin-top: 1px;
+    }
+
+    .watchlist-btn {
+      font-size: 9px !important;
+      padding-top: 1px;
+      padding-bottom: 1px;
+    }
 
     .interval-btns button {
-      margin-left: 5px;
-      width: 29px;
-      font-size: 12px;
-      padding: 1px;
-      border-radius: 5px;
+      margin-left: 2px;
+      width: 24px;
+      font-size: 9px;
+      height: 20px;
     }
+
+    .indicator-img-btn {
+      width: 22px;
+      height: 22px;
+      margin-top: 2px;
+    }
+
+    .indicator-img-btn img {
+      object-fit: contain;
+      width: 10px;
+      margin-bottom: 3px;
+    }
+
+
 }

@@ -30,6 +30,7 @@ const Toast = Swal.mixin({
 
 function CryptoHeader({ market, interval }) {
   const [volume,setVolume] = useState(0)
+  const [high,setHigh] =useState(0)
 
   // for alert
   const [open, setOpen] = useState(false);
@@ -82,6 +83,7 @@ useEffect(()=>{
         function(e){
           let parsedData = JSON.parse(e.data);
           setVolume(parsedData[5]);
+          setHigh(parsedData[2])
         },
       )
 
@@ -93,32 +95,39 @@ useEffect(()=>{
   
   return (
     <div className="CryptoHeader crypto-bar stock-header">
-      { user &&
-          <div className='d-flex'>
-            <p style={{marginRight: '20px'}}>Alerts</p>
-            <AccessAlarmsIcon sx={{color:'white', transform:'scale(1.8)'}} onClick={handleOpen}
+      {user && (
+        <div className="d-flex">
+          <p className="alerts-name" style={{ marginRight: "20px" }}>Alerts</p>
+          <AccessAlarmsIcon className='alarm-icon'
+            sx={{ color: "white",  }}
+            onClick={handleOpen}
+          />
+
+          <Popover
+            sx={{ mt: 20, ml: 10, borderWidth: 0, maxWidth: "400px" }}
+            open={open}
+            onClose={handleClose}
+          >
+            <Alert
+              open={open}
+              onClose={handleClose}
+              market={market || marketState}
+              // interval={location?.state?.interval || "1m"}
             />
-            
-            <Popover sx={{mt:20, ml:10, borderWidth:0, maxWidth:'400px' }}
-                  open={open}
-                  onClose={handleClose}
-            >
-              <Alert
-                open={open}
-                onClose={handleClose}
-                market={market || marketState}
-                // interval={location?.state?.interval || "1m"}
-              />
-            </Popover>
-          </div>
-        }
+          </Popover>
+        </div>
+      )}
       <header className="stock-header">
         {market || marketState}/USDT - <span>{interval || intervalState}</span>
       </header>
       <div className="d-flex flex-row justify-content-evenly">
         <div className="d-flex flex-column">
-          <p>24hVolume</p>
+          <p>24h Vol</p>
           <span className="volume-value">{volume.toFixed(2)}</span>
+        </div>
+        <div className="d-flex flex-column">
+          <p>24h High</p>
+          <span className="volume-value">{high.toFixed(2)}</span>
         </div>
       </div>
       {user && (

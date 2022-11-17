@@ -7,6 +7,9 @@ import MenuItem from "@mui/material/MenuItem";
 import { useDispatch, useSelector } from "react-redux";
 import { LINE, CANDLESTICK ,BAR } from "../../utils/Constants";
 import { updateChartType } from "../../redux/chart";
+import Lines from "../../assets/line.svg"
+import Candles from "../../assets/candles.svg";
+import Bars from "../../assets/bar.svg";
 
 const ChartTypes = () => {
   const dispatch = useDispatch();
@@ -17,6 +20,7 @@ const ChartTypes = () => {
 
   const handleChange = (e) => {
     setType(e.target.value);
+    console.log("type is",e.target.value )
   };
 
   useEffect(() => {
@@ -27,7 +31,13 @@ const ChartTypes = () => {
     <div data-testid="chartTypes" className="chart-types">
       <FormControl>
         <Select
-          style={{ height: "27px", color: "white", backgroundColor: "#2E3035",fontSize:"14px" }}
+          style={{
+            height: "27px",
+            color: "white",
+            backgroundColor: "#2E3035",
+            fontSize: "14px",
+            width:"56px",
+          }}
           autoWidth
           value={type}
           onChange={handleChange}
@@ -44,7 +54,13 @@ const ChartTypes = () => {
             key={0}
             value={CANDLESTICK}
           >
-            {CANDLESTICK}
+            {type == CANDLESTICK ? (
+              <img className="chart-type-img" src={Candles} />
+            ) : (
+              <span>
+                <img className="chart-type-img" src={Candles} /> {CANDLESTICK}
+              </span>
+            )}
           </MenuItem>
           <MenuItem
             style={{ backgroundColor: "#292C31" }}
@@ -52,7 +68,13 @@ const ChartTypes = () => {
             key={1}
             value={LINE}
           >
-            {LINE}
+            {type == LINE ? (
+              <img className="chart-type-img" src={Lines} />
+            ) : (
+              <span>
+                <img className="chart-type-img" src={Lines} /> {LINE}
+              </span>
+            )}
           </MenuItem>
           <MenuItem
             style={{ backgroundColor: "#292C31", marginBottom: "-8px" }}
@@ -60,7 +82,13 @@ const ChartTypes = () => {
             key={3}
             value={BAR}
           >
-            {BAR}
+            {type == BAR ? (
+              <img className="chart-type-img" src={Bars} />
+            ) : (
+              <span>
+                <img className="chart-type-img" src={Bars} /> {BAR}
+              </span>
+            )}
           </MenuItem>
         </Select>
       </FormControl>
