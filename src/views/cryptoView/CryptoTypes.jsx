@@ -36,7 +36,10 @@ function CryptoTypes({changeCryptoType}) {
       <Table striped hover variant="dark">
         <thead>
           <tr>
-            <th>Types</th>
+            <th>
+              <span>Types</span><br />
+              <span>/USDT</span>
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -53,9 +56,25 @@ function CryptoTypes({changeCryptoType}) {
                     }}
                   >
                     <div className="type-btn-inter">
-                      <img style={{width:"17px",height:"17px"}} src={type=="BTC/USDT"?BitcoinIcon: type=="ETH/USDT"? EthIcon:
-                        type=="SOL/USDT"?SolanIcon : type=="BNB/USDT"? BinanceIcon: type=="AVAX/USDT"?AvaxIcon: type=="TRX/USDT"?TrxIcon:"none"}/>
-                      <p >{type}</p>
+                      <img
+                        style={{ width: "17px", height: "17px" }}
+                        src={
+                          type == "BTC/USDT"
+                            ? BitcoinIcon
+                            : type == "ETH/USDT"
+                            ? EthIcon
+                            : type == "SOL/USDT"
+                            ? SolanIcon
+                            : type == "BNB/USDT"
+                            ? BinanceIcon
+                            : type == "AVAX/USDT"
+                            ? AvaxIcon
+                            : type == "TRX/USDT"
+                            ? TrxIcon
+                            : "none"
+                        }
+                      />
+                      <p>{type.split("/")[0]}</p>
                     </div>
                   </button>
                 </td>

@@ -102,6 +102,10 @@ function CryptoChart({ market, interval, internalIndicators }) {
         autoScale: false,
         shiftVisibleRangeOnNewBar: true,
       },
+      priceScale: {
+        color: "black",
+        lineWidth:20,
+      },
     });
     let newCrypto =
       config.DOMAIN_NAME +
@@ -539,7 +543,7 @@ function CryptoChart({ market, interval, internalIndicators }) {
       if (width >= 478 && width < 550) {
         chart.current.resize(380, 320);
       }
-      if (width > 350 && width < 478) chart.current.resize(320, 280);
+      if (width > 350 && width < 478) chart.current.resize(300, 280);
     };
   });
 
