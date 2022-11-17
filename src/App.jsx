@@ -5,6 +5,8 @@ import { gapi } from "gapi-script";
 import { useEffect, useState } from "react";
 import { onMessageListener } from "./firebaseInit";
 import ReactNotificationComponent from "./views/notification/ReactNotifications";
+import { useDispatch } from "react-redux";
+import { increment } from "./redux/notification";
 // import TokenRequest from "../src/views/notification/TokenRequest";
 // import { onMessageListener } from "./utils/firebaseInit";
 // import {useEffect, useState} from 'react';
@@ -16,8 +18,17 @@ function App() {
   const [show, setShow] = useState(false);
   const [notification, setNotification] = useState({ title: "", body: "" });
 
+  const dispatch = useDispatch();
+
+  // useEffect(() => {
+  //   if (show) {
+  //     dispatch(increment());
+  //   }
+  // }, [show]);
   onMessageListener()
     .then((payload) => {
+      console.log("hey hey hey a new notification has arvied", payload);
+      callDispatch();
       setShow(true);
       // toast.success(`${payload.notification.body}`)
       setNotification({
@@ -29,6 +40,9 @@ function App() {
     })
     .catch((err) => console.log("failed: ", err));
 
+  const callDispatch = () => {
+    dispatch(increment());
+  };
   useEffect(() => {
     function start() {
       gapi.auth2.init({
@@ -48,6 +62,7 @@ function App() {
           body={notification.body}
         />
       )}
+      
       
     </div>
   );

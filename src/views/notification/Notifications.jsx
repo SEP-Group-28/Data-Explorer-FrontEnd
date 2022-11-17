@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import "../../assets/css/Notifications.css"
-import DummyData from "./notificationDummyData.json"
 import { autocompleteClasses, Container } from '@mui/material';
 import Button from '@mui/material/Button';
 import {DataGrid} from '@mui/x-data-grid';
@@ -11,13 +10,21 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import NotificationServices from "../../services/NotificationServices";
 import { Fragment } from "react";
+import Token from "../../services/Token";
+import { useDispatch, useSelector } from "react-redux";
+import { decrement, setCount } from "../../redux/notification";
+import SimpleLoader from "../../components/loaders/lottieLoader/simpleLoader";
 
-// const rows = DummyData;
+// TODO: 
+// 1. css fix
+// 2. Loader
 
-export default function Notifications({increment}){
+export default function Notifications(){
   // for no new notification alert
     const [open_, setOpen_] = useState(true);
     const handleOpen_ = () => setOpen_(true);
+    // let {count} = useSelector(state => state.notification)
+    const dispatch = useDispatch()
     const handleClose_ = (event, reason) => {
       if (reason == 'clickaway'){
         return;
@@ -26,14 +33,50 @@ export default function Notifications({increment}){
       return
     };
     const callHistoricNotifications = async() => {
+      setLoader(true)
+      setTimeout(() => {
+        setLoader(false)
+      }, 1000);
       const rows = await NotificationServices.getNotifications();
-      setData(rows?.data['last 5 days notifications'])
+      const rows_ = rows?.data['last day notifications'].map((row, index) => {
+        return {
+          id: index,
+          date:  " " + new Date(row[0]).getDate() + "/" + new Date(row[0]).getMonth() + "/" + new Date(row[0]).getFullYear() + " " + new Date(row[0]).getHours() + ":" + new Date(row[0]).getMinutes() + ":" + new Date(row[0]).getSeconds(),
+          symbol: row[1],
+          price: row[2],
+          type: 'crossing',
+        }
+      
+      })
+      console.log("rows", rows_)
+      // console.log("rows", rows?.data['last day notifications'])
+      setData(rows_)
       console.log("data  notifications:", rows)
+      console.log("length of data", rows?.data['last day notifications'].length)
+      dispatch(setCount(rows?.data['last day notifications'].length))
     };
     useEffect(()=>{
       callHistoricNotifications();
+      // let eventSource = new EventSource(
+      //   `${config.DOMAIN_NAME}/notifications/present`,
+      //   {headers: { Authorization: `Bearer ${Token.getAccessToken()}` }}
+      // );
+      // eventSource.addEventListener(
+      //   "message",
+      //   function (e) {
+      //     let parsedData = JSON.parse(e.data);
+      //     console.log("parsedData", parsedData)
+      //     // let object = {
+      //     //   time: parsedData[0],
+            
+      //     // };
+      //     // candleSeries.current.update(object);
+      //   }
+      // );
     }, [])
     
+    
+
     const action = (
       <Fragment>
         <IconButton
@@ -46,18 +89,34 @@ export default function Notifications({increment}){
         </IconButton>
       </Fragment>
     );
-
+    const [loader, setLoader] = useState(true);
     const [data, setData] = useState([]);
-    const handleMark = (e, id) => {
-        increment();
-        setData(data?.filter(elem=> elem.id !== id));
+    const handleMark = async(e, id, symbol, price) => {
+        const data_ = {'symbol': symbol.split("/")[0], 'price': price}
+        console.log("data_", data_)
+        const response = await NotificationServices.readNotification(data_);
+        console.log("response for reading notification", response)
+        if (response.data == 'success'){
+          setData(data.filter(item => item.id !== id))
+          dispatch(decrement())
+        }
+    }
+    const handleMarkAll = async(e) => {
+      const response = await NotificationServices.readAllNotifications();
+      console.log("response for reading all notifications", response)
+      if (response.data == 'success'){
+        setData([])
+        dispatch(setCount(0))
+      }
     }
     const columns = [
         { field:'id', hide:true},
+        { field: 'date', headerName: 'Date', width: 175, headerAlign:'center', align:'center', sortable:true },
         { field: 'symbol', headerName: 'Symbol', width: 100, headerAlign:'center', align:'center', sortable:false },
-        { field: 'type', headerName: 'Message', width: 200, headerAlign:'center', align:'center', sortable:false },
-        { field: 'open price', headerName: 'Open Price',type: 'number', width: 120, headerAlign:'center', align:'center', sortable:false },
-        { field: 'current peak price', headerName: 'Current Peak',type: 'number', width: 120, headerAlign:'center', align:'center', sortable:false },
+        { field: 'type', headerName: 'Type', width: 200, headerAlign:'center', align:'center', sortable:false },
+        { field: 'price', headerName: 'Price',type: 'number', width: 120, headerAlign:'center', align:'center', sortable:false },
+        
+        // { field: 'current peak price', headerName: 'Current Peak',type: 'number', width: 120, headerAlign:'center', align:'center', sortable:false },
         {
           field: "Mark As Read",
           sortable: false,
@@ -79,7 +138,9 @@ export default function Notifications({increment}){
               color="primary"
               sx= {{pr:3, pl:3, w:'auto'}}
               onClick={(event) =>{
-                handleMark(event, cellValues.id);
+                console.log("cellValues", cellValues)
+                handleMark(event, cellValues.id, cellValues.row.symbol, cellValues.row.price);
+                // handleMarkAll(event);
               }}
               >
               </Button>
@@ -91,7 +152,8 @@ export default function Notifications({increment}){
         }
     ];
     return (
-        
+        loader ? <SimpleLoader/> 
+        :
         data && data?.length <= 0
         ? 
           <Snackbar
@@ -104,31 +166,29 @@ export default function Notifications({increment}){
             anchorOrigin={{ vertical:'top',  horizontal:'center'}}
           />
         : 
-        <div>
-        <Container maxWidth="lg">
+        <Container maxWidth="sm" sx={{boarder:0}}>
         <div style={{ height: 400, width: '100%'}}>
           
           <DataGrid
-            rows={data.map((row)=>row[1])}
+            rows={data}
             columns={columns}
-            pageSize={5}
-            rowsPerPageOptions={[5]}
+            pageSize={10}
+            rowsPerPageOptions={[10]}
             disableColumnFilter
             disableColumnSelector
             disableColumnMenu
             sx={{
               m:2,
-              boxShadow: 2,
-              border: 2,
-              borderColor: 'primary.light',
+              boxShadow: 0,
+              border: 0,
+              borderColor: 'primary.dark',
               color: 'white',
-              backgroundColor: '#393C45'
+              backgroundColor: '#212529'
             }
           }
           />
           </div>
           </Container>
-        </div>
     );
 }
 

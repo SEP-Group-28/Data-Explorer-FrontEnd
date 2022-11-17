@@ -24,6 +24,7 @@ import { save } from "../../redux/alert";
 import UserServices from "../../services/API/UserServices";
 import { saveImage } from "../../redux/profile";
 import Swal from 'sweetalert2';
+import PageLoader from "../../components/pageLoader/PageLoader";
 
 // import TokenRequest from "../notification/TokenRequest";
 
@@ -58,7 +59,7 @@ function Login() {
   const [passwordError, setPasswordError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const [loader, setLoader] = useState(false);
+  const [loader, setLoader] = useState(true);
   const [isTokenFound, setTokenFound] = useState(false)
   const togglePassword = () => {
     setShowPassword(!showPassword);
@@ -75,8 +76,15 @@ function Login() {
     });
   };
 
-  const handleSubmit = async (e) => {
+  useEffect(() => {
     setLoader(true);
+    setTimeout(() => {
+      setLoader(false);
+    }, 1000);
+  }, []);
+
+  const handleSubmit = async (e) => {
+    // setLoader(true);
     e.preventDefault();
     const { value, error } = Validation.login(state);
     if (error) {
@@ -174,12 +182,12 @@ function Login() {
       setPasswordError("");
     }
 
-      setLoader(false);
+      // setLoader(false);
     
   };
 
   if (loader) {
-    return <Loader position="absolute" top="45%" left="47%"/>
+    return <PageLoader />
   } else {
     return (
       <div className="Login">
@@ -230,7 +238,7 @@ function Login() {
             <button data-testid='login-elem' type="submit" className="login-btn" id="login-btn" onClick={handleSubmit} >
               Login
             </button>
-            <div id="googleSignInButton" style={{position:'relative', display:'flex', justifyContent:'center', marginBottom:'25px', marginTop:'-10%'}}>
+            {/* <div id="googleSignInButton" style={{position:'relative', display:'flex', justifyContent:'center', marginBottom:'25px', marginTop:'-10%'}}>
               <GoogleLogin
                   clientId={client_id}
                   buttonText="Sign in with google"
@@ -240,7 +248,7 @@ function Login() {
                   isSignedIn={true}
                   theme='dark'
               />
-            </div>
+            </div> */}
             <div className=" col-7 align-self-center justify-content-between register-login-footer login-footer">
               <p style={{ fontSize: "12px", color:'grey' }}>No account?</p>
               <span style={{ fontSize: "12px" }}>{" "}

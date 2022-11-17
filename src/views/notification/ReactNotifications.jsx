@@ -21,7 +21,7 @@ const ReactNotificationComponent = ({ title, body }) => {
 
   return (
     <ToastContainer
-      autoClose={3000}
+      autoClose={2500}
       hideProgressBar
       newestOnTop={false}
       closeOnClick
@@ -29,6 +29,8 @@ const ReactNotificationComponent = ({ title, body }) => {
       pauseOnFocusLoss={false}
       draggable
       pauseOnHover={false}
+      bodyClassName='toastBody'
+      toastStyle={{ backgroundColor: '#111726', color: 'white' }}
     />
   )
 }

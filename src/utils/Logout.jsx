@@ -4,6 +4,7 @@ import Loader from "../components/loader/Loader";
 import AlertServices from "../services/AlertServices";
 import { useSelect } from "@mui/base";
 import { useSelector } from "react-redux";
+import PageLoader from "../components/pageLoader/PageLoader";
 
 function Logout() {
 
@@ -32,7 +33,7 @@ function Logout() {
     
   }
   if(loader){
-    return <Loader/>
+    return <PageLoader/>
   }
   return (
     <div>

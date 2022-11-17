@@ -11,6 +11,8 @@ import Badge from '@mui/material/Badge';
 import Alert from '../alert/Alert';
 import AlertModal from '@mui/material/Modal';
 import Swal from 'sweetalert2';
+import { Container } from '@mui/system';
+import { Popover, Popper } from '@mui/material';
 
 const Toast = Swal.mixin({
   toast: true,
@@ -27,7 +29,8 @@ const Toast = Swal.mixin({
 });
 
 function CryptoHeader({ market, interval }) {
-  const [volume,setVolume] = useState(19000)
+  const [volume,setVolume] = useState(0)
+  const [high,setHigh] =useState(0)
 
   // for alert
   const [open, setOpen] = useState(false);
@@ -40,14 +43,14 @@ function CryptoHeader({ market, interval }) {
         if(response.data.message == "Crypto type already added"){
           Toast.fire({
             icon: 'warning',
-            title: `${market+'/USDT'}`,
+            title: `${(market=="") ? marketState+"/USDT" : market+"/USDT"}`,
             text:'Already added to watchlist',
           })
         }
         else{
           Toast.fire({
             icon: 'success',
-            title: `${market+'/USDT'}`,
+            title: `${(market=="") ? marketState+"/USDT" : market+"/USDT"}`,
             text:'Successfully added to watchlist',
           })
         }
@@ -70,49 +73,61 @@ function CryptoHeader({ market, interval }) {
        user = null;
      }
   user=true
-// useEffect(()=>{
-//   let eventSource = new EventSource(
-//     `${config.DOMAIN_NAME}/present/` +
-//       `${market || marketState}/1d`)
+useEffect(()=>{
+  let eventSource = new EventSource(
+    `${config.DOMAIN_NAME}/present/` +
+      `${market || marketState}/1d`)
 
-//       eventSource.addEventListener(
-//         "message",
-//         function(e){
-//           let parsedData = JSON.parse(e.data);
-//           setVolume(parsedData[5]);
-//         },
-//       )
+      eventSource.addEventListener(
+        "message",
+        function(e){
+          let parsedData = JSON.parse(e.data);
+          setVolume(parsedData[5]);
+          setHigh(parsedData[2])
+        },
+      )
+
+      return ()=>{
+        eventSource.close()
+      }
   
-// },[market])
+},[market])
   
   return (
     <div className="CryptoHeader crypto-bar stock-header">
-      { user &&
-          <div>
-            <AccessAlarmsIcon sx={{color:'white', transform:'scale(2)'}} onClick={handleOpen}
+      {user && (
+        <div className="d-flex">
+          <p className="alerts-name" style={{ marginRight: "20px" }}>Alerts</p>
+          <AccessAlarmsIcon className='alarm-icon'
+            sx={{ color: "white",  }}
+            onClick={handleOpen}
+          />
+
+          <Popover
+            sx={{ mt: 20, ml: 10, borderWidth: 0, maxWidth: "400px" }}
+            open={open}
+            onClose={handleClose}
+          >
+            <Alert
+              open={open}
+              onClose={handleClose}
+              market={market || marketState}
+              // interval={location?.state?.interval || "1m"}
             />
-            <AlertModal sx={{mt:20, ml:10, borderWidth:0, maxWidth:'300px' }}
-                  open={open}
-                  onClose={handleClose}
-                  aria-labelledby="modal-modal-title"
-                  aria-describedby="modal-modal-description"
-            >
-              <Alert
-                open={open}
-                onClose={handleClose}
-                market={market || marketState}
-                // interval={location?.state?.interval || "1m"}
-              />
-            </AlertModal>
-          </div>
-        }
+          </Popover>
+        </div>
+      )}
       <header className="stock-header">
         {market || marketState}/USDT - <span>{interval || intervalState}</span>
       </header>
       <div className="d-flex flex-row justify-content-evenly">
         <div className="d-flex flex-column">
-          <p>24hVolume</p>
-          <span className="volume-value"></span>
+          <p>24h Vol</p>
+          <span className="volume-value">{volume.toFixed(2)}</span>
+        </div>
+        <div className="d-flex flex-column">
+          <p>24h High</p>
+          <span className="volume-value">{high.toFixed(2)}</span>
         </div>
       </div>
       {user && (

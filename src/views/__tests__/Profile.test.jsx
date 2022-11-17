@@ -11,13 +11,27 @@ import ChangePassword from '../profile/ChangePassword';
 // mock
 jest.mock("../../firebaseInit");
 jest.mock("../../services/Token");
+// mock react lottie
+jest.mock("react-lottie", () => ({
+    __esModule: true,
+    default: (props) => <div data-testid="react-lottie">{props.options.animationData}</div>,
+}));
+// mock pageloader
+jest.mock("../../components/pageLoader/PageLoader", () => ({
+    __esModule: true,
+    default: () => <div data-testid="page-loader"></div>,
+}));
+
 // jest.mock("../../services/API/UserServices");
 // const token= require("../../services/Token");
 // token.getAuth = jest.fn().mockImplementation(() => {const user = {'user_id': '1234'}; return user});
 
-
+jest.setTimeout(30000);
 describe("Test Profile component", () =>{
+    
+
     const createInstance=() => {
+        
         render(
         <Provider store={store}>
         <BrowserRouter>
@@ -27,6 +41,9 @@ describe("Test Profile component", () =>{
     }  
 
     it("render profile form with two buttons", () => {
+        jest.useFakeTimers();
+        jest.advanceTimersByTime(250);
+        const loader = true
         createInstance();
         const btnList = screen.getByTestId('profile-elem');
         expect(btnList).not.toBeNull();

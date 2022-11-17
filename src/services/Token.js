@@ -1,19 +1,19 @@
 import jwtDecode from "jwt-decode";
 
 const setAccessToken =(value)=>{
-    localStorage.setItem("AccessToken",value)
+    sessionStorage.setItem("AccessToken",value)
 }
 
 const getAccessToken =(value)=>{
-    return localStorage.getItem("AccessToken")
+    return sessionStorage.getItem("AccessToken")
 }
 
 const removeAccessToken = ()=>{
-    localStorage.removeItem("AccessToken")
+    sessionStorage.removeItem("AccessToken")
 }
 
 const getAuth = () =>{
-    const jwt = localStorage.getItem("AccessToken");
+    const jwt = sessionStorage.getItem("AccessToken");
 
   try {
     const user = jwtDecode(jwt);
