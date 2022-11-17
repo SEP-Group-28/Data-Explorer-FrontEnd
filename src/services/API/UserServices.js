@@ -1,6 +1,6 @@
 import config from "../../config.json";
 // import axios from "../HttpServices";
-import token from "../Token";
+import token from "../Token.js";
 import axios from 'axios';
 
 //API endpoint

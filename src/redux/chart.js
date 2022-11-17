@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { act } from "react-dom/test-utils";
-import { CANDLESTICK } from "../utils/Constants";
+import { CANDLESTICK } from "../utils/Constants.js";
 
 export const chartSlice = createSlice({
   name: "chart",

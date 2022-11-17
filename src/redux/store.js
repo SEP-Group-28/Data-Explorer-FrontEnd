@@ -1,12 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { persistReducer, persistStore } from 'redux-persist';
-import alertReducer from "./alert"
-import profileReducer from "./profile"
-import watchlistReducer from "./watchlist"
-import chartReducer from "./chart"
+import alertReducer from "./alert.js"
+import profileReducer from "./profile.js"
+import watchlistReducer from "./watchlist.js"
+import chartReducer from "./chart.js"
 import storage from 'redux-persist/lib/storage/session'
 import thunk from 'redux-thunk';
-import notificationReducer from './notification';
+import notificationReducer from './notification.js';
 
 const presistAlertConfig = {
     key: 'alerts',
