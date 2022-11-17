@@ -13,7 +13,7 @@ import {
   updateCryptoDataLimit,
   updateCryptoTimeStamp,
 } from "../../redux/chart";
-import { CANDLESTICK, LINE } from "../../utils/Constants";
+import { CANDLESTICK, LINE ,BAR} from "../../utils/Constants";
 
 function CryptoChart({ market, interval, internalIndicators }) {
   const location = useLocation();
@@ -37,6 +37,7 @@ function CryptoChart({ market, interval, internalIndicators }) {
   const candleSeries = useRef();
   const volumeSeries = useRef();
   const lineSeries = useRef();
+  const barSeries = useRef();
 
   const smalineSeries = useRef();
   const wmalineSeries = useRef();
@@ -161,7 +162,7 @@ function CryptoChart({ market, interval, internalIndicators }) {
           if(chartType== LINE){
             lineSeries.current = chart.current.addLineSeries({
               lineWidth: 2.5,
-              color: "#0C57EE",
+              color: "#0F9FF7",
             });
             lineSeries.current.applyOptions({
               scaleMargins: {
@@ -180,6 +181,21 @@ function CryptoChart({ market, interval, internalIndicators }) {
             })
             lineSeries.current.setData(tempLineData);
           }
+          if(chartType == BAR){
+            barSeries.current = chart.current.addBarSeries({
+              thinBars: false,
+              downColor: "#A70808",
+              upColor: "#129F01",
+            });
+            barSeries.current.applyOptions({
+              scaleMargins: {
+                top: 0.05,
+                bottom: 0.17,
+              },
+            });
+            barSeries.current.setData(tempChartData)
+          }
+          
 
           
           volumeSeries.current.setData(tempVolumeData);
@@ -211,10 +227,18 @@ function CryptoChart({ market, interval, internalIndicators }) {
         time: parsedData[0],
         value: parsedData[4],
       };
+       let volume = {
+         time: parsedData[0],
+         value: parsedData[5],
+         color: parsedData[1] > parsedData[4] ? "#834C4B" : "#318B52",
+       };
 
       if(chartType== CANDLESTICK) candleSeries.current.update(object);
       if(chartType ==LINE) lineSeries.current.update(LineObject);
+
+      volumeSeries.current.update(volume);
     });
+
 
     if (ma) {
       maLineSeries.current = chart.current.addLineSeries({
