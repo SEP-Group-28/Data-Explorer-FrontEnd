@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import "../../assets/css/Notifications.css"
-import DummyData from "./notificationDummyData.json"
 import { autocompleteClasses, Container } from '@mui/material';
 import Button from '@mui/material/Button';
 import {DataGrid} from '@mui/x-data-grid';
@@ -14,8 +13,11 @@ import { Fragment } from "react";
 import Token from "../../services/Token";
 import { useDispatch, useSelector } from "react-redux";
 import { decrement, setCount } from "../../redux/notification";
+import SimpleLoader from "../../components/loaders/lottieLoader/simpleLoader";
 
-// const rows = DummyData;
+// TODO: 
+// 1. css fix
+// 2. Loader
 
 export default function Notifications(){
   // for no new notification alert
@@ -31,6 +33,10 @@ export default function Notifications(){
       return
     };
     const callHistoricNotifications = async() => {
+      setLoader(true)
+      setTimeout(() => {
+        setLoader(false)
+      }, 1000);
       const rows = await NotificationServices.getNotifications();
       const rows_ = rows?.data['last day notifications'].map((row, index) => {
         return {
@@ -40,6 +46,7 @@ export default function Notifications(){
           price: row[2],
           type: 'crossing',
         }
+      
       })
       console.log("rows", rows_)
       // console.log("rows", rows?.data['last day notifications'])
@@ -82,7 +89,7 @@ export default function Notifications(){
         </IconButton>
       </Fragment>
     );
-
+    const [loader, setLoader] = useState(true);
     const [data, setData] = useState([]);
     const handleMark = async(e, id, symbol, price) => {
         const data_ = {'symbol': symbol.split("/")[0], 'price': price}
@@ -106,8 +113,8 @@ export default function Notifications(){
         { field:'id', hide:true},
         { field: 'date', headerName: 'Date', width: 175, headerAlign:'center', align:'center', sortable:true },
         { field: 'symbol', headerName: 'Symbol', width: 100, headerAlign:'center', align:'center', sortable:false },
-        { field: 'price', headerName: 'Price',type: 'number', width: 120, headerAlign:'center', align:'center', sortable:false },
         { field: 'type', headerName: 'Type', width: 200, headerAlign:'center', align:'center', sortable:false },
+        { field: 'price', headerName: 'Price',type: 'number', width: 120, headerAlign:'center', align:'center', sortable:false },
         
         // { field: 'current peak price', headerName: 'Current Peak',type: 'number', width: 120, headerAlign:'center', align:'center', sortable:false },
         {
@@ -145,7 +152,8 @@ export default function Notifications(){
         }
     ];
     return (
-        
+        loader ? <SimpleLoader/> 
+        :
         data && data?.length <= 0
         ? 
           <Snackbar
@@ -158,8 +166,7 @@ export default function Notifications(){
             anchorOrigin={{ vertical:'top',  horizontal:'center'}}
           />
         : 
-        <div>
-        <Container maxWidth="lg">
+        <Container maxWidth="sm" sx={{boarder:0}}>
         <div style={{ height: 400, width: '100%'}}>
           
           <DataGrid
@@ -172,17 +179,16 @@ export default function Notifications(){
             disableColumnMenu
             sx={{
               m:2,
-              boxShadow: 2,
-              border: 2,
-              borderColor: 'primary.light',
+              boxShadow: 0,
+              border: 0,
+              borderColor: 'primary.dark',
               color: 'white',
-              backgroundColor: '#393C45'
+              backgroundColor: '#212529'
             }
           }
           />
           </div>
           </Container>
-        </div>
     );
 }
 

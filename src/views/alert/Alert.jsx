@@ -20,6 +20,8 @@ import Form from 'react-bootstrap/Form';
 import Swal from 'sweetalert2';
 import { Box } from '@mui/system';
 
+// todo: which loader to use?
+
 export default function Alert({market}) {
     // popover
     const [anchorEl, setAnchorEl] = useState(null);
