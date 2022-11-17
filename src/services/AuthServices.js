@@ -1,7 +1,7 @@
 import config from "../config.json";
 import axios from "axios";
 // import axios from "./HttpServices"
-import token from "./Token";
+import token from "./Token.js";
 
 const APIEndpoint = config.DOMAIN_NAME + "/auth";
 

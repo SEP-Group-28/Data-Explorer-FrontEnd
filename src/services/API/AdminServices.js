@@ -2,7 +2,7 @@
 
 import config from "../../config.json";
 // import axios from "../HttpServices";
-import token from "../Token";
+// import token from "../Token";
 import axios from 'axios';
 const APIEndpoint = config.DOMAIN_NAME + "/admin";
 

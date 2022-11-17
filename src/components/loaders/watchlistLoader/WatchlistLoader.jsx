@@ -1,9 +1,9 @@
 // loader 
 import React from 'react';
 import Lottie from 'react-lottie';
-import animationData from './simple_loader.json';
+import animationData from './watchlist_loader.json';
 
-const SimpleLoader = () => {
+const WatchlistLoader = () => {
     const defaultOptions = {
         loop: true,
         autoplay: true,
@@ -15,11 +15,10 @@ const SimpleLoader = () => {
     
     return (
         <div>
-        <Lottie options={defaultOptions} height={1000} width={500} />
+        <Lottie options={defaultOptions} height={500} width={500}/>
         </div>
     );
 };
 
-export default SimpleLoader;
-
+export default WatchlistLoader;
 

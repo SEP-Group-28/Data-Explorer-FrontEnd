@@ -1,5 +1,5 @@
 import Axios from "axios";
-import Token from "./Token";
+import Token from "./Token.js";
 import config from "../config.json";
 import jwtDecode from "jwt-decode";
 import dayJS from "dayjs";

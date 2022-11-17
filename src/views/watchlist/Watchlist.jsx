@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { removeMarketList, saveWatchlist } from '../../redux/watchlist';
 import { WindowSharp } from '@mui/icons-material';
 import SimpleLoader from '../../components/loaders/lottieLoader/simpleLoader';
+import WatchlistLoader from '../../components/loaders/watchlistLoader/WatchlistLoader';
 
 export default function Watchlist() {
   
@@ -76,6 +77,7 @@ export default function Watchlist() {
   const userDecode = Token.getAuth()
   const user_id = userDecode['user_id']
   const [loading, setLoading] = React.useState(true);
+  const [loading2, setLoading2] = React.useState(false);
 
   const checkMarket = async(symbol) => {
       console.log("calling check market")
@@ -103,6 +105,10 @@ export default function Watchlist() {
 
   }, []);
   const getWatchlist = async() => {
+    setLoading2(true)
+    setTimeout(() => {
+      setLoading2(false)
+    }, 3000);
     const response = await WatchlistServices.viewWatchlist()
     
     console.log("response get watchlist:", response)
@@ -230,7 +236,10 @@ export default function Watchlist() {
     <div>
       <HeaderTwo/>
 
-      { rows?.length <= 0 
+      { 
+      loading2 ?
+       <WatchlistLoader/> :
+      rows?.length <= 0 
       ? 
       <div >
       <h1 align='center' style={{ color:'white', left:'50%', size:'50px',marginTop:"20%"}}>No items to display in your watchlist</h1>
@@ -248,18 +257,19 @@ export default function Watchlist() {
             rows
             }
             columns={columns}
-            pageSize={6}
-            rowsPerPageOptions={[6]}
+            pageSize={5}
+            rowsPerPageOptions={[5]}
             disableColumnFilter
             disableColumnSelector
+            disableSelectionOnClick
             disableColumnMenu
             sx={{
               m:2,
               boxShadow: 2,
-              border: 2,
-              borderColor: 'primary.light',
+              border: 0,
+              borderColor: 'primary.dark',
               color: 'white',
-              backgroundColor: '#393C45'
+              backgroundColor: '#212529'
             }
           }
         />

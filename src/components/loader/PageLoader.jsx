@@ -1,6 +1,5 @@
 import React, {Fragment} from 'react';
 import "./PageLoader.css"
-import loader from "../../../public/assets/icons/icon-128x128.png"
 import CoinLoader from '../loaders/coinLoader/CoinLoader';
 
 const PreLoader = () => {
