@@ -237,10 +237,8 @@ const HeaderTwo = () => {
   
   
   return (
-
-
-    <AppBar className="AppBar" >
-      <Container maxWidth="xl" sx={{backgroundColor:"#20232B"}}>
+    <AppBar data-testid="headerTwo" className="AppBar">
+      <Container maxWidth="xl" sx={{ backgroundColor: "#20232B" }}>
         <Toolbar className="appbar-toolbar" disableGutters>
           <img
             src={Logo}
@@ -273,7 +271,6 @@ const HeaderTwo = () => {
             </IconButton>
             <Menu
               className={classes.menu}
-            
               id="basic-menu"
               anchorEl={anchorElNav}
               anchorOrigin={{
@@ -293,16 +290,20 @@ const HeaderTwo = () => {
             >
               {!user &&
                 pages.map((page) => (
-                  <MenuItem 
-                  className={classes.font}
-                    sx={{fontSize:"15px"}}
+                  <MenuItem
+                    className={classes.font}
+                    sx={{ fontSize: "15px" }}
                     key={page}
                   >
                     <Link
-                    state={{market:page=='Crypto'?
-                  'BTC': page=='Stock'?
-                  'TESLA':''}}
-                  
+                      state={{
+                        market:
+                          page == "Crypto"
+                            ? "BTC"
+                            : page == "Stock"
+                            ? "TESLA"
+                            : "",
+                      }}
                       style={{ color: "white" }}
                       to={
                         page == "Home"
@@ -321,9 +322,14 @@ const HeaderTwo = () => {
                 userPages.map((page) => (
                   <MenuItem key={page}>
                     <Link
-                     state={{market:page=='Crypto'?
-                     'BTC': page=='Stock'?
-                     'TESLA':''}}
+                      state={{
+                        market:
+                          page == "Crypto"
+                            ? "BTC"
+                            : page == "Stock"
+                            ? "TESLA"
+                            : "",
+                      }}
                       to={page == "Home" ? "/" : "/" + page}
                       className="menu-names"
                     >
@@ -341,9 +347,14 @@ const HeaderTwo = () => {
               {!user &&
                 pages.map((page) => (
                   <Link
-                  state={{market:page=='Crypto'?
-                  'BTC': page=='Stock'?
-                  'TSLA':''}}
+                    state={{
+                      market:
+                        page == "Crypto"
+                          ? "BTC"
+                          : page == "Stock"
+                          ? "TSLA"
+                          : "",
+                    }}
                     style={{
                       backgroundColor: page == "Sign up" ? "#286AEF" : "none",
                     }}
@@ -369,9 +380,14 @@ const HeaderTwo = () => {
               {user &&
                 userPages.map((page) => (
                   <Link
-                  state={{market:page=='Crypto'?
-                  'BTC': page=='Stock'?
-                  'TSLA':''}}
+                    state={{
+                      market:
+                        page == "Crypto"
+                          ? "BTC"
+                          : page == "Stock"
+                          ? "TSLA"
+                          : "",
+                    }}
                     className={
                       page == "Sign up"
                         ? "Signup-HeaderTwo page-buttons"
@@ -390,41 +406,40 @@ const HeaderTwo = () => {
                   >
                     {page}
                   </Link>
-                  
                 ))}
-                
             </Box>
-            { user &&
-                <div style={{marginRight:'18px'}}>
+            {user && (
+              <div style={{ marginRight: "18px" }}>
                 <Badge badgeContent={count} color="primary">
-                <NotificationsRoundedIcon sx={{}} onClick={handleOpen}/>  
+                  <NotificationsRoundedIcon sx={{}} onClick={handleOpen} />
                 </Badge>
-                <NotificationModal sx={{mt:-8, borderWidth:0 }}
+                <NotificationModal
+                  sx={{ mt: -8, borderWidth: 0 }}
                   open={open}
                   onClose={handleClose}
                   aria-labelledby="modal-modal-title"
                   aria-describedby="modal-modal-description"
                 >
                   <Box sx={style}>
-                    <Notifications increment={increment}/>
+                    <Notifications increment={increment} />
                   </Box>
                 </NotificationModal>
-                </div>
-              }
-              {/* <div id="add-to">
+              </div>
+            )}
+            {/* <div id="add-to">
               <Button id="add-to-btn">Install</Button>
               </div> */}
-             
+
             {user && (
-              <Box sx={{ flexGrow: 0, marginRight:'5px' }}>
+              <Box sx={{ flexGrow: 0, marginRight: "5px" }}>
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                     {/* {console.log('kkkkk')} */}
-                    <Avatar key={link} alt="Remy Sharp" src={link}/>
+                    <Avatar key={link} alt="Remy Sharp" src={link} />
                   </IconButton>
                 </Tooltip>
                 <Menu
-                className={classes.menu}
+                  className={classes.menu}
                   sx={{ mt: "45px" }}
                   id="menu-appbar"
                   anchorEl={anchorElUser}
@@ -440,22 +455,21 @@ const HeaderTwo = () => {
                   open={Boolean(anchorElUser)}
                   onClose={handleCloseUserMenu}
                 >
-               
                   {settings.map((setting) => (
                     <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                      <Link className="menu-names" to= {"/"+setting.toLowerCase()} 
+                      <Link
+                        className="menu-names"
+                        to={"/" + setting.toLowerCase()}
                         key={setting}
                         name={setting}
                         sx={{ my: 2, color: "white", display: "block" }}
                       >
                         {setting}
                       </Link>
-                      
                     </MenuItem>
                   ))}
                 </Menu>
               </Box>
-              
             )}
             {/* {user && <TokenRequest/>} */}
           </div>
