@@ -39,26 +39,10 @@ import jwtDecode from "jwt-decode";
 import { ClassNames } from '@emotion/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { saveImage } from '../../redux/profile';
+import SimpleLoader from '../../components/loaders/lottieLoader/simpleLoader';
+import PageLoader from '../../components/pageLoader/PageLoader';
+import Swal from 'sweetalert2';
 
-// const useStyles = makeStyles((theme) => ({
-//   root: {
-//     display: "flex",
-//   },
-//   menu: {
-//     "& .MuiPaper-root": {
-//       backgroundColor: "#292C31",
-//     },
-//   },
-
-//   formControl: {
-//     width: 120,
-//   },
-// }));
-const style_ = {
-    // outLineInput:disabled {
-    //     background: #dddddd,
-    // }
-}
 const style = {
     position: 'relative',
     top: '40%',
@@ -95,364 +79,326 @@ const styles = theme => ({
         color: 'white'
     }
 });
-// const style_2 = {
-//     position: 'relative',
-//     top: '50%',
-//     left: '28%',
-//     width: 800,
-//     maxWidth: 'calc(100% - 20px)',
-//     transform: 'translate(-94%, -5%)',
-//     bgcolor: 'background.paper',
-// };
 
-const Profile = () => {
-    // const refprofilepicdiv=useRef(null)
-    // const refimg=useRef(null)
-    // const reffile=useRef(null)
-    // const refuploadBtn=useRef(null)
-    const navigate = useNavigate();
-    const imageref=useRef()
+const Toast = Swal.mixin({
+    toast: true,
+    position: 'top',
+    background:'#111726',
+    color:'white',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer)
+      toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+  });
 
-    const [loader, setLoader] = useState(false);
-    const [open, setOpen] = useState(false);
-    const [show, setShow] = useState(false);
-    const handleShow = () => setShow(true);
-    const handleClose = () => setShow(false);
 
-    const {link} = useSelector((state)=>state.profile)
-    const dispatch = useDispatch()
+const Profile = () => { 
     
-    const userDecode = Token.getAuth()
-    const id = userDecode['user_id']
-    // console.log("id:", id)
-    const handleSubmit = async() => {
+const navigate = useNavigate();
+const imageref=useRef()
+
+const [loader, setLoader] = useState(true);
+const [open, setOpen] = useState(false);
+const [show, setShow] = useState(false);
+const handleShow = () => setShow(true);
+const handleClose = () => setShow(false);
+
+const {link} = useSelector((state)=>state.profile)
+const dispatch = useDispatch()
+
+const userDecode = Token.getAuth() //get token from local storage
+const id = userDecode['user_id'] //get user id from token
+const handleSubmit = async() => {   //upload image
+
+try {
+    
+    const response=await UserServices.updateprofile(state,id)
+    console.log(response)
+    if (response.status === 201) {
+        Toast.fire({
+            icon: 'success',
+            title: 'Profile updated successfully'
+          })
+    }
+} catch (error) {
+    console.log(error)
+    
+}
+
+// setOpen(true)
+
+};
+const handleOpen=()=>{  //open modal
+setOpen(true)
+}
+
+const formValues = {
+'First Name': '',
+'Last Name': '',
+'DOB':'',
+'Country':''
+}
+
+var [state, setState] = useState(formValues);
+const [errordata, setError] = useState(formValues);
+const [user, setUser] = useState([])
+const [user_id, setUserID] = useState();
+const [fNameError,setfNameError]=useState("")
+const [lNameError,setlNameError]=useState("")
+const [emailError, setEmailError] =useState("")
+const [dobError,setDobError]=useState("")
+const [isShown,setIsShown]=useState(false)
+
+const errors = {};
+
+useEffect(() => {
+    setLoader(true);
+    setTimeout(() => {
+        setLoader(false);   //hide loader
+    }, 1000)
+    getUser();  //get user details
+}, [])
+
+const getUser = async () => {
+    
+    try {
+        const response = await UserServices.getUser(id);
+        const getuser=response.data.data
         
-        // console.log(state)
-        try {
-            
-            const response=await UserServices.updateprofile(state,id)
-        } catch (error) {
-            console.log(error)
-            
-        }
-      
-        // setOpen(true)
-    
-    };
-    const handleOpen=()=>{
-        setOpen(true)
-    }
-
-    const formValues = {
-        'First Name': '',
-        'Last Name': '',
-        'DOB':'',
-        'Country':''
-    }
-
-    var [state, setState] = useState(formValues);
-    const [errordata, setError] = useState(formValues);
-    const [user, setUser] = useState([])
-    const [user_id, setUserID] = useState();
-    const [fNameError,setfNameError]=useState("")
-    const [lNameError,setlNameError]=useState("")
-    const [emailError, setEmailError] =useState("")
-    const [dobError,setDobError]=useState("")
-    const [isShown,setIsShown]=useState(false)
-    // const handleUser = (event) => {
-    //     // console.log(event.target.value);
-    //     setState({
-    //         ...state,
-    //         [event.target.name]: event.target.value
-    //     })
-    //     // console.log(moment(state['Birthday']).format("MM-DD-YYYY"))
-    // }
-    // const [value, setValue] = useState(dayjs('01/01/2004'));
-
-    const errors = {};
-
-    useEffect(() => {
-        getUser();
-    }, [])
-
-    const getUser = async () => {
-        setLoader(true);
-        try {
-            const response = await UserServices.getUser(id);
-            const getuser=response.data.data
-            // console.log('response',getuser['imagepath'])
-            // const l_ = 
-            // console.log('l_',l_)
-            dispatch(saveImage(getuser['imagepath']))
-            // console.log("user",getuser.data.data)
-            // setUserID(getuser.data.data.user_id);
-
-            state = {
-                // 'First Name': getuser.data.data.firstname,
-                // 'Last Name': getuser.data.data.lastname,
-                // 'Email': getuser.data.data.email
-                'First Name': getuser['firstname'],
-                'Last Name' : getuser['lastname'],
-                // 'Email'     : getuser['email'],
-                'ImagePath':getuser['imagepath'],
-                'DOB':getuser['dob'],
-                'Country':getuser['country']
-            }
-            setState(state)
-
-            //  console.log(getuser)
-        }
-        catch (err) {
-            // console.log(err);
-
-        }
-        setTimeout(() => {
-            setLoader(false);
-        }, 200);
-        setLoader(false);
-    }
-
-    // var imgDiv=refprofilepicdiv.current
-    // var img = refimg.current
-    // var file = reffile.current
-    // var uploadBtn = refuploadBtn.current
-
-    
-    // console.log(img)
-    // if(imgDiv){
-    //     console.log('hi')
-    //     imgDiv.addEventListener('mouseover', function(){
-    //         uploadBtn.style.display = "block";
-    //     });
-    //     imgDiv.addEventListener('mouseout', function(){
-    //         uploadBtn.style.display = "none";
-    //     });
-
-    // }
-    // if(file){
+        dispatch(saveImage(getuser['imagepath']))   //save image path in redux
         
-       const handleChangePhoto= function(e){
-            // console.log(e.target.files)
-            const choosedFile = e.target.files[0];
-            // console.log('name',choosedFile)
-            // console.log('namedfsdf',choosedFile.name)
+
+        state = {
+            'First Name': getuser['firstname'],
+            'Last Name' : getuser['lastname'],
+            'ImagePath':getuser['imagepath'],
+            'DOB':getuser['dob'],
+            'Country':getuser['country']
+        }
+        setState(state)
+
+    }
+    catch (err) {
+        console.log(err);
+
+    }
     
-            if (choosedFile) {
-    
-                const reader = new FileReader();
-                reader.addEventListener('load', function(){
-                    document.getElementById('photo').setAttribute('src', reader.result);
-                   
-                });
+}
+
+const handleChangePhoto= function(e){    //change photo
+    // console.log(e.target.files)
+    const choosedFile = e.target.files[0];
+    // console.log('name',choosedFile)
+    // console.log('namedfsdf',choosedFile.name)
+
+    if (choosedFile) {
+
+        const reader = new FileReader();
+        reader.addEventListener('load', function(){     //load image
+            document.getElementById('photo').setAttribute('src', reader.result);
+            
+        });
+        
+
+        reader.readAsDataURL(choosedFile);  //read image
+        try{
+            // console.log(choosedFile)
+            const formData=new FormData();
+            formData.append('Image',choosedFile)    //append image
+            // formData.append('ImageName',choosedFile.name)
+            // print('chooosed name',choosedFile.name)
+            const call=async()=>{   
                 
-    
-                reader.readAsDataURL(choosedFile);
-                try{
-                    // console.log(choosedFile)
-                    const formData=new FormData();
-                    formData.append('Image',choosedFile)
-                    // formData.append('ImageName',choosedFile.name)
-                    // print('chooosed name',choosedFile.name)
-                    const call=async()=>{
-                        
-                        // print('formData',formData)
-                        try { 
-                            const response =await UserServices.updatePhoto(id,formData);
-                            if(response.status===200){
-                                // console.log('success')
-                                // console.log("====")
-                                dispatch(saveImage(response['data']['data']['imagepath']))
-                            }
-                            // imageref.current.getElementById('hi').setAttribute('src',reader.result)
-                            // console.log("imageref ", imageref.current)
-                            
-                        } catch (error) {
-                            console.log(error)
-                            
-                        }
-                      
-                        
+                // print('formData',formData)
+                try { 
+                    console.log("trying to upload")
+                    const response =await UserServices.updatePhoto(id,formData);
+                    console.log("rsponse for uploader", response)
+                    if(response.status===200){
+                        Toast.fire({
+                            icon: 'success',
+                            title: 'Profile photo updated'
+                            })
+                        dispatch(saveImage(response['data']['data']['imagepath']))
                     }
-                    call()
-                    
-    
-                }
-                catch(error){
+                } catch (error) {
                     console.log(error)
+                    
                 }
                 
                 
             }
-        }
-    // }
-
-    const handleDOBChange = (newValue ) => {
-        // console.log(newValue)
-        // console.log(newValue['$d'].toLocaleDateString())
-        setState({...state,'DOB':newValue['$d'].toLocaleDateString()});
-      };
-    
-
-    const handleCountryChange=(value)=>{
-        setState({...state,'Country':value})
-
-    }
-    
-
-    const handleChange = event => {
-      // 👇️ toggle shown state
-    //   console.log(event)
-    //   console.log(event.target.value)
-      setState({...state,[event.target.name]:event.target.value})
-        
-      // 👇️ or simply set it to true
-      // setIsShown(true);
-    };
-    
-
-    if (loader) {
-        return <Loader />
-    } else {
-
-        return (
-            <div className='container2' style={{'display':'flex', 'flexDirection': 'column'}}>
-                {/* {console.log('image',state['ImagePath'])} */}
-                <HeaderTwo  imagepath={state['ImagePath']}/>
-                <div className='form-container col-xl-5 mt-5 pt-5 mx-auto' style={ style_1}>
-                    
-                    <h1 className='fs-1 text-primary' style={{marginTop:'-40px'}}>Profile Details</h1>
-
+            call()
             
-                    <div onMouseEnter={()=>setIsShown(true)} onMouseLeave={()=>setIsShown(false)} className="profile-pic-div" style={{position: 'relative', left: '50%', marginTop:'-200px', maxWidth:'50%'}}>
-                      <img  data-testid='profile-pic' src={state['ImagePath']? state['ImagePath']:'src/assets/DefaultProfilePic/user.jpg'} id="photo" className='photo'/>
-                      <input onChange={handleChangePhoto} type="file" id="file" className='file'/>
-                     {isShown &&(<label    htmlFor="file" id="uploadBtn" className='uploadBtn'>Choose Photo</label>)}
-                    </div>
-                    {/* <Helmet>
-                    <script type='module' src="src/views/profile/photoUpload.jsx"/>
-                    </Helmet> */}
-                    <Form className="form-group register-form container col-xl-10 d-flex flex-column " style={style}>
 
-                    <FormControl sx={{ m: 1  }} variant="outlined" className="register-form-control">
-                    <InputLabel sx={{fontSize:"13px",mt:"-7px"}} className="inputLabel" htmlFor="outlined-adornment-firstname">
-                    First Name
-                    </InputLabel>
-                    <OutlinedInput data-testid='first-name' value={state['First Name']} className="outLineInput" id="outlined-adornment-firstname" type={"text"}
-                        style={{ color: "rgb(194, 193, 193)", fontSize: "13px" }}
-                        name="First Name" onChange={handleChange} error={fNameError != ""} label="First Name"/>
-                    </FormControl>
-                    {fNameError !== "" && (
-                        <p className="login-signup-error  mb-0" style={{ color: "red", fontSize: "10px" }}>
-                        {fNameError}
-                        </p>
-                    )}
-
-
-                    <FormControl sx={{ m: 1 }} variant="outlined" className="register-form-control">
-                    <InputLabel sx={{fontSize:"13px",mt:"-7px"}} className="inputLabel" htmlFor="outlined-adornment-lastname">
-                    Last Name
-                    </InputLabel>
-                    <OutlinedInput  value={state['Last Name']} className="outLineInput" id="outlined-adornment-lastname" type={"text"}
-                        style={{ color: "rgb(194, 193, 193)", fontSize: "13px" }}
-                        name="Last Name" onChange={handleChange} error={lNameError != ""} label="Last Name"/>
-                    </FormControl>
-                    {lNameError !== "" && (
-                        <p className=" login-signup-error mb-0" style={{ color: "red", fontSize: "10px" }}>
-                        {lNameError}
-                        </p>
-                    )}
-                    {/* {console.log(state['Email'])} */}
-                        <FormControl sx={{ m: 1 }} variant="outlined" className="register-form-control">
-                
-                        <LocalizationProvider dateAdapter={AdapterDayjs} style={{backgroundColor:'white'}} >
-                            
-                                <MobileDatePicker
-                                label="Date of Birth"
-                                inputFormat="MM/DD/YYYY"
-                                value={state['DOB']? state['DOB']:dayjs('01/01/2004')}
-                                name={'DOB'}
-                                sx={{ backgroundColor:'#0d6efd'}}
-                                onChange={handleDOBChange}
-                                renderInput={(params) => <TextField {...params} 
-                                    sx={{
-                                        width: 'auto',
-                                        "& .MuiInputBase-root": {
-                                            height: 40,
-                                        color:'#C1C0C0',
-                                        fontSize:'14px'
-                                        },
-                                        ".css-1sumxir-MuiFormLabel-root-MuiInputLabel-root":{
-                                            color:'#C1C0C0',
-                                            marginTop:'-5px',
-                                            fontSize: '14px'
-                                        }
-                                    }}
-                                    />}
-                                />
-                            </LocalizationProvider>
-                        </FormControl>
-                            {emailError !== "" && (
-                        <p className="login-signup-error mb-0" style={{ color: "red", fontSize: "10px" }}>
-                            {dobError}
-                        </p>
-                            )
-                        }
-
-                    <CountryDropdown
-                            className="register-form-control"
-                            style={{color:'#C1C0C0', paddingTop:"8px", paddingBottom:'8px',paddingLeft:'14px',paddingRight:'14px', backgroundColor:'#30353F', fontSize:"13px", marginTop:"5px", maxWidth:'98%', marginLeft:'7px', marginRight:'8px'}}
-                            value={state['Country']}
-                            name={'Country'}
-                            onChange={handleCountryChange} />
-
-                    {/* <FormControl sx={{ m: 1 }} variant="outlined" className="register-form-control">
-                        <InputLabel sx={{fontSize:"13px",mt:"-7px"}} className="inputLabel" htmlFor="outlined-adornment-Location">
-                    Country
-                        </InputLabel>
-                        <OutlinedInput  value={state['Location']} data-testid='DOB' className="outLineInput" id="outlined-adornment-Location" type={"text"}
-                        style={{ color: "rgb(194, 193, 193)", fontSize: "13px" }}
-                        name="DOB" onChange={handleChange} error={emailError != ""} label="Location"/>
-                    </FormControl> */}
-                    {emailError !== "" && (
-                        <p className="login-signup-error mb-0" style={{ color: "red", fontSize: "10px" }}>
-                            {emailError}
-                        </p>
-                        )
-                    }
-
-                    <div data-testid='profile-elem' className='container1'>
-                    <Button className="button" size="lg" onClick={handleSubmit} style={{fontSize:'14px'}}>Save</Button>
-                    <Button className="button" size='lg' onClick={handleShow} style={{fontSize:'14px'}}>Change Password</Button>
-                    </div>
-                    {/* <Button className='btn btn-secondary button w-20 update-btn' size="lg" onClick={handleOpen} style={{fontSize:'14px'}}>Edit</Button> */}
-            </Form>
-
-
-                </div>
-                {/* { open &&
-                    <div style={{position:'relative', left:'55%', top:'-5px', transform: 'translate(2%, -203%)'}}>
-                    <UpdateProfile/>
-                    </div>
-                } */}
-                { show &&
-                    <div style={{marginRight:'18px', width:'10px'}}>
-                    <ChangePassModal sx={{mt:-8, borderWidth:0 }}
-                    open={show}
-                    onClose={handleClose}
-                    aria-labelledby="modal-modal-title"
-                    aria-describedby="modal-modal-description"
-                    >
-                        <Box style={{ maxWidth:'50%', transform:'translate(50%, 45%)'}}>                        
-                        <ChangePassword sx={{w:'10px'}}/>
-                        </Box>
-                    </ChangePassModal>
-                    </div>
-
-                }
-            </div >
-           
-        )
+        }
+        catch(error){
+            console.log(error)
+        }
+        
+        
     }
 }
 
+
+const handleDOBChange = (newValue ) => {
+setState({...state,'DOB':newValue['$d'].toLocaleDateString()});
+};
+
+
+const handleCountryChange=(value)=>{
+setState({...state,'Country':value})
+
+}
+
+
+const handleChange = event => {
+setState({...state,[event.target.name]:event.target.value})
+};
+
+
+if (loader) {
+    return <PageLoader />
+}else{
+    return (
+        <div className='container2' style={{'display':'flex', 'flexDirection': 'column'}}>
+        {/* {console.log('image',state['ImagePath'])} */}
+        <HeaderTwo  imagepath={state['ImagePath']}/>
+        
+        <div className='form-container col-xl-5 mt-5 pt-5 mx-auto' style={ style_1}>
+            
+            <h1 className='fs-1 text-primary' style={{marginTop:'-40px'}}>Profile Details</h1>
+
+
+            <div onMouseEnter={()=>setIsShown(true)} onMouseLeave={()=>setIsShown(false)} className="profile-pic-div" style={{position: 'relative', left: '50%', marginTop:'-200px', maxWidth:'50%'}}>
+                <img  data-testid='profile-pic' src={state['ImagePath']? state['ImagePath']:'src/assets/DefaultProfilePic/user.jpg'} id="photo" className='photo'/>
+                <input onChange={handleChangePhoto} type="file" id="file" className='file'/>
+                {isShown &&(<label    htmlFor="file" id="uploadBtn" className='uploadBtn'>Choose Photo</label>)}
+            </div>
+            <Form className="form-group register-form container col-xl-10 d-flex flex-column " style={style}>
+
+            <FormControl sx={{ m: 1  }} variant="outlined" className="register-form-control">
+            <InputLabel sx={{fontSize:"13px",mt:"-7px"}} className="inputLabel" htmlFor="outlined-adornment-firstname">
+            First Name
+            </InputLabel>
+            <OutlinedInput data-testid='first-name' value={state['First Name']} className="outLineInput" id="outlined-adornment-firstname" type={"text"}
+                style={{ color: "rgb(194, 193, 193)", fontSize: "13px" }}
+                name="First Name" onChange={handleChange} error={fNameError != ""} label="First Name"/>
+            </FormControl>
+
+            {fNameError !== "" && (
+                <p className="login-signup-error  mb-0" style={{ color: "red", fontSize: "10px" }}>
+                {fNameError}
+                </p>
+            )}
+
+
+            <FormControl sx={{ m: 1 }} variant="outlined" className="register-form-control">
+            <InputLabel sx={{fontSize:"13px",mt:"-7px"}} className="inputLabel" htmlFor="outlined-adornment-lastname">
+            Last Name
+            </InputLabel>
+            <OutlinedInput  value={state['Last Name']} className="outLineInput" id="outlined-adornment-lastname" type={"text"}
+                style={{ color: "rgb(194, 193, 193)", fontSize: "13px" }}
+                name="Last Name" onChange={handleChange} error={lNameError != ""} label="Last Name"/>
+            </FormControl>
+            {lNameError !== "" && (
+                <p className=" login-signup-error mb-0" style={{ color: "red", fontSize: "10px" }}>
+                {lNameError}
+                </p>
+            )}
+            {/* {console.log(state['Email'])} */}
+                <FormControl sx={{ m: 1 }} variant="outlined" className="register-form-control">
+
+                <LocalizationProvider dateAdapter={AdapterDayjs} style={{backgroundColor:'white'}} >
+                    
+                        <MobileDatePicker
+                        label="Date of Birth"
+                        inputFormat="MM/DD/YYYY"
+                        value={state['DOB']? state['DOB']:dayjs('01/01/2004')}
+                        name={'DOB'}
+                        sx={{ backgroundColor:'#0d6efd'}}
+                        onChange={handleDOBChange}
+                        renderInput={(params) => <TextField {...params} 
+                            sx={{
+                                width: 'auto',
+                                "& .MuiInputBase-root": {
+                                    height: 40,
+                                color:'#C1C0C0',
+                                fontSize:'14px'
+                                },
+                                ".css-1sumxir-MuiFormLabel-root-MuiInputLabel-root":{
+                                    color:'#C1C0C0',
+                                    marginTop:'-5px',
+                                    fontSize: '14px'
+                                }
+                            }}
+                            />}
+                        />
+                    </LocalizationProvider>
+                </FormControl>
+                    {emailError !== "" && (
+                <p className="login-signup-error mb-0" style={{ color: "red", fontSize: "10px" }}>
+                    {dobError}
+                </p>
+                    )
+                }
+
+            <CountryDropdown
+                    className="register-form-control"
+                    style={{color:'#C1C0C0', paddingTop:"8px", paddingBottom:'8px',paddingLeft:'14px',paddingRight:'14px', backgroundColor:'#30353F', fontSize:"13px", marginTop:"5px", maxWidth:'98%', marginLeft:'7px', marginRight:'8px'}}
+                    value={state['Country']}
+                    name={'Country'}
+                    onChange={handleCountryChange} />
+
+            {/* <FormControl sx={{ m: 1 }} variant="outlined" className="register-form-control">
+                <InputLabel sx={{fontSize:"13px",mt:"-7px"}} className="inputLabel" htmlFor="outlined-adornment-Location">
+            Country
+                </InputLabel>
+                <OutlinedInput  value={state['Location']} data-testid='DOB' className="outLineInput" id="outlined-adornment-Location" type={"text"}
+                style={{ color: "rgb(194, 193, 193)", fontSize: "13px" }}
+                name="DOB" onChange={handleChange} error={emailError != ""} label="Location"/>
+            </FormControl> */}
+            {emailError !== "" && (
+                <p className="login-signup-error mb-0" style={{ color: "red", fontSize: "10px" }}>
+                    {emailError}
+                </p>
+                )
+            }
+
+            <div data-testid='profile-elem' className='container1'>
+            <Button className="button" size="lg" onClick={handleSubmit} style={{fontSize:'14px'}}>Save</Button>
+            <Button className="button" size='lg' onClick={handleShow} style={{fontSize:'14px'}}>Change Password</Button>
+            </div>
+            {/* <Button className='btn btn-secondary button w-20 update-btn' size="lg" onClick={handleOpen} style={{fontSize:'14px'}}>Edit</Button> */}
+        </Form>
+
+
+        </div>
+        {/* { open &&
+            <div style={{position:'relative', left:'55%', top:'-5px', transform: 'translate(2%, -203%)'}}>
+            <UpdateProfile/>
+            </div>
+        } */}
+        { show &&
+            <div style={{marginRight:'18px', width:'10px'}}>
+            <ChangePassModal sx={{mt:-8, borderWidth:0 }}
+            open={show}
+            onClose={handleClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+            >
+                <Box style={{ maxWidth:'50%', transform:'translate(50%, 45%)'}}>                        
+                <ChangePassword sx={{w:'10px'}}/>
+                </Box>
+            </ChangePassModal>
+            </div>
+
+        }
+        </div >
+    )
+}
+}
 export default Profile;

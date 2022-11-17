@@ -19,11 +19,25 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Token from "../../services/Token";
 import jwtDecode from "jwt-decode";
+import Swal from 'sweetalert2';
 
 
 // import moment from 'moment';
 
 // import Messages from "../../helpers/Messages";
+const Toast = Swal.mixin({
+    toast: true,
+    position: 'top',
+    background:'#111726',
+    color:'white',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer)
+      toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+  });
 
 const ChangePassword = () => {
 
@@ -149,11 +163,16 @@ const ChangePassword = () => {
                 const response = await UserServices.updatePasswordByUser({ password, old_password, user_id });
                 // console.log("Password Update....", response)
                 if (response.status === 200) {            
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Password Updated Successfully'
+                    })
                     // Messages.SuccessMessage("Password Updated Successfully");
                     setTimeout(navigate('/logout'), 3000);
                 }
 
             } catch (error) {
+                
                 // snackbar
                 console.log(error.response)
                 
